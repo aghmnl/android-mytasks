@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color1_50">#f9fbe7</color>
+    <color name="color1_100">#f0f4c3</color>
+    <color name="color1_300">#dce775</color>
+    <color name="color1_500">#c0ca33</color>
+    <color name="color1_700">#827717</color>
+    <color name="color1_900">#414503</color>
+    <color name="color1_950">#272900</color>
+    <color name="text">@color/color1_950</color>
+    <color name="hint">@color/color1_900</color>
+    <color name="button">@color/color1_900</color>
+    <color name="text_button">@color/color1_100</color>
+    <color name="background">@color/color1_100</color>
+    <color name="line">@color/color1_50</color>
+</resources>
