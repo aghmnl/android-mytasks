@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color1_50">#f9fbe7</color>
-    <color name="color1_100">#f0f4c3</color>
-    <color name="color1_300">#dce775</color>
-    <color name="color1_500">#c0ca33</color>
-    <color name="color1_700">#827717</color>
-    <color name="color1_900">#414503</color>
-    <color name="color1_950">#272900</color>
-    <color name="text">@color/color1_950</color>
-    <color name="hint">@color/color1_900</color>
-    <color name="button">@color/color1_900</color>
-    <color name="text_button">@color/color1_100</color>
-    <color name="background">@color/color1_100</color>
-    <color name="line">@color/color1_50</color>
+<!--    FollowApp Color Palette -->
+    <color name="color2_50">#f9fbe7</color>
+    <color name="color2_100">#f0f4c3</color>
+    <color name="color2_300">#dce775</color>
+    <color name="color2_500">#c0ca33</color>
+    <color name="color2_700">#827717</color>
+    <color name="color2_900">#414503</color>
+    <color name="color2_950">#272900</color>
+
+<!--    Standardizing color naming for this app-->
+    <color name="color_50">@color/color2_50</color>
+    <color name="color_100">@color/color2_100</color>
+    <color name="color_300">@color/color2_300</color>
+    <color name="color_500">@color/color2_500</color>
+    <color name="color_700">@color/color2_700</color>
+    <color name="color_900">@color/color2_900</color>
+    <color name="color_950">@color/color2_950</color>
+
+<!--    Standard color references-->
+    <color name="text">@color/color_950</color>
+    <color name="hint">@color/color_900</color>
+    <color name="button">@color/color_900</color>
+    <color name="text_button">@color/color_100</color>
+    <color name="background">@color/color_100</color>
+    <color name="line">@color/color_50</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.followapp.mytasks
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,12 +26,17 @@ class TasksAdapter(private val tasks: List<Task>) : RecyclerView.Adapter<TasksAd
 
     // This function is required by the RecyclerView.Adapter
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        // This line was previously inse the TaskViewHolder class as val
         val taskTitle: TextView = holder.view.findViewById(R.id.textViewTaskTitle)
-        println(tasks)
+
         val task = tasks[position]
         taskTitle.text = task.title
-//        holder.itemView.setOnClickListener {
-//            // Handle click event to show task details
-//        }
+        holder.itemView.setOnClickListener {
+            // Set the clicked task to SelectedTask.task
+            SelectedTask.task = task
+            // Open TaskDetail activity with the details of the clicked task
+            val intent = Intent(holder.itemView.context, TaskDetail::class.java)
+            holder.itemView.context.startActivity(intent)
+        }
     }
 }

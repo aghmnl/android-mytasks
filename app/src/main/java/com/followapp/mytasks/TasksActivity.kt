@@ -2,20 +2,19 @@ package com.followapp.mytasks
 
 //import android.content.Context
 //import android.content.SharedPreferences
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 //import java.time.LocalTime
 //import java.util.Date
-
-//import com.google.android.material.floatingactionbutton.FloatingActionButton
-//import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 //import com.google.gson.Gson
 
 class TasksActivity : AppCompatActivity() {
     private lateinit var tasksRecyclerView: RecyclerView
-//    private lateinit var addTaskButton: FloatingActionButton
+    private lateinit var addTaskButton: FloatingActionButton
 
 //    private lateinit var sharedPreferences: SharedPreferences
 //    private val gson = Gson()
@@ -30,14 +29,16 @@ class TasksActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tasks)
 
         tasksRecyclerView = findViewById(R.id.recyclerViewTasks)
-//        addTaskButton = findViewById(R.id.fabAddTask)
+        addTaskButton = findViewById(R.id.fabAddTask)
 
         tasksRecyclerView.layoutManager = LinearLayoutManager(this)
         tasksRecyclerView.adapter = TasksAdapter(taskList)
 
-//        addTaskButton.setOnClickListener {
-//            // Handle click event to add new task
-//        }
+        addTaskButton.setOnClickListener {
+            // Handle click event to add new task
+            val intent = Intent(this, TaskDetail::class.java)
+            startActivity(intent)
+        }
 
 //        sharedPreferences = getSharedPreferences("tasks", Context.MODE_PRIVATE)
     }
