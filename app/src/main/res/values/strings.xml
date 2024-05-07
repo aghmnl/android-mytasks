@@ -3,4 +3,8 @@
     <string name="add_task">Add</string>
     <string name="delete_task">Delete</string>
     <string name="close">Close</string>
+    <string name="date">Date</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="due_date">Due date</string>
 </resources>

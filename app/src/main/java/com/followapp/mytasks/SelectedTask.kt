@@ -1,5 +1,7 @@
 package com.followapp.mytasks
 
 object SelectedTask {
-    var task: Task? = null
+    var position: Int = -1
+    var tasksList = mutableListOf<Task>()
+
 }

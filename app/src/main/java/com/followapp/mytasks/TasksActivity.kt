@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 //import java.time.LocalTime
 //import java.util.Date
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 //import com.google.gson.Gson
 
 class TasksActivity : AppCompatActivity() {
@@ -19,22 +20,23 @@ class TasksActivity : AppCompatActivity() {
 //    private lateinit var sharedPreferences: SharedPreferences
 //    private val gson = Gson()
 
-    private val task1 = Task("Hacer las compras",false)
-    private val task2 = Task("Ir al gym", false)
-    private val task3 = Task("Programar", true)
-    private val taskList = listOf(task1, task2, task3)
+    private val tasksAdapter = TasksAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tasks)
 
+        addSomeTasks()
+
         tasksRecyclerView = findViewById(R.id.recyclerViewTasks)
         addTaskButton = findViewById(R.id.fabAddTask)
 
         tasksRecyclerView.layoutManager = LinearLayoutManager(this)
-        tasksRecyclerView.adapter = TasksAdapter(taskList)
+        tasksRecyclerView.adapter = tasksAdapter
 
         addTaskButton.setOnClickListener {
+            SelectedTask.position = -1
+
             // Handle click event to add new task
             val intent = Intent(this, TaskDetail::class.java)
             startActivity(intent)
@@ -42,6 +44,22 @@ class TasksActivity : AppCompatActivity() {
 
 //        sharedPreferences = getSharedPreferences("tasks", Context.MODE_PRIVATE)
     }
+
+    private fun addSomeTasks() {
+        val task1 = Task("Hacer las compras", false)
+        val task2 = Task("Ir al gym", false)
+        val task3 = Task("Programar", true)
+        SelectedTask.tasksList = mutableListOf(task1, task2, task3)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        tasksAdapter.notifyDataSetChanged()
+//            recyclerView.adapter?.notifyItemInserted(0)  // Todo implementar
+//            recyclerView.adapter?.notifyItemRemoved(position)  // Todo implementar
+//            recyclerView.adapter?.notifyItemRangeChanged(0, getSize())  // Todo implementar
+    }
+
 
 //    // Add a task
 //    private fun addTask(task: Task) {
