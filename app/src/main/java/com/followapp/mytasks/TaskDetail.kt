@@ -3,36 +3,45 @@ package com.followapp.mytasks
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.TextView
+import android.widget.DatePicker
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.Calendar
 
 class TaskDetail : AppCompatActivity() {
-    private lateinit var taskTitle: TextView
-    private lateinit var taskDescription: TextView
-    private lateinit var dueDate: TextView
+    private lateinit var editTextTaskTitleDetail: EditText
+    private lateinit var editTextTaskDescription: EditText
+    private lateinit var datePickerDueDate: DatePicker
+    private lateinit var saveButton: Button
     private lateinit var deleteButton: Button
     private lateinit var closeButton: Button
-
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    private val position = SelectedTask.position
+    private val task = SelectedTask.tasksList[position]
+    private val calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.task_detail)
 
-        taskTitle = findViewById(R.id.editTextTaskTitleDetail)
-        taskDescription = findViewById(R.id.editTextTaskDescription)
-        dueDate = findViewById(R.id.editTextDueDate)
+        editTextTaskTitleDetail = findViewById(R.id.editTextTaskTitleDetail)
+        editTextTaskDescription = findViewById(R.id.editTextTaskDescription)
+        datePickerDueDate = findViewById(R.id.datePickerDueDate)
+        saveButton = findViewById(R.id.buttonSaveTask)
         deleteButton = findViewById(R.id.buttonDeleteTask)
         closeButton = findViewById(R.id.buttonCloseDetail)
 
         // Get the task from SelectedTask
-        if (SelectedTask.position != -1) {
-            // Display task details
-            taskTitle.text = SelectedTask.tasksList[SelectedTask.position].title
-            taskDescription.text = SelectedTask.tasksList[SelectedTask.position].description
-//            dueDate.text = dateFormat.format(task.dueDate!!)  // TODO esto puede dar null
+        if (position > -1) {
+
+            // Set the Title and description if not null the latter
+            editTextTaskTitleDetail.setText(task.title)
+            if (task.description != null) editTextTaskDescription.setText(task.description)
+
+            // Set the DatePicker to the task's due date if not null
+            if(task.dueDate != null) {
+                calendar.time = task.dueDate!!
+                datePickerDueDate.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+            }
 
             deleteButton.setOnClickListener {
                 // Handle delete action
@@ -42,28 +51,36 @@ class TaskDetail : AppCompatActivity() {
             deleteButton.visibility = View.GONE // Hide delete button for new task
         }
 
-        closeButton.setOnClickListener {
-            // Save the task
+
+
+        datePickerDueDate.setOnClickListener {
+            calendar.set(datePickerDueDate.year, datePickerDueDate.month, datePickerDueDate.dayOfMonth)
+            task.dueDate = calendar.time
+        }
+
+        saveButton.setOnClickListener {
+            // Adds a new task
             val newTask = Task(
-                taskTitle.text.toString(),
+                editTextTaskTitleDetail.text.toString(),
                 false,
-                description = taskDescription.text.toString(),
-//                dateFormat.parse(dueDate.text.toString())
+                description = editTextTaskDescription.text.toString(),
+                dueDate = task.dueDate
             )
-            if(SelectedTask.position == -1) SelectedTask.tasksList.add(newTask)
 
-//            if (SelectedTask.isNewTask) {
-//                // Add the new task to the list
-//                tasksList.add(newTask)
-//                tasksAdapter.notifyDataSetChanged()
-//            } else {
-//                // Update the existing task
-//                val index = tasksList.indexOf(SelectedTask.task)
-//                if (index != -1) {
-//                    tasksList[index] = newTask
-//                    tasksAdapter.notifyDataSetChanged()
-//                }
+            if (position > -1) {
+                SelectedTask.tasksList[position] = newTask
+            }
 
+            if (position == -1) {
+                SelectedTask.tasksList.add(newTask)
+                SelectedTask.position = -2 // Position -2 means that a new task was added
+            }
+
+            // Close the detail view
+            finish()
+        }
+
+        closeButton.setOnClickListener {
             // Close the detail view
             finish()
         }

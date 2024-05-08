@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">MyTasks</string>
     <string name="add_task">Add</string>
-    <string name="delete_task">Delete</string>
+    <string name="delete">Delete</string>
     <string name="close">Close</string>
+    <string name="save">Save</string>
     <string name="date">Date</string>
     <string name="title">Title</string>
     <string name="description">Description</string>

@@ -54,7 +54,14 @@ class TasksActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        tasksAdapter.notifyDataSetChanged()
+
+        // Position -2 means that a new task was added
+        if (SelectedTask.position == -2) {
+            tasksAdapter.notifyItemInserted(SelectedTask.tasksList.size)
+        } else if (SelectedTask.position > -1){
+            tasksAdapter.notifyItemRangeChanged(SelectedTask.position, SelectedTask.tasksList.size)
+            SelectedTask.position = -1
+        }
 //            recyclerView.adapter?.notifyItemInserted(0)  // Todo implementar
 //            recyclerView.adapter?.notifyItemRemoved(position)  // Todo implementar
 //            recyclerView.adapter?.notifyItemRangeChanged(0, getSize())  // Todo implementar
