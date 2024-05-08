@@ -14,7 +14,7 @@ class TasksAdapter() : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
 
     // This function is required by the RecyclerView.Adapter
     override fun getItemCount(): Int {
-        return SelectedTask.tasksList.size
+        return TaskManager.tasksList.size
     }
 
     // This function is required by the RecyclerView.Adapter
@@ -29,12 +29,12 @@ class TasksAdapter() : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
         // This line was previously inse the TaskViewHolder class as val
         val taskTitle: TextView = holder.view.findViewById(R.id.textViewTaskTitle)
 
-        val task = SelectedTask.tasksList[position]
+        val task = TaskManager.tasksList[position]
 
         taskTitle.text = task.title
         holder.itemView.setOnClickListener {
             // Set the clicked task to SelectedTask.task
-            SelectedTask.position = position
+            TaskManager.selectedTaskIndex = position
             // Open TaskDetail activity with the details of the clicked task
             val intent = Intent(holder.itemView.context, TaskDetail::class.java)
             holder.itemView.context.startActivity(intent)

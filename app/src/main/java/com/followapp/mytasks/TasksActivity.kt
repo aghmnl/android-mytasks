@@ -35,12 +35,16 @@ class TasksActivity : AppCompatActivity() {
         tasksRecyclerView.adapter = tasksAdapter
 
         addTaskButton.setOnClickListener {
-            SelectedTask.position = -1
+            TaskManager.selectedTaskIndex = -1
 
             // Handle click event to add new task
             val intent = Intent(this, TaskDetail::class.java)
             startActivity(intent)
         }
+
+        TaskManager.onItemInserted = { tasksAdapter.notifyItemInserted(TaskManager.tasksList.size) }
+        TaskManager.onItemChanged = { tasksAdapter.notifyItemRangeChanged(TaskManager.selectedTaskIndex, TaskManager.tasksList.size) }
+        TaskManager.onItemRemoved = { tasksAdapter.notifyItemRemoved(TaskManager.selectedTaskIndex) }
 
 //        sharedPreferences = getSharedPreferences("tasks", Context.MODE_PRIVATE)
     }
@@ -49,24 +53,8 @@ class TasksActivity : AppCompatActivity() {
         val task1 = Task("Hacer las compras", false)
         val task2 = Task("Ir al gym", false)
         val task3 = Task("Programar", true)
-        SelectedTask.tasksList = mutableListOf(task1, task2, task3)
+        TaskManager.tasksList = mutableListOf(task1, task2, task3)
     }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Position -2 means that a new task was added
-        if (SelectedTask.position == -2) {
-            tasksAdapter.notifyItemInserted(SelectedTask.tasksList.size)
-        } else if (SelectedTask.position > -1){
-            tasksAdapter.notifyItemRangeChanged(SelectedTask.position, SelectedTask.tasksList.size)
-            SelectedTask.position = -1
-        }
-//            recyclerView.adapter?.notifyItemInserted(0)  // Todo implementar
-//            recyclerView.adapter?.notifyItemRemoved(position)  // Todo implementar
-//            recyclerView.adapter?.notifyItemRangeChanged(0, getSize())  // Todo implementar
-    }
-
 
 //    // Add a task
 //    private fun addTask(task: Task) {
