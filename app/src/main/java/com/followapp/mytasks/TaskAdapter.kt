@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TasksAdapter() : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
+class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
 
     // This class is required as result of the onCreateViewHolder
     class TaskViewHolder(val view: View) : RecyclerView.ViewHolder(view)

@@ -48,7 +48,7 @@ class TaskDetail : AppCompatActivity() {
             }
 
             deleteButton.setOnClickListener {
-                TaskManager.deleteTask()
+                TaskManager.deleteTask(task.id)
                 finish()
 
 
