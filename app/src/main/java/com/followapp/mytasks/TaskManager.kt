@@ -36,10 +36,11 @@ object TaskManager {
     }
 
     fun addTask(task: Task) {
-        tasksList.add(task)
         CoroutineScope(Dispatchers.IO).launch {
-            taskDAO.insert(task)
+            val id = taskDAO.insert(task)
+            task.id = id.toInt()
         }
+        tasksList.add(task)
         onItemInserted?.invoke()
     }
 
@@ -51,11 +52,9 @@ object TaskManager {
         onItemChanged?.invoke()
     }
 
-    fun deleteTask(id: Int) {
-        tasksList.removeAt(selectedTaskIndex)
-        CoroutineScope(Dispatchers.IO).launch {
-            taskDAO.delete(id)
-        }
+    fun deleteTask(task: Task) {
+        tasksList.remove(task)
+        CoroutineScope(Dispatchers.IO).launch { taskDAO.delete(task) }
         onItemRemoved?.invoke()
     }
 }

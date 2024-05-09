@@ -48,10 +48,8 @@ class TaskDetail : AppCompatActivity() {
             }
 
             deleteButton.setOnClickListener {
-                TaskManager.deleteTask(task.id)
+                TaskManager.deleteTask(task)
                 finish()
-
-
             }
         } else {
             // Handle new task creation
@@ -65,23 +63,26 @@ class TaskDetail : AppCompatActivity() {
         }
 
         saveButton.setOnClickListener {
-            // Adds a new task
-            val newTask = Task(
-                editTextTaskTitleDetail.text.toString(),
-                false,
-                description = editTextTaskDescription.text.toString(),
-                dueDate = task.dueDate
-            )
-
+            // Create a new task or update an existing one
             if (selectedTaskIndex > -1) {
+                val newTask = Task(
+                    editTextTaskTitleDetail.text.toString(),
+                    false,
+                    id = task.id,
+                    description = editTextTaskDescription.text.toString(),
+                    dueDate = task.dueDate
+                )
                 TaskManager.updateTask(newTask)
-            }
 
-            if (selectedTaskIndex == -1) {
+            } else {
+                val newTask = Task(
+                    editTextTaskTitleDetail.text.toString(),
+                    false,
+                    description = editTextTaskDescription.text.toString(),
+                    dueDate = task.dueDate
+                )
                 TaskManager.addTask(newTask)
             }
-
-            // Close the detail view
             finish()
         }
 

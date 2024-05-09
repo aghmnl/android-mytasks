@@ -19,9 +19,6 @@ class TasksActivity : AppCompatActivity() {
 
         TaskManager.initialize(this)
 
-
-//        addSomeTasks()
-
         tasksRecyclerView = findViewById(R.id.recyclerViewTasks)
         addTaskButton = findViewById(R.id.fabAddTask)
 
@@ -41,21 +38,4 @@ class TasksActivity : AppCompatActivity() {
         TaskManager.onItemRemoved = { tasksAdapter.notifyItemRemoved(TaskManager.selectedTaskIndex) }
 
     }
-
-
-
-
-//    // Get all tasks
-//    private fun getTasks(): List<Task> {
-//        val json = sharedPreferences.getString("tasks", null)
-//        val type = object : TypeToken<List<Task>>() {}.type
-//        return gson.fromJson(json, type) ?: emptyList()
-//    }
-
-//    private fun saveTasks(tasks: List<Task>) {
-//        val editor = sharedPreferences.edit()
-//        val json = gson.toJson(tasks)
-//        editor.putString("tasks", json)
-//        editor.apply()
-//    }
 }
