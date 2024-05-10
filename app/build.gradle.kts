@@ -1,10 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-//    id("kotlin-android")
-//    id("kotlin-parcelize")
-//    id("com.google.devtools.ksp") version "1.8.0-1.0.9"
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -44,7 +41,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.5"
     }
     packaging {
         resources {
@@ -81,11 +78,6 @@ dependencies {
 
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
-//    kapt("androidx.room:room-compiler:$roomVersion")
-//    ksp("androidx.room:room-compiler:$roomVersion")
-
+    ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-//    implementation "androidx.compose.runtime:runtime-livedata:1.5.4"
-    kapt("androidx.room:room-compiler:$roomVersion")
 }
