@@ -30,9 +30,9 @@ object TaskManager {
     }
 
     private fun addSomeTasks() {
-        addTask(Task("Hacer las compras", false))
-        addTask(Task("Ir al gym", false))
-        addTask(Task("Programar", true))
+        addTask(Task("Shopping", false))
+        addTask(Task("Gym", false))
+        addTask(Task("Work", true))
     }
 
     fun addTask(task: Task) {
