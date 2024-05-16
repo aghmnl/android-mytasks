@@ -15,7 +15,6 @@
         android:id="@+id/fabAddTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/button"
         android:contentDescription="@string/add_task"
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTasks"
@@ -23,6 +22,9 @@
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/recyclerViewTasks"
-        app:layout_constraintVertical_bias="0.95"
-        app:tint="@color/text_button" />
+        app:layout_constraintVertical_bias="0.95"/>
+
+<!--    android:backgroundTint="@color/button"-->
+<!--    app:tint="@color/text_button"-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

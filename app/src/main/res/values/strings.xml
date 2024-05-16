@@ -11,4 +11,5 @@
     <string name="example1">Hacer las compras</string>
     <string name="example2">Ir al gym</string>
     <string name="example3">Trabajar</string>
+    <string name="select_date">select a date</string>
 </resources>
