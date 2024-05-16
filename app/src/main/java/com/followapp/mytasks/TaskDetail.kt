@@ -16,7 +16,8 @@ class TaskDetail : AppCompatActivity() {
     private lateinit var deleteButton: Button
     private lateinit var closeButton: Button
     private val selectedTaskIndex = TaskManager.selectedTaskIndex
-    private val task = if (selectedTaskIndex != -1) TaskManager.tasksList[selectedTaskIndex] else Task("", false)
+    private val task =
+        if (selectedTaskIndex != -1 && selectedTaskIndex < TaskManager.tasksList.size) TaskManager.tasksList[selectedTaskIndex] else Task("", false)
     private val calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {

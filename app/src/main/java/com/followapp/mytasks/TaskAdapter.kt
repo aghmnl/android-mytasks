@@ -1,5 +1,6 @@
 package com.followapp.mytasks
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -37,7 +38,9 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
             TaskManager.selectedTaskIndex = position
             // Open TaskDetail activity with the details of the clicked task
             val intent = Intent(holder.itemView.context, TaskDetail::class.java)
-            holder.itemView.context.startActivity(intent)
+            if (!(holder.itemView.context as Activity).isFinishing) {
+                holder.itemView.context.startActivity(intent)
+            }
         }
     }
 }
