@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.MyTasks" parent="Theme.Material3.DayNight">
-<!--        <item name="android:textColor">@color/text</item>-->
-<!--        <item name="android:textColorHint">@color/hint</item>-->
+    <style name="Theme.MyTasks" parent="Theme.Material3.DayNight.NoActionBar">
     </style>
 
 </resources>

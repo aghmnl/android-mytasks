@@ -12,4 +12,7 @@
     <string name="example2">Ir al gym</string>
     <string name="example3">Trabajar</string>
     <string name="select_date">select a date</string>
+    <string name="navigation_drawer_open">open</string>
+    <string name="navigation_drawer_close">close</string>
+    <string name="login">Login</string>
 </resources>
