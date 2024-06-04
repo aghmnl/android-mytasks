@@ -3,6 +3,7 @@ package com.followapp.mytasks
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
@@ -18,19 +19,20 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 
-class TasksActivity : AppCompatActivity() {
+class TasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var tasksRecyclerView: RecyclerView
     private lateinit var addTaskButton: FloatingActionButton
     private lateinit var advertView: AdView
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+
+
     private val tasksAdapter = TasksAdapter()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tasks)
-
-        initToolbar()
-        initBanner()
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) // This is to avoid dark mode
 
@@ -54,32 +56,33 @@ class TasksActivity : AppCompatActivity() {
         TaskManager.onItemChanged = { tasksAdapter.notifyItemRangeChanged(TaskManager.selectedTaskIndex, TaskManager.tasksList.size) }
         TaskManager.onItemRemoved = { tasksAdapter.notifyItemRemoved(TaskManager.selectedTaskIndex) }
 
+        initToolBar()
+        initBanner()
+
     }
 
-    private fun initToolbar() {
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
+    private fun initToolBar() {
+        val toolbar: Toolbar = findViewById(R.id.toolbar_main)
         setSupportActionBar(toolbar)
 
-        // Initialize the navigation drawer toggle button
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar,
-            R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+        drawerLayout = findViewById(R.id.drawer_layout)
 
-        // Set item selected listener for the navigation view
-        val navigationView: NavigationView = findViewById(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            // Handle navigation item clicks here
-            when (menuItem.itemId) {
-                R.id.nav_item_login -> println("HOLA MUNDO")
-            }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
-        }
+        val toggle = ActionBarDrawerToggle(
+            this, drawerLayout, toolbar, R.string.bar_title, R.string.navigation_drawer_close
+        )
+
+        drawerLayout.addDrawerListener(toggle)
+
+        toggle.syncState()
+        initNavigationView()
     }
+
+    private fun initNavigationView() {
+        navigationView = findViewById(R.id.nav_view)
+
+        navigationView.setNavigationItemSelectedListener(this)
+    }
+
 
     // To load the ads banner
     private fun initBanner() {
@@ -95,5 +98,19 @@ class TasksActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder().build()
         advertView.loadAd(adRequest)
 
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_login -> {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
+        // Para cerrar el menú luego de elegir la opción
+        drawerLayout.closeDrawer(GravityCompat.START)
+
+        return true
     }
 }

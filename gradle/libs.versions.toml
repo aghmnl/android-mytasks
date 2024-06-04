@@ -1,18 +1,24 @@
 [versions]
 agp = "8.4.1"  # Tanto para library como para application
+#firebaseAuth = "22.3.1"  No es necesario porque se usa Firebase Android BoM
+drawerlayout = "1.2.0"
+firebaseBom = "33.1.0"
 kotlin = "1.9.24"  # https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android
 kps = "1.9.24-1.0.20"  # https://github.com/google/ksp/releases
 activityCompose = "1.9.0"
-appcompat = "1.6.1"
+appcompat = "1.7.0"
 composeBom = "2024.05.00"
 constraintlayout = "2.1.4"
 espressoCore = "3.5.1"
 firebaseCrashlyticsBuildtools = "3.0.0"
+googleGmsGoogleServices = "4.4.2"
 gson = "2.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 material = "1.12.0"
+navigation = "2.7.7"
 playServicesAds = "23.1.0"
+playServicesAuth = "20.7.0"  # // GoogleSignIn is deprecated in version 21.0.0
 roomVersion = "2.6.1"
 # @keep
 compileSdk = "34"
@@ -21,16 +27,21 @@ minSdk = "26"  # Updated from 25 to 26 to use LocalTime
 # @keep
 targetSdk = "34"
 # @keep
-compose-compiler = "1.5.14"  #  https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+compose-compiler = "1.5.14"
+
 
 [libraries]
+android-material = { module = "com.google.android.material:material", version.ref = "material" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+androidx-drawerlayout = { module = "androidx.drawerlayout:drawerlayout", version.ref = "drawerlayout" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
 androidx-material3 = { module = "androidx.compose.material3:material3" }
+androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
@@ -40,13 +51,19 @@ androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
-firebase-crashlytics-buildtools = { module = "com.google.firebase:firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics-buildtools = { module = "com.google.firebase:firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools"}
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { module = "junit:junit", version.ref = "junit" }
-material = { module = "com.google.android.material:material", version.ref = "material" }
 play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "kps" }
+
+# https://firebase.google.com/docs/android/troubleshooting-faq#add-plugins-using-buildscript-syntax
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }

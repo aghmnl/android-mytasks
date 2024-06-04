@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "692558155479",
+    "project_id": "followapp-mytasks",
+    "storage_bucket": "followapp-mytasks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692558155479:android:ab9bbf98cfd37477c56a92",
+        "android_client_info": {
+          "package_name": "com.followapp.mytasks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "692558155479-mk7tc1ase12is4j59n7vrmqf3ar86p6s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.followapp.mytasks",
+            "certificate_hash": "88d68f293c8015f13e1f290bf69eb1aa19b202b4"
+          }
+        },
+        {
+          "client_id": "692558155479-800k03813n3hand9nljrlnrtdnl4sens.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlWHq687WfGXJHOytWZQU8JaW5fWcS5HY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "692558155479-800k03813n3hand9nljrlnrtdnl4sens.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

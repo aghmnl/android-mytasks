@@ -17,11 +17,14 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>  <!-- Banner test ID -->
-<!--        android:value="ca-app-pub-5163472824682213~4420222935"/>-->  <!-- FollowApp MyTasks ID -->
+            android:value="ca-app-pub-3940256099942544~3347511713" />  <!-- Banner test ID -->
+        <!--        android:value="ca-app-pub-5163472824682213~4420222935"/>-->  <!-- FollowApp MyTasks ID -->
 
         <activity
             android:name=".TaskDetail"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
             android:exported="false" />
         <activity
             android:name=".TasksActivity"
