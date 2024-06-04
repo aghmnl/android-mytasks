@@ -63,7 +63,7 @@
             <!--    </com.google.android.gms.ads.AdView>-->
 
 
-        </RelativeLayout>
+</RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
