@@ -48,6 +48,10 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+
+    viewBinding { enable = true}
+
+
     buildFeatures {
         compose = true
     }
@@ -63,8 +67,11 @@ android {
 
 dependencies {
 
-//    implementation("androidx.core:core-ktx:1.12.0")
-//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+//    implementation(libs.androidx.core.ktx)
+//    implementation(libs.androidx.lifecycle.runtime.ktx)
+//    implementation(libs.kotlinx.coroutines.android)
+
+
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -77,6 +84,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.android.libraries.identity.googleid)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
@@ -84,7 +92,9 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.play.services.ads)
     implementation(libs.play.services.auth)
-
+    implementation(libs.androidx.security.identity.credential)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.androidx.drawerlayout)
 
 

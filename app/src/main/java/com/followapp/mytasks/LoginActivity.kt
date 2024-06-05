@@ -1,42 +1,89 @@
 package com.followapp.mytasks
 
-import android.app.Activity
-import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn  // GoogleSignIn is deprecated in version 21.0.0
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.AuthCredential
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import androidx.credentials.PasswordCredential
+import androidx.credentials.PublicKeyCredential
+import androidx.credentials.exceptions.GetCredentialException
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var credentialManager: CredentialManager
     private lateinit var auth: FirebaseAuth      // shared instance of the FirebaseAuth object (the entry point of the Firebase Authentication SDK).
-
-    @Suppress("PrivatePropertyName")     // This is a constant that will be used when calling startActivityForResult(). It's used as a request code.
-    // Can be any integer unique to the Activity. Is used to identify the result of the Google Sign-In Intent.
-    private val RC_SIGN_IN = 2
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        auth = FirebaseAuth.getInstance()
+        //auth = Firebase.auth Propuesto por Android Studio
+        credentialManager = CredentialManager.create(this)
         initLogin()
 
-        /* Copilot
-//        val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-//        val intent = keyguardManager.createConfirmDeviceCredentialIntent("Login", "Please confirm your screen lock to continue")
-//        startActivityForResult(intent, 0)
-         */
+    }
+
+    private fun initLogin() {
+
+        // First, check if the user has any accounts that have previously been used to sign in to your app by calling the API with the setFilterByAuthorizedAccounts parameter set to true. Users can choose between available accounts to sign in.
+        // If no authorized Google Accounts are available, the user should be prompted to sign up with any of their available accounts. To do this, prompt the user by calling the API again and setting setFilterByAuthorizedAccounts to false
+//        val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+//            .setFilterByAuthorizedAccounts(true)
+//            .setServerClientId(getString(R.string.web_client_id))
+//            .setAutoSelectEnabled(true)
+////            .setNonce("nonce string to use when generating a Google ID token")  // To be tested and improved  https://developer.android.com/google/play/integrity/classic#nonce
+//            .build()
+
+
+//        val request: GetCredentialRequest = Builder()
+//            .addCredentialOption(googleIdOption)
+//            .build()
+
+
+        /*        Propuesto por Android Studio
+            signInRequest = BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(
+                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                        .setSupported(true)
+                        // Your server's client ID, not your Android client ID.
+                        .setServerClientId(getString(R.string.web_client_id))
+                        // Only show accounts previously used to sign in.
+                        .setFilterByAuthorizedAccounts(true)
+                        .build()
+                )
+
+        */
+
+
+//        val googleAccount = GoogleSignIn.getLastSignedInAccount(this)
+//        if (googleAccount != null) {
+//            firebaseAuthWithGoogle(googleAccount.idToken!!)  // If the user is already signed in, authenticate with Firebase.
+
+
+        // Find the Google Sign-In button in the layout and set a click listener.
+        val signInButton: Button = findViewById(R.id.signInGoogle)
+
+
+        signInButton.setOnClickListener {
+            getGoogleIdToken()
+        }
     }
 
     /* Propuesto por Android Studio
@@ -48,119 +95,131 @@ class LoginActivity : AppCompatActivity() {
     }
     */
 
-    private fun initLogin() {
-/*        Propuesto por Android Studio
-        val signInRequest = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    // Your server's client ID, not your Android client ID.
-                    .setServerClientId(getString(R.string.web_client_id))
-                    // Only show accounts previously used to sign in.
-                    .setFilterByAuthorizedAccounts(true)
-                    .build()
-            )
+    private fun getGoogleIdToken() {
+        val googleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(getString(R.string.web_client_id))
+            .build()
 
- */
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
 
-
-        // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
-
-        // Configure Google Sign-In to request the user's ID, email address, and basic profile.
-        // ID and basic profile are included in DEFAULT_SIGN_IN.
-        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.web_client_id))  // Request an ID token from Google Play services.
-            .requestEmail()   // Request the user's email address.
-            .build()   // Build the GoogleSignInOptions.
-
-        val googleSignInClient =
-            GoogleSignIn.getClient(this, googleSignInOptions)     // Create a GoogleSignInClient with the options specified by gso.
-
-        // Check for existing Google Sign In account. If the user is already signed in, the GoogleSignInAccount will be non-null.
-        val googleAccount = GoogleSignIn.getLastSignedInAccount(this)
-        if (googleAccount != null) {
-            firebaseAuthWithGoogle(googleAccount.idToken!!)  // If the user is already signed in, authenticate with Firebase.
-        }
-
-        // Find the Google Sign-In button in the layout and set a click listener.
-        val signInButton: Button = findViewById(R.id.signInGoogle)
-
-        val signInResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-                try {
-                    val account = task.getResult(ApiException::class.java)!!
-                    firebaseAuthWithGoogle(account.idToken!!)
-                } catch (e: ApiException) {
-                    Log.w(ContentValues.TAG, "Google sign in failed", e)
-                    updateUI(null)
-                }
+        lifecycleScope.launch {
+            try {
+                val result = credentialManager.getCredential(
+                    request = request,
+                    context = this@LoginActivity,
+                )
+                handleSignIn(result)
+            } catch (e: GetCredentialException) {
+//            handleFailure(e)
             }
         }
 
-        signInButton.setOnClickListener {
-            val signInIntent = googleSignInClient.signInIntent
-            signInResultLauncher.launch(signInIntent)
-        }
+//        val task = credentialManager.getCredential(this, request)
+//        task.addOnCompleteListener { result ->
+//            if (result.isSuccessful) {
+//                val idToken = result.result?.idToken
+//                if (idToken != null) {
+//                    firebaseAuthWithGoogle(idToken)
+//                } else {
+//                    // Handle case when no Google ID token is available
+//                    updateUI(null)
+//                }
+//            } else {
+//                // Handle error
+//                updateUI(null)
+//            }
+//        }
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)   // Get a credential from the Google ID token.
-        firebaseAuthWithCredential(credential)
-    }
-
-    private fun firebaseAuthWithCredential(credential: AuthCredential) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
-                // Sign in success, update UI with the signed-in user's information
                 val user = auth.currentUser
                 println("PRINTING EMAIL")
                 println(user?.email)
                 updateUI(user)
             } else {
-                // If sign in fails, display a message to the user.
-                Log.w(ContentValues.TAG, "signInWithCredential:failure", task.exception)
+                Log.w(TAG, "signInWithCredential:failure", task.exception)
                 updateUI(null)
             }
         }
     }
+
+    private fun handleSignIn(result: GetCredentialResponse) {
+        // Handle the successfully returned credential.
+        when (val credential = result.credential) {
+
+            // Passkey credential
+            is PublicKeyCredential -> {
+                // Share responseJson such as a GetCredentialResponse on your server to
+                // validate and authenticate
+//                responseJson = credential.authenticationResponseJson
+                println("CREDENTIAL IS PublicKeyCredential")
+            }
+
+            // Password credential
+            is PasswordCredential -> {
+                // Send ID and password to your server to validate and authenticate.
+//                val username = credential.id
+//                val password = credential.password
+                println("CREDENTIAL IS PasswordCredential")
+
+            }
+
+            // GoogleIdToken credential
+            is CustomCredential -> {
+                println("CREDENTIAL IS CustomCredential")
+                if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                    try {
+                        // Use googleIdTokenCredential and extract id to validate and
+                        // authenticate on your server.
+                        val googleIdTokenCredential = GoogleIdTokenCredential
+                            .createFrom(credential.data)
+                        println(googleIdTokenCredential.displayName)
+                        println(googleIdTokenCredential.id)
+                        println(googleIdTokenCredential.familyName)
+                        println(googleIdTokenCredential.givenName)
+                        firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
+
+                    } catch (e: GoogleIdTokenParsingException) {
+                        Log.e(TAG, "Received an invalid google id token response", e)
+                    }
+                } else {
+                    // Catch any unrecognized custom credential type here.
+                    Log.e(TAG, "Unexpected type of credential")
+                }
+            }
+
+            else -> {
+                // Catch any unrecognized credential type here.
+                Log.e(TAG, "Unexpected type of credential")
+            }
+        }
+    }
+
+
+
+
+    /* Propuesto por Android Studio
+    override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.getCurrentUser()
+        updateUI(currentUser);
+    }
+
+     */
 
     private fun updateUI(user: FirebaseUser?) {
-        if (user != null) goHome()
-    }
-
-    private fun goHome() {
-        val intent = Intent(this, TasksActivity::class.java)
-        startActivity(intent)
-    }
-
-    // This function is called when an activity launched exits, giving the requestCode it started with, the resultCode it returned, and any additional data from it.
-    @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // Check if the request code is the one used for Google Sign-In.
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)!!
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(ContentValues.TAG, "Google sign in failed", e)
-                updateUI(null)
-            }
+        if (user != null) {
+            val intent = Intent(this, TasksActivity::class.java)
+            startActivity(intent)
         }
     }
-
-//    @Deprecated(
-//        "This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.",
-//        ReplaceWith("super.onActivityResult(requestCode, resultCode, data)", "androidx.appcompat.app.AppCompatActivity")
-//    )
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
 
     /* Propuesto por Android Studio
     val googleCredential = oneTapClient.getSignInCredentialFromIntent(data)
@@ -191,16 +250,6 @@ class LoginActivity : AppCompatActivity() {
     }
     */
 
-//        if (requestCode == 0) {
-//            if (resultCode == RESULT_OK) {
-//                // The user has successfully logged in
-//            } else {
-//                // The user has failed to log in
-//            }
-//        }
-
-
-//    }
 
     /* Propuesto por Android Studio
     private fun logout() {
