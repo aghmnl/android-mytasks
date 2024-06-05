@@ -37,6 +37,7 @@ class TasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) // This is to avoid dark mode
 
         TaskManager.initialize(this)
+        println("RUNNING INITIALIZE")
 
         tasksRecyclerView = findViewById(R.id.recyclerViewTasks)
         addTaskButton = findViewById(R.id.fabAddTask)
@@ -79,10 +80,8 @@ class TasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     private fun initNavigationView() {
         navigationView = findViewById(R.id.nav_view)
-
         navigationView.setNavigationItemSelectedListener(this)
     }
-
 
     // To load the ads banner
     private fun initBanner() {

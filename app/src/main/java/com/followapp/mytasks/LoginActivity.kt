@@ -139,8 +139,6 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
                 val user = auth.currentUser
-                println("PRINTING EMAIL")
-                println(user?.email)
                 updateUI(user)
             } else {
                 Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -158,7 +156,6 @@ class LoginActivity : AppCompatActivity() {
                 // Share responseJson such as a GetCredentialResponse on your server to
                 // validate and authenticate
 //                responseJson = credential.authenticationResponseJson
-                println("CREDENTIAL IS PublicKeyCredential")
             }
 
             // Password credential
@@ -166,24 +163,17 @@ class LoginActivity : AppCompatActivity() {
                 // Send ID and password to your server to validate and authenticate.
 //                val username = credential.id
 //                val password = credential.password
-                println("CREDENTIAL IS PasswordCredential")
-
             }
 
             // GoogleIdToken credential
             is CustomCredential -> {
-                println("CREDENTIAL IS CustomCredential")
                 if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     try {
                         // Use googleIdTokenCredential and extract id to validate and
                         // authenticate on your server.
                         val googleIdTokenCredential = GoogleIdTokenCredential
                             .createFrom(credential.data)
-                        println(googleIdTokenCredential.displayName)
-                        println(googleIdTokenCredential.id)
-                        println(googleIdTokenCredential.familyName)
-                        println(googleIdTokenCredential.givenName)
-                        firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
+                         firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
 
                     } catch (e: GoogleIdTokenParsingException) {
                         Log.e(TAG, "Received an invalid google id token response", e)
@@ -217,6 +207,9 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             val intent = Intent(this, TasksActivity::class.java)
+
+            //  This flag ensures that if an instance of TasksActivity already exists in the back stack, it will be brought to the foreground instead of creating a new one.
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
         }
     }
