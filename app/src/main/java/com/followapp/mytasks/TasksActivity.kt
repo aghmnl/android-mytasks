@@ -9,7 +9,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.CredentialManager
+import androidx.credentials.exceptions.GetCredentialException
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
@@ -18,6 +22,8 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 class TasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var tasksRecyclerView: RecyclerView
@@ -25,9 +31,12 @@ class TasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private lateinit var advertView: AdView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-
-
     private val tasksAdapter = TasksAdapter()
+
+    // This should be in the LoginActivity
+    private lateinit var credentialManager: CredentialManager
+    private lateinit var auth: FirebaseAuth      // shared instance of the FirebaseAuth object (the entry point of the Firebase Authentication SDK).
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,11 +114,29 @@ class TasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
+            R.id.nav_logout -> {
+                logout()
+            }
         }
 
         // Para cerrar el menú luego de elegir la opción
         drawerLayout.closeDrawer(GravityCompat.START)
 
         return true
+    }
+
+    private fun logout() {
+        lifecycleScope.launch {
+            try {
+                credentialManager = CredentialManager.create(this@TasksActivity)
+                auth = FirebaseAuth.getInstance()
+
+                credentialManager.clearCredentialState(ClearCredentialStateRequest())
+                auth.signOut()
+                println("LOGOUT")
+            } catch (e: GetCredentialException) {
+                println("THERE WAS AN ERROR LOGOUT")
+            }
+        }
     }
 }

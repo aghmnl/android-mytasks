@@ -173,7 +173,7 @@ class LoginActivity : AppCompatActivity() {
                         // authenticate on your server.
                         val googleIdTokenCredential = GoogleIdTokenCredential
                             .createFrom(credential.data)
-                         firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
+                        firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
 
                     } catch (e: GoogleIdTokenParsingException) {
                         Log.e(TAG, "Received an invalid google id token response", e)
@@ -190,8 +190,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
 
     /* Propuesto por Android Studio
@@ -244,11 +242,6 @@ class LoginActivity : AppCompatActivity() {
     */
 
 
-    /* Propuesto por Android Studio
-    private fun logout() {
-        Firebase.auth.signOut()
-    }
-     */
-
-
 }
+
+
