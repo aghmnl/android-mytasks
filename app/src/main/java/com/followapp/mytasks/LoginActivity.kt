@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import androidx.lifecycle.lifecycleScope
+import com.followapp.mytasks.mainModule.view.TasksActivity
 import kotlinx.coroutines.launch
 
 

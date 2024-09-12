@@ -27,7 +27,7 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".TasksActivity"
+            android:name=".mainModule.view.TasksActivity"
             android:exported="true"
             android:theme="@style/Theme.MyTasks">
             <intent-filter>

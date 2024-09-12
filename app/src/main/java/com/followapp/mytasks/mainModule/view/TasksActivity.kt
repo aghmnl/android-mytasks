@@ -1,11 +1,11 @@
-package com.followapp.mytasks
+package com.followapp.mytasks.mainModule.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -16,6 +16,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.followapp.mytasks.LoginActivity
+import com.followapp.mytasks.R
+import com.followapp.mytasks.TaskDetail
+import com.followapp.mytasks.TaskManager
+import com.followapp.mytasks.TasksAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -38,10 +43,9 @@ class TasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private lateinit var auth: FirebaseAuth      // shared instance of the FirebaseAuth object (the entry point of the Firebase Authentication SDK).
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tasks)
+        setContentView(R.layout.activity_main)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) // This is to avoid dark mode
 
@@ -114,6 +118,7 @@ class TasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
+
             R.id.nav_logout -> {
                 logout()
             }
