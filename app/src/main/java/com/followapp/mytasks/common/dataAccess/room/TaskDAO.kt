@@ -1,10 +1,11 @@
-package com.followapp.mytasks
+package com.followapp.mytasks.common.dataAccess.room
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.followapp.mytasks.common.entities.Task
 
 @Dao
 interface TaskDAO {

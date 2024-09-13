@@ -1,4 +1,4 @@
-package com.followapp.mytasks
+package com.followapp.mytasks.loginModile.view
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -20,7 +20,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import androidx.lifecycle.lifecycleScope
-import com.followapp.mytasks.mainModule.view.TasksActivity
+import com.followapp.mytasks.R
+import com.followapp.mytasks.mainModule.view.MainActivity
 import kotlinx.coroutines.launch
 
 
@@ -205,7 +206,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            val intent = Intent(this, TasksActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
 
             //  This flag ensures that if an instance of TasksActivity already exists in the back stack, it will be brought to the foreground instead of creating a new one.
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP

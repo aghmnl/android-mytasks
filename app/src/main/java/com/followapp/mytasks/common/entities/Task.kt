@@ -1,4 +1,4 @@
-package com.followapp.mytasks
+package com.followapp.mytasks.common.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

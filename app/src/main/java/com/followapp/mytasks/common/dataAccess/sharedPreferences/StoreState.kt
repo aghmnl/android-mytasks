@@ -1,4 +1,4 @@
-package com.followapp.mytasks
+package com.followapp.mytasks.common.dataAccess.sharedPreferences
 
 import android.content.Context
 

@@ -16,11 +16,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.followapp.mytasks.LoginActivity
+import com.followapp.mytasks.loginModile.view.LoginActivity
 import com.followapp.mytasks.R
-import com.followapp.mytasks.TaskDetail
-import com.followapp.mytasks.TaskManager
-import com.followapp.mytasks.TasksAdapter
+import com.followapp.mytasks.detailModule.view.TaskDetail
+import com.followapp.mytasks.taskModule.model.domain.TaskManager
+import com.followapp.mytasks.homeModule.view.TasksAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -30,7 +30,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
-class TasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var tasksRecyclerView: RecyclerView
     private lateinit var addTaskButton: FloatingActionButton
     private lateinit var advertView: AdView
@@ -133,7 +133,7 @@ class TasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private fun logout() {
         lifecycleScope.launch {
             try {
-                credentialManager = CredentialManager.create(this@TasksActivity)
+                credentialManager = CredentialManager.create(this@MainActivity)
                 auth = FirebaseAuth.getInstance()
 
                 credentialManager.clearCredentialState(ClearCredentialStateRequest())

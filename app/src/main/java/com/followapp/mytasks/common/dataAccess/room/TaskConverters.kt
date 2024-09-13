@@ -1,9 +1,9 @@
-package com.followapp.mytasks
+package com.followapp.mytasks.common.dataAccess.room
 
 import androidx.room.TypeConverter
 import java.util.Date
 
-class Converters {
+class TaskConverters {
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {
         return value?.let { Date(it) }

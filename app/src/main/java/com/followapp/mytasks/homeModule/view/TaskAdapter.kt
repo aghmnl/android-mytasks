@@ -1,4 +1,4 @@
-package com.followapp.mytasks
+package com.followapp.mytasks.homeModule.view
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.followapp.mytasks.R
+import com.followapp.mytasks.taskModule.model.domain.TaskManager
+import com.followapp.mytasks.detailModule.view.TaskDetail
 
 class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
 

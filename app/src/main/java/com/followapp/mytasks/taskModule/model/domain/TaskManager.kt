@@ -1,7 +1,10 @@
-package com.followapp.mytasks
+package com.followapp.mytasks.taskModule.model.domain
 
 import android.content.Context
 import androidx.room.Room
+import com.followapp.mytasks.common.dataAccess.room.AppDatabase
+import com.followapp.mytasks.common.dataAccess.room.TaskDAO
+import com.followapp.mytasks.common.entities.Task
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

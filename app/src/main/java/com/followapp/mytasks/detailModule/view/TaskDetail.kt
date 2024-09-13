@@ -1,10 +1,13 @@
-package com.followapp.mytasks
+package com.followapp.mytasks.detailModule.view
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.followapp.mytasks.R
+import com.followapp.mytasks.taskModule.model.domain.TaskManager
+import com.followapp.mytasks.common.entities.Task
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.Calendar
