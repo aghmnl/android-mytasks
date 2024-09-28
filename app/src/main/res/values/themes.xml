@@ -3,6 +3,8 @@
     <style name="Theme.MyTasks" parent="Theme.Material3.DayNight.NoActionBar">
 <!--        <item name="colorError">@color/colorError</item>-->
 <!--        <item name="colorOnError">@color/colorOnError</item>-->
+        <item name="android:fontFamily">@font/red_hat_display</item>
+
     </style>
 
 </resources>
