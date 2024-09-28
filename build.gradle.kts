@@ -4,4 +4,5 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.google.devtools.ksp) apply false
     alias(libs.plugins.google.gms.google.services) apply false  // Google Play services plugin
+    alias(libs.plugins.compose.compiler) apply false
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,7 +9,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
 
         <!-- EditText to edit task title -->
         <EditText
@@ -25,13 +27,6 @@
         <!--            android:textColor="@color/text"-->
         <!--            android:textColorHint="@color/hint"-->
 
-    </LinearLayout>
-
-    <!-- LinearLayout to wrap EditText -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
 
         <!-- EditText to edit task description -->
         <EditText
@@ -44,50 +39,52 @@
             android:inputType="text"
             android:padding="16dp"
             android:textSize="14sp" />
-    </LinearLayout>
-
-    <!-- LinearLayout to wrap EditText -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
 
         <!-- Button to show the date picker -->
         <Button
             android:id="@+id/buttonShowDatePicker"
+            style="@style/Widget.Material3.Button.TonalButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_date" />
+
+        <!-- Button to delete the task -->
+        <Button
+            android:id="@+id/buttonDeleteTask"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"
+            android:textColor="?attr/colorOnError"
+            app:backgroundTint="?attr/colorError"
+            app:iconTint="?attr/colorOnError"
+            app:strokeColor="?attr/colorError" />
 
     </LinearLayout>
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!-- Button to save the task -->
-        <Button
-            android:id="@+id/buttonSaveTask"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save" />
-
-        <!-- Button to delete the task -->
-        <Button
-            android:id="@+id/buttonDeleteTask"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/delete" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
 
         <!-- Button to close the detail view -->
         <Button
             android:id="@+id/buttonCloseDetail"
-            style="?android:attr/buttonBarButtonStyle"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text="@string/close" />
+
+        <!-- Button to save the task -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSaveTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/save" />
+
     </LinearLayout>
 
 </LinearLayout>

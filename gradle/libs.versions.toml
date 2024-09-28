@@ -1,29 +1,29 @@
 [versions]
-agp = "8.6.0"  # Tanto para library como para application
+agp = "8.6.1"  # Tanto para library como para application
 #firebaseAuth = "22.3.1"  No es necesario porque se usa Firebase Android BoM
 coreKtx = "1.13.1"
 credentials = "<latest version>"
 drawerlayout = "1.2.0"
-firebaseBom = "33.1.0"
-kotlin = "1.9.24"  # https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android
+firebaseBom = "33.3.0"
+kotlin = "2.0.0"  # https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android
 kotlinxCoroutinesAndroid = "1.8.0"
-kps = "1.9.24-1.0.20"  # https://github.com/google/ksp/releases
-activityCompose = "1.9.0"
+kps = "2.0.0-1.0.21"  # https://github.com/google/ksp/releases
+activityCompose = "1.9.2"
 appcompat = "1.7.0"
-composeBom = "2024.05.00"
+composeBom = "2024.09.02"
 constraintlayout = "2.1.4"
-espressoCore = "3.5.1"
-firebaseCrashlyticsBuildtools = "3.0.0"
+espressoCore = "3.6.1"
+firebaseCrashlyticsBuildtools = "3.0.2"
 googleGmsGoogleServices = "4.4.2"
 gson = "2.10.1"
 junit = "4.13.2"
-junitVersion = "1.1.5"
+junitVersion = "1.2.1"
 koinVersion = "3.5.3"
 #lifecycleRuntimeKtx = "2.8.1"
 material = "1.12.0"
-navigation = "2.7.7"
-playServicesAds = "23.1.0"
-playServicesAuth = "20.7.0"  # // GoogleSignIn is deprecated in version 21.0.0
+navigation = "2.8.1"
+playServicesAds = "23.3.0"
+playServicesAuth = "21.2.0"  # // GoogleSignIn is deprecated in version 21.0.0
 roomVersion = "2.6.1"
 # @keep
 compileSdk = "34"
@@ -33,8 +33,8 @@ securityIdentityCredential = "1.0.0-alpha03"
 # @keep
 targetSdk = "34"
 # @keep
-compose-compiler = "1.5.14"
-googleid = "1.1.0"
+# compose-compiler = "2.0.0"
+googleid = "1.1.1"
 
 
 [libraries]
@@ -79,6 +79,7 @@ play-services-auth = { module = "com.google.android.gms:play-services-auth", ver
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "kps" }
 
 # https://firebase.google.com/docs/android/troubleshooting-faq#add-plugins-using-buildscript-syntax

@@ -25,4 +25,7 @@
 <!--    <color name="text_button">@color/color_100</color>-->
 <!--    <color name="background">@color/color_100</color>-->
 <!--    <color name="line">@color/color_50</color>-->
+
+<!--    <color name="colorError">#B00020</color>-->
+<!--    <color name="colorOnError">#FFFFFF</color>-->
 </resources>
