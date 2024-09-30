@@ -2,8 +2,8 @@
 <resources>
 <!--    FollowApp Color Palette -->
 <!--    <color name="color2_50">#f9fbe7</color>-->
-<!--    <color name="color2_100">#f0f4c3</color>-->
-<!--    <color name="color2_300">#dce775</color>-->
+    <color name="color2_100">#f0f4c3</color>
+    <color name="color2_300">#dce775</color>
 <!--    <color name="color2_500">#c0ca33</color>-->
 <!--    <color name="color2_700">#827717</color>-->
 <!--    <color name="color2_900">#414503</color>-->
@@ -11,8 +11,8 @@
 
 <!--    Standardizing color naming for this app-->
 <!--    <color name="color_50">@color/color2_50</color>-->
-<!--    <color name="color_100">@color/color2_100</color>-->
-<!--    <color name="color_300">@color/color2_300</color>-->
+    <color name="color_100">@color/color2_100</color>
+    <color name="color_300">@color/color2_300</color>
 <!--    <color name="color_500">@color/color2_500</color>-->
 <!--    <color name="color_700">@color/color2_700</color>-->
 <!--    <color name="color_900">@color/color2_900</color>-->
@@ -23,7 +23,7 @@
 <!--    <color name="hint">@color/color_900</color>-->
 <!--    <color name="button">@color/color_900</color>-->
 <!--    <color name="text_button">@color/color_100</color>-->
-<!--    <color name="background">@color/color_100</color>-->
+    <color name="background">@color/color_100</color>
 <!--    <color name="line">@color/color_50</color>-->
 
 <!--    <color name="colorError">#B00020</color>-->

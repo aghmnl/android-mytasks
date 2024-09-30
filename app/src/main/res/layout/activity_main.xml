@@ -7,45 +7,40 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- App Bar -->
+            <include
+                android:id="@+id/app_bar_main"
+                layout="@layout/app_bar_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <!-- Tasks -->
             <include
                 layout="@layout/activity_tasks"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@id/ad_view_container" />
+                android:layout_height="0dp"
+                android:layout_above="@id/ad_view_container"
+                android:layout_below="@id/app_bar_main" />
 
             <!-- Ads -->
             <FrameLayout
                 android:id="@+id/ad_view_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerInParent="true" />
-
-            <!--    <com.google.android.gms.ads.AdView-->
-            <!--        android:id="@+id/adView"-->
-            <!--        android:layout_width="wrap_content"-->
-            <!--        android:layout_height="wrap_content"-->
-            <!--        android:layout_alignParentBottom="true"-->
-            <!--        android:layout_centerHorizontal="true"-->
-            <!--        ads:adSize="BANNER"-->
-            <!--        ads:adUnitId="ca-app-pub-5163472824682213~4420222935">-->
-
-            <!--    </com.google.android.gms.ads.AdView>-->
-
+                android:layout_alignParentBottom="true" />
 
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- App Bar -->
-    <include layout="@layout/app_bar_main" />
 
     <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
@@ -56,7 +51,3 @@
         app:menu="@menu/activity_main_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
-
-
-
-
