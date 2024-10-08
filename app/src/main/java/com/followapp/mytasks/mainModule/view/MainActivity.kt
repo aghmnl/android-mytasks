@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.followapp.mytasks.loginModile.view.LoginActivity
 import com.followapp.mytasks.R
 import com.followapp.mytasks.detailModule.view.TaskDetail
-import com.followapp.mytasks.taskModule.model.domain.TaskManager
+import com.followapp.mytasks.tasksModule.model.domain.TaskManager
 import com.followapp.mytasks.homeModule.view.TasksAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize

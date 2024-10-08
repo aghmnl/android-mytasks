@@ -4,7 +4,22 @@
 <!--        <item name="colorError">@color/colorError</item>-->
 <!--        <item name="colorOnError">@color/colorOnError</item>-->
         <item name="android:fontFamily">@font/red_hat_display</item>
-
     </style>
+
+    <style name="MainMargin">
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">15dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="Title">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Content">
+        <item name="android:textSize">14sp</item>
+    </style>
+
 
 </resources>

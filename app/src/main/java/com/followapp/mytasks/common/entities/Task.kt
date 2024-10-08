@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 //import java.time.LocalTime
 import java.util.Date
 
-@Entity
+@Entity(tableName = "TasksTable")
 data class Task(
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "is_done") var isDone: Boolean,

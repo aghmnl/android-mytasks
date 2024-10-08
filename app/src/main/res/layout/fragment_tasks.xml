@@ -4,11 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <!-- RecyclerView to display tasks -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewTasks"
@@ -29,9 +24,4 @@
             app:layout_constraintTop_toTopOf="@+id/recyclerViewTasks"
             app:layout_constraintVertical_bias="0.95" />
 
-        <!--    android:backgroundTint="@color/button"-->
-        <!--    app:tint="@color/text_button"-->
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>

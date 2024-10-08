@@ -4,26 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    style="@style/MainMargin"
     android:orientation="vertical">
 
     <!-- LinearLayout to wrap EditText -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <!-- EditText to edit task title -->
         <EditText
             android:id="@+id/editTextTaskTitleDetail"
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="no"
             android:background="@android:color/transparent"
             android:hint="@string/title"
             android:inputType="text"
             android:padding="16dp"
-            android:textSize="18sp" />
+            style="@style/Title"/>
 
         <!--            android:textColor="@color/text"-->
         <!--            android:textColorHint="@color/hint"-->
@@ -32,14 +34,14 @@
         <!-- EditText to edit task description -->
         <EditText
             android:id="@+id/editTextTaskDescription"
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="no"
             android:background="@android:color/transparent"
             android:hint="@string/description"
             android:inputType="text"
             android:padding="16dp"
-            android:textSize="14sp" />
+            style="@style/Content" />
 
         <!-- Button to show the date picker -->
         <Button
@@ -64,7 +66,6 @@
     </LinearLayout>
 
     <LinearLayout
-        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
@@ -75,7 +76,7 @@
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginEnd="5dp"
             android:text="@string/close" />
 
         <!-- Button to save the task -->
@@ -83,7 +84,7 @@
             android:id="@+id/buttonSaveTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+
             android:text="@string/save" />
 
     </LinearLayout>

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.followapp.mytasks.R
-import com.followapp.mytasks.taskModule.model.domain.TaskManager
+import com.followapp.mytasks.tasksModule.model.domain.TaskManager
 import com.followapp.mytasks.detailModule.view.TaskDetail
 
 class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {

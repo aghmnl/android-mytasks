@@ -9,8 +9,11 @@ import com.followapp.mytasks.common.entities.Task
 
 @Dao
 interface TaskDAO {
-    @Query("SELECT * FROM task")
+    @Query("SELECT * FROM TasksTable")
     suspend fun getAll(): List<Task>
+
+    @Query("SELECT * FROM TasksTable WHERE id == :id")
+    fun getTaskById(id: Double): Task
 
     @Insert
     suspend fun insert(task: Task): Long

@@ -1,6 +1,7 @@
-package com.followapp.mytasks.taskModule.model.domain
+package com.followapp.mytasks.tasksModule.model.domain
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import com.followapp.mytasks.common.dataAccess.room.AppDatabase
 import com.followapp.mytasks.common.dataAccess.room.TaskDAO
@@ -28,15 +29,15 @@ object TaskManager {
         runBlocking {
             tasksList.addAll(taskDAO.getAll())
             onItemInserted?.invoke()
-            if (tasksList.isEmpty()) addSomeTasks()
+//            if (tasksList.isEmpty()) addSomeTasks()
         }
     }
 
-    private fun addSomeTasks() {
-        addTask(Task("Shopping", false))
-        addTask(Task("Gym", false))
-        addTask(Task("Work", true))
-    }
+//    private fun addSomeTasks() {
+//        addTask(Task("Shopping", false))
+//        addTask(Task("Gym", false))
+//        addTask(Task("Work", true))
+//    }
 
     fun addTask(task: Task) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -56,6 +57,7 @@ object TaskManager {
     }
 
     fun deleteTask(task: Task) {
+        Log.v("DebugAgus", "Borrando tarea " + task.id)  // Cuando no borra es porque no aparece el id correspondiente
         tasksList.remove(task)
         CoroutineScope(Dispatchers.IO).launch { taskDAO.delete(task) }
         onItemRemoved?.invoke()
