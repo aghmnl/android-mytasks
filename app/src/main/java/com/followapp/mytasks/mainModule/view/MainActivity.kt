@@ -13,6 +13,8 @@ import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +23,7 @@ import com.followapp.mytasks.R
 import com.followapp.mytasks.detailModule.view.TaskDetail
 import com.followapp.mytasks.tasksModule.model.domain.TaskManager
 import com.followapp.mytasks.homeModule.view.TasksAdapter
+import com.followapp.mytasks.homeModule.viewModel.TaskViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -31,48 +34,38 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var taskViewModel: TaskViewModel
+    private lateinit var tasksAdapter: TasksAdapter
+
     private lateinit var tasksRecyclerView: RecyclerView
     private lateinit var addTaskButton: FloatingActionButton
     private lateinit var advertView: AdView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-    private val tasksAdapter = TasksAdapter()
 
-    // This should be in the LoginActivity
     private lateinit var credentialManager: CredentialManager
-    private lateinit var auth: FirebaseAuth      // shared instance of the FirebaseAuth object (the entry point of the Firebase Authentication SDK).
-
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) // This is to avoid dark mode
+        TaskManager.initialize(applicationContext)  // Ensure this is called before any other operations
 
-        TaskManager.initialize(this)
-        println("RUNNING INITIALIZE")
+        taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
+        tasksAdapter = TasksAdapter()
 
         tasksRecyclerView = findViewById(R.id.recyclerViewTasks)
-        addTaskButton = findViewById(R.id.fabAddTask)
-
         tasksRecyclerView.layoutManager = LinearLayoutManager(this)
         tasksRecyclerView.adapter = tasksAdapter
 
-        addTaskButton.setOnClickListener {
-            TaskManager.selectedTaskIndex = -1
+        taskViewModel.allTasks.observe(this, Observer { tasks ->
+            tasks?.let { tasksAdapter.submitList(it) }
+        })
 
-            // Handle click event to add new task
-            val intent = Intent(this, TaskDetail::class.java)
-            startActivity(intent)
+        findViewById<FloatingActionButton>(R.id.fabAddTask).setOnClickListener {
+            startActivity(Intent(this, TaskDetail::class.java))
         }
-
-        TaskManager.onItemInserted = { tasksAdapter.notifyItemInserted(TaskManager.tasksList.size) }
-        TaskManager.onItemChanged = { tasksAdapter.notifyItemRangeChanged(TaskManager.selectedTaskIndex, TaskManager.tasksList.size) }
-        TaskManager.onItemRemoved = { tasksAdapter.notifyItemRemoved(TaskManager.selectedTaskIndex) }
-
-        initToolBar()
-        initBanner()
-
     }
 
     private fun initToolBar() {
@@ -96,7 +89,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.setNavigationItemSelectedListener(this)
     }
 
-    // To load the ads banner
     private fun initBanner() {
         MobileAds.initialize(this) {}
         advertView = AdView(this)
@@ -109,7 +101,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val adRequest = AdRequest.Builder().build()
         advertView.loadAd(adRequest)
-
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -124,7 +115,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        // Para cerrar el menú luego de elegir la opción
         drawerLayout.closeDrawer(GravityCompat.START)
 
         return true

@@ -6,15 +6,20 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.followapp.mytasks.R
 import com.followapp.mytasks.tasksModule.model.domain.TaskManager
 import com.followapp.mytasks.common.entities.Task
+import com.followapp.mytasks.homeModule.viewModel.TaskViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 class TaskDetail : AppCompatActivity() {
+    private lateinit var taskViewModel: TaskViewModel
+    private var task: Task? = null
+
     private lateinit var editTextTaskTitleDetail: EditText
     private lateinit var editTextTaskDescription: EditText
 
@@ -23,8 +28,6 @@ class TaskDetail : AppCompatActivity() {
     private lateinit var deleteButton: Button
     private lateinit var closeButton: Button
     private val selectedTaskIndex = TaskManager.selectedTaskIndex
-    private val task =
-        if (selectedTaskIndex != -1 && selectedTaskIndex < TaskManager.tasksList.size) TaskManager.tasksList[selectedTaskIndex] else Task("", false)
     private val calendar = Calendar.getInstance()
     private lateinit var materialDatePicker: MaterialDatePicker<Long>
 
@@ -32,6 +35,8 @@ class TaskDetail : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.task_detail)
+
+        taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
 
         editTextTaskTitleDetail = findViewById(R.id.editTextTaskTitleDetail)
         editTextTaskDescription = findViewById(R.id.editTextTaskDescription)
@@ -42,14 +47,16 @@ class TaskDetail : AppCompatActivity() {
 
         // Get the task from SelectedTask
         if (selectedTaskIndex > -1) {
+            task = TaskManager.tasksList[selectedTaskIndex]
+
 
             // Set the Title and description if not null the latter
-            editTextTaskTitleDetail.setText(task.title)
-            if (task.description != null) editTextTaskDescription.setText(task.description)
+            editTextTaskTitleDetail.setText(task?.title)
+            editTextTaskDescription.setText(task?.description ?: "")
 
             // Set the DatePicker to the task's due date if not null
-            if (task.dueDate != null) {
-                calendar.time = task.dueDate!!
+            task?.dueDate?.let {
+                calendar.time = it
                 buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
             }
 
@@ -58,7 +65,7 @@ class TaskDetail : AppCompatActivity() {
 //                Log.v("DebugAgus", "TaskManager.tasksList.size = " + TaskManager.tasksList.size)
                 Log.v("DebugAgus", "selectedTaskIndex = $selectedTaskIndex")  // Cuando queda sólo una tarea y el selectedTaskIndex es 1, no la puede borrar
 
-                    TaskManager.deleteTask(task)
+                task?.let { TaskManager.deleteTask(it) }
                 finish()
             }
         } else {
@@ -81,7 +88,7 @@ class TaskDetail : AppCompatActivity() {
         // When the date is changed, it updates task.dueDate with the new date
         materialDatePicker.addOnPositiveButtonClickListener {
             calendar.timeInMillis = it
-            task.dueDate = calendar.time
+            task?.dueDate = calendar.time
             buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
         }
 
@@ -91,9 +98,9 @@ class TaskDetail : AppCompatActivity() {
                 val newTask = Task(
                     editTextTaskTitleDetail.text.toString(),
                     false,
-                    id = task.id,
+                    id = task?.id ?: 0,
                     description = editTextTaskDescription.text.toString(),
-                    dueDate = task.dueDate
+                    dueDate = task?.dueDate
                 )
                 TaskManager.updateTask(newTask)
 
@@ -102,7 +109,7 @@ class TaskDetail : AppCompatActivity() {
                     editTextTaskTitleDetail.text.toString(),
                     false,
                     description = editTextTaskDescription.text.toString(),
-                    dueDate = task.dueDate
+                    dueDate = task?.dueDate
                 )
                 TaskManager.addTask(newTask)
             }
