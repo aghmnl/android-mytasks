@@ -1,12 +1,11 @@
 package com.followapp.mytasks.homeModule.model
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import com.followapp.mytasks.common.dataAccess.room.TaskDAO
 import com.followapp.mytasks.common.entities.Task
 
 class TaskRepository(private val taskDAO: TaskDAO) {
-    val allTasks: LiveData<List<Task>> = taskDAO.getAll().asLiveData()
+    val allTasks: LiveData<List<Task>> = taskDAO.getAllTasks()
 
     suspend fun insert(task: Task) {
         taskDAO.insert(task)

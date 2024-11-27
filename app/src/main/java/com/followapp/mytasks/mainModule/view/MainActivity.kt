@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.credentials.ClearCredentialStateRequest
@@ -21,9 +20,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.followapp.mytasks.loginModile.view.LoginActivity
 import com.followapp.mytasks.R
 import com.followapp.mytasks.detailModule.view.TaskDetail
-import com.followapp.mytasks.tasksModule.model.domain.TaskManager
 import com.followapp.mytasks.homeModule.view.TasksAdapter
 import com.followapp.mytasks.homeModule.viewModel.TaskViewModel
+import com.followapp.mytasks.tasksModule.model.domain.TaskManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -37,8 +36,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var taskViewModel: TaskViewModel
     private lateinit var tasksAdapter: TasksAdapter
 
-    private lateinit var tasksRecyclerView: RecyclerView
-    private lateinit var addTaskButton: FloatingActionButton
+//    private lateinit var tasksRecyclerView: RecyclerView
+//    private lateinit var addTaskButton: FloatingActionButton
     private lateinit var advertView: AdView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
@@ -55,10 +54,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
         tasksAdapter = TasksAdapter()
 
-        tasksRecyclerView = findViewById(R.id.recyclerViewTasks)
+        val tasksRecyclerView = findViewById<RecyclerView>(R.id.recyclerViewTasks)
         tasksRecyclerView.layoutManager = LinearLayoutManager(this)
         tasksRecyclerView.adapter = tasksAdapter
 
+        // Observe LiveData and update the adapter
         taskViewModel.allTasks.observe(this, Observer { tasks ->
             tasks?.let { tasksAdapter.submitList(it) }
         })
