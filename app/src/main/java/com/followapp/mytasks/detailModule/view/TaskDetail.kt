@@ -10,14 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.followapp.mytasks.R
 import com.followapp.mytasks.tasksModule.model.domain.TaskManager
 import com.followapp.mytasks.common.entities.Task
-import com.followapp.mytasks.homeModule.viewModel.TaskViewModel
+import com.followapp.mytasks.homeModule.viewModel.HomeViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 class TaskDetail : AppCompatActivity() {
-    private lateinit var taskViewModel: TaskViewModel
+    private lateinit var taskViewModel: HomeViewModel
     private var task: Task? = null
 
     private lateinit var editTextTaskTitleDetail: EditText
@@ -36,7 +36,7 @@ class TaskDetail : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.task_detail)
 
-        taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
+        taskViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         editTextTaskTitleDetail = findViewById(R.id.editTextTaskTitleDetail)
         editTextTaskDescription = findViewById(R.id.editTextTaskDescription)

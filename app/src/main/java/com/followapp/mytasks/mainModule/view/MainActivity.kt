@@ -20,8 +20,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.followapp.mytasks.loginModile.view.LoginActivity
 import com.followapp.mytasks.R
 import com.followapp.mytasks.detailModule.view.TaskDetail
-import com.followapp.mytasks.homeModule.view.TasksAdapter
-import com.followapp.mytasks.homeModule.viewModel.TaskViewModel
+import com.followapp.mytasks.homeModule.model.HomeRepository
+import com.followapp.mytasks.homeModule.model.domain.HomeRoomDatabase
+import com.followapp.mytasks.homeModule.view.TaskListAdapter
+import com.followapp.mytasks.homeModule.viewModel.HomeViewModel
+import com.followapp.mytasks.homeModule.viewModel.HomeViewModelFactory
 import com.followapp.mytasks.tasksModule.model.domain.TaskManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -33,8 +36,8 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private lateinit var taskViewModel: TaskViewModel
-    private lateinit var tasksAdapter: TasksAdapter
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var tasksAdapter: TaskListAdapter
 
 //    private lateinit var tasksRecyclerView: RecyclerView
 //    private lateinit var addTaskButton: FloatingActionButton
@@ -49,17 +52,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        TaskManager.initialize(applicationContext)  // Ensure this is called before any other operations
+        TaskManager.initialize()  // Ensure this is called before any other operations
 
-        taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
-        tasksAdapter = TasksAdapter()
+        homeViewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository(HomeRoomDatabase())))[HomeViewModel::class.java]
+        tasksAdapter = TaskListAdapter()
 
         val tasksRecyclerView = findViewById<RecyclerView>(R.id.recyclerViewTasks)
         tasksRecyclerView.layoutManager = LinearLayoutManager(this)
         tasksRecyclerView.adapter = tasksAdapter
 
         // Observe LiveData and update the adapter
-        taskViewModel.allTasks.observe(this, Observer { tasks ->
+        homeViewModel.allTasks.observe(this, Observer { tasks ->
             tasks?.let { tasksAdapter.submitList(it) }
         })
 
