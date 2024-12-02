@@ -14,7 +14,7 @@ class TaskApplication: Application() {
 
         database = Room.databaseBuilder(this,
             TaskDatabase::class.java,
-            "WineDatabase")
+            "TaskDatabase")
             .build()
     }
 }

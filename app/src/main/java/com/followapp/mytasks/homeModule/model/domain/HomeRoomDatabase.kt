@@ -9,9 +9,9 @@ class HomeRoomDatabase {
 
     fun getAllTasks() = dao.getAllTasks()
 
-    suspend fun addTask(task: Task) = dao.addTask(task)
+    fun addTask(task: Task) = dao.addTask(task)
 
-    suspend fun updateTask(task: Task) = dao.updateTask(task)
+    fun updateTask(task: Task) = dao.updateTask(task)
 
-    suspend fun deleteTask(task: Task) = dao.deleteTask(task)
+    fun deleteTask(task: Task) = dao.deleteTask(task)
 }

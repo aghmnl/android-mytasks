@@ -16,11 +16,11 @@ interface TaskDAO {
 //    suspend fun getTaskById(id: Double): Task
 
     @Insert
-    suspend fun addTask(task: Task): Long
+    fun addTask(task: Task): Long
 
     @Update
-    suspend fun updateTask(task: Task): Int
+    fun updateTask(task: Task): Int
 
     @Delete
-    suspend fun deleteTask(task: Task): Int
+    fun deleteTask(task: Task): Int
 }

@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.followapp.mytasks.common.entities.Task
 import com.followapp.mytasks.homeModule.model.HomeRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
@@ -24,7 +26,9 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
     fun getAllTasks() {
         viewModelScope.launch {
-            val result = repository.allTasks
+            val result = withContext(Dispatchers.IO) {
+                repository.allTasks
+            }
             setTasks(result)
         }
     }
