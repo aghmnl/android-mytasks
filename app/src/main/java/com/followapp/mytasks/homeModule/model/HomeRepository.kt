@@ -5,17 +5,17 @@ import com.followapp.mytasks.common.entities.Task
 import com.followapp.mytasks.homeModule.model.domain.HomeRoomDatabase
 
 class HomeRepository(private val db: HomeRoomDatabase) {
-    val allTasks: LiveData<List<Task>> = db.getAllTasks()
+    val allTasks: List<Task> = db.getAllTasks()
 
-    suspend fun insert(task: Task) {
-        db.insert(task)
+    suspend fun addTask(task: Task): Long {
+        return db.addTask(task)
     }
 
-    suspend fun update(task: Task) {
-        db.update(task)
+    suspend fun updateTask(task: Task): Int {
+        return db.updateTask(task)
     }
 
-    suspend fun delete(task: Task) {
-        db.delete(task)
+    suspend fun deleteTask(task: Task): Int {
+        return db.deleteTask(task)
     }
 }

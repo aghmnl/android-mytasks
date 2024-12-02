@@ -12,35 +12,19 @@ import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.followapp.mytasks.loginModile.view.LoginActivity
 import com.followapp.mytasks.R
-import com.followapp.mytasks.detailModule.view.TaskDetail
-import com.followapp.mytasks.homeModule.model.HomeRepository
-import com.followapp.mytasks.homeModule.model.domain.HomeRoomDatabase
 import com.followapp.mytasks.homeModule.view.HomeFragment
-import com.followapp.mytasks.homeModule.view.TaskListAdapter
-import com.followapp.mytasks.homeModule.viewModel.HomeViewModel
-import com.followapp.mytasks.homeModule.viewModel.HomeViewModelFactory
-import com.followapp.mytasks.tasksModule.model.domain.TaskManager
+import com.followapp.mytasks.loginModile.view.LoginActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-
-//    private lateinit var tasksRecyclerView: RecyclerView
-//    private lateinit var addTaskButton: FloatingActionButton
     private lateinit var advertView: AdView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
@@ -52,26 +36,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         launchHome()
-
-
-
-        TaskManager.initialize()  // Ensure this is called before any other operations
-
-//        homeViewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository(HomeRoomDatabase())))[HomeViewModel::class.java]
-//        tasksAdapter = TaskListAdapter()
-
-//        val tasksRecyclerView = findViewById<RecyclerView>(R.id.recyclerViewTasks)
-//        tasksRecyclerView.layoutManager = LinearLayoutManager(this)
-//        tasksRecyclerView.adapter = tasksAdapter
-
-        // Observe LiveData and update the adapter
-//        homeViewModel.allTasks.observe(this, Observer { tasks ->
-//            tasks?.let { tasksAdapter.submitList(it) }
-//        })
-
-//        findViewById<FloatingActionButton>(R.id.fabAddTask).setOnClickListener {
-//            startActivity(Intent(this, TaskDetail::class.java))
-//        }
     }
 
     fun launchHome() {
