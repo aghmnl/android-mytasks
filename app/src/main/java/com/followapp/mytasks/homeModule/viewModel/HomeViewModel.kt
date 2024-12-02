@@ -1,6 +1,5 @@
 package com.followapp.mytasks.homeModule.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,7 +19,7 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         getAllTasks()
     }
 
-    fun setTasks(value: List<Task>) {  // protected es necesario para que las clases hijas también tengan acceso
+    fun setTasks(value: List<Task>) {
         _allTasks.postValue(value)
     }
 
@@ -30,33 +29,6 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
                 repository.getAllTasks()
             }
             setTasks(result)
-        }
-    }
-
-    fun addTask(task: Task) {
-        viewModelScope.launch {
-            val result = repository.addTask(task)
-            if (result == -1L) {
-                Log.i("IMPORTANTE", "No se pudo agregar la tarea")
-            }
-        }
-    }
-
-    fun updateTask(task: Task) {
-        viewModelScope.launch {
-            val result = repository.updateTask(task)
-            if (result == 0) {
-                Log.i("IMPORTANTE", "No se pudo modificar la tarea")
-            }
-        }
-    }
-
-    fun deleteTask(task: Task) {
-        viewModelScope.launch {
-            val result = repository.deleteTask(task)
-            if (result == 0) {
-                Log.i("IMPORTANTE", "No se pudo borrar la tarea")
-            }
         }
     }
 }

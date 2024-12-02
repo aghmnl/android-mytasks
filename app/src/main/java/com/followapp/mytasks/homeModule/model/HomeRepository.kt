@@ -11,15 +11,5 @@ class HomeRepository(private val db: HomeRoomDatabase) {
         return db.getAllTasks()
     }
 
-    suspend fun addTask(task: Task): Long {
-        return db.addTask(task)
-    }
 
-    suspend fun updateTask(task: Task): Int {
-        return db.updateTask(task)
-    }
-
-    suspend fun deleteTask(task: Task): Int {
-        return db.deleteTask(task)
-    }
 }
