@@ -2,19 +2,24 @@ package com.followapp.mytasks.homeModule.model
 
 import com.followapp.mytasks.common.entities.Task
 import com.followapp.mytasks.homeModule.model.domain.HomeRoomDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class HomeRepository(private val db: HomeRoomDatabase) {
-    val allTasks: List<Task> = db.getAllTasks()
+    suspend fun getAllTasks(): List<Task> {
+        return db.getAllTasks()
+    }
 
-    fun addTask(task: Task): Long {
+    suspend fun addTask(task: Task): Long {
         return db.addTask(task)
     }
 
-    fun updateTask(task: Task): Int {
+    suspend fun updateTask(task: Task): Int {
         return db.updateTask(task)
     }
 
-    fun deleteTask(task: Task): Int {
+    suspend fun deleteTask(task: Task): Int {
         return db.deleteTask(task)
     }
 }

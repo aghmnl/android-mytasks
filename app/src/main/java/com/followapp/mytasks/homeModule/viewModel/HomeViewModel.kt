@@ -27,7 +27,7 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
     fun getAllTasks() {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                repository.allTasks
+                repository.getAllTasks()
             }
             setTasks(result)
         }
