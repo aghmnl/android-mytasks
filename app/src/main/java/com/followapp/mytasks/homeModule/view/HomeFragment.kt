@@ -17,7 +17,7 @@ import androidx.lifecycle.Observer
 import com.followapp.mytasks.detailModule.view.TaskDetail
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.content.Intent
-
+import com.followapp.mytasks.common.entities.Task
 
 
 class HomeFragment : Fragment() {
@@ -28,7 +28,6 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -36,7 +35,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         homeViewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository(HomeRoomDatabase())))[HomeViewModel::class.java]
-        tasksAdapter = TaskListAdapter()
+        tasksAdapter = TaskListAdapter { task -> openTaskDetail(task) }
 
         val tasksRecyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewTasks)
         tasksRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -47,7 +46,12 @@ class HomeFragment : Fragment() {
         })
 
         view.findViewById<FloatingActionButton>(R.id.fabAddTask).setOnClickListener {
-            startActivity(Intent(context, TaskDetail::class.java))
+            openTaskDetail(null)
         }
+    }
+
+    private fun openTaskDetail(task: Task?) {
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(task)
+        findNavController().navigate(action)
     }
 }

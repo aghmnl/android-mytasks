@@ -1,34 +1,13 @@
-package com.followapp.mytasks.homeModule.viewModel
+package com.followapp.mytasks.detailModule.viewModel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.followapp.mytasks.common.entities.Task
-import com.followapp.mytasks.homeModule.model.HomeRepository
+import com.followapp.mytasks.detailModule.model.DetailRepository
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
-
-    private val _allTasks = MutableLiveData<List<Task>>()
-    val allTasks: LiveData<List<Task>> = _allTasks
-
-    init {
-        getAllTasks()
-    }
-
-    fun setTasks(value: List<Task>) {  // protected es necesario para que las clases hijas también tengan acceso
-        _allTasks.postValue(value)
-    }
-
-    fun getAllTasks() {
-        viewModelScope.launch {
-            val result = repository.allTasks
-            setTasks(result)
-        }
-    }
-
+class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
     fun addTask(task: Task) {
         viewModelScope.launch {
             val result = repository.addTask(task)
@@ -56,5 +35,3 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         }
     }
 }
-
-
