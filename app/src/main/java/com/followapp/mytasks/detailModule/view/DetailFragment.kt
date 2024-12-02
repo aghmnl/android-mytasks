@@ -26,8 +26,8 @@ class DetailFragment : Fragment() {
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
 
-//    private var taskId = 0
-//    private lateinit var _taskId: Task
+    private var taskId = -1L
+    private lateinit var _taskId: Task
 
     private lateinit var taskViewModel: DetailViewModel
     private var task: Task? = null
