@@ -1,20 +1,43 @@
 package com.followapp.mytasks.homeModule.view
 
 
+import android.content.DialogInterface.OnClickListener
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.followapp.mytasks.R
 import com.followapp.mytasks.common.entities.Task
+import com.followapp.mytasks.databinding.ItemTaskBinding
 
-class TaskListAdapter : ListAdapter<Task, TaskViewHolder>(TaskDiff()) {
+class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        return TaskViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.task_row, parent, false))
+    lateinit var listener: OnClickListener
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder  {
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false))
     }
 
-    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val task = getItem(position)
         holder.bind(getItem(position))
+    }
+
+    fun setOnClickListener(listener: OnClickListener) {
+        this.listener = listener
+    }
+
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val binding = ItemTaskBinding.bind(view)
+
+        fun setListener(task: Task) {
+            binding.root.setOnClickListener {
+                listener.onClick(task)
+                true
+            }
+
+        }
     }
 }
 
