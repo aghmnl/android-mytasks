@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".mainModule.view.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background">
@@ -23,13 +26,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <!-- Tasks -->
-            <include
-                layout="@layout/fragment_tasks"
+            <!-- Fragment Container -->
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragment_container_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_above="@id/ad_view_container"
-                android:layout_below="@id/app_bar_main" />
+                android:layout_below="@id/app_bar_main"
+                tools:layout="@layout/fragment_home" />
 
             <!-- Ads -->
             <FrameLayout

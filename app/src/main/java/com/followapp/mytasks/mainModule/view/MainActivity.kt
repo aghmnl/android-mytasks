@@ -22,6 +22,7 @@ import com.followapp.mytasks.R
 import com.followapp.mytasks.detailModule.view.TaskDetail
 import com.followapp.mytasks.homeModule.model.HomeRepository
 import com.followapp.mytasks.homeModule.model.domain.HomeRoomDatabase
+import com.followapp.mytasks.homeModule.view.HomeFragment
 import com.followapp.mytasks.homeModule.view.TaskListAdapter
 import com.followapp.mytasks.homeModule.viewModel.HomeViewModel
 import com.followapp.mytasks.homeModule.viewModel.HomeViewModelFactory
@@ -36,8 +37,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private lateinit var homeViewModel: HomeViewModel
-    private lateinit var tasksAdapter: TaskListAdapter
+
 
 //    private lateinit var tasksRecyclerView: RecyclerView
 //    private lateinit var addTaskButton: FloatingActionButton
@@ -51,23 +51,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        launchHome()
+
+
 
         TaskManager.initialize()  // Ensure this is called before any other operations
 
-        homeViewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository(HomeRoomDatabase())))[HomeViewModel::class.java]
-        tasksAdapter = TaskListAdapter()
+//        homeViewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository(HomeRoomDatabase())))[HomeViewModel::class.java]
+//        tasksAdapter = TaskListAdapter()
 
-        val tasksRecyclerView = findViewById<RecyclerView>(R.id.recyclerViewTasks)
-        tasksRecyclerView.layoutManager = LinearLayoutManager(this)
-        tasksRecyclerView.adapter = tasksAdapter
+//        val tasksRecyclerView = findViewById<RecyclerView>(R.id.recyclerViewTasks)
+//        tasksRecyclerView.layoutManager = LinearLayoutManager(this)
+//        tasksRecyclerView.adapter = tasksAdapter
 
         // Observe LiveData and update the adapter
-        homeViewModel.allTasks.observe(this, Observer { tasks ->
-            tasks?.let { tasksAdapter.submitList(it) }
-        })
+//        homeViewModel.allTasks.observe(this, Observer { tasks ->
+//            tasks?.let { tasksAdapter.submitList(it) }
+//        })
 
-        findViewById<FloatingActionButton>(R.id.fabAddTask).setOnClickListener {
-            startActivity(Intent(this, TaskDetail::class.java))
+//        findViewById<FloatingActionButton>(R.id.fabAddTask).setOnClickListener {
+//            startActivity(Intent(this, TaskDetail::class.java))
+//        }
+    }
+
+    fun launchHome() {
+        val fragment = HomeFragment()
+        supportFragmentManager.beginTransaction().apply {
+            add(R.id.container_main, fragment)
+                .commit()
         }
     }
 
