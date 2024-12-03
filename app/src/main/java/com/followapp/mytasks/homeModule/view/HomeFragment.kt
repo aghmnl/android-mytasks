@@ -40,19 +40,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         setupAdapter()
         setupRecyclerView()
         setupObservers()
-
-//        val tasksRecyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewTasks)
-//        tasksRecyclerView.layoutManager = LinearLayoutManager(context)
-//        tasksRecyclerView.adapter = tasksAdapter
-
-
-        view.findViewById<FloatingActionButton>(R.id.fabAddTask).setOnClickListener {
-            val detailFragment = DetailFragment()
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.container_main, detailFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
+        setupButtons()
     }
 
     private fun setupViewModel() {
@@ -71,12 +59,24 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
     }
 
-
     private fun setupObservers() {
         homeViewModel.allTasks.observe(viewLifecycleOwner, Observer { tasks ->
-            tasks?.let { tasksAdapter.submitList(it) }
+            tasks?.let {
+                tasksAdapter.submitList(it)
+                getTasks()
+            }
         })
 //        homeViewModel.allTasks.observe(viewLifecycleOwner) { getTasks() }
+    }
+
+    private fun setupButtons() {
+        binding.fabAddTask.setOnClickListener {
+            val detailFragment = DetailFragment()
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.container_main, detailFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
 

@@ -11,7 +11,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTasks"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_task" />
 
     <!-- FloatingActionButton to add a new task -->
@@ -21,7 +24,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/add_task"
         android:src="@drawable/ic_add"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTasks"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"

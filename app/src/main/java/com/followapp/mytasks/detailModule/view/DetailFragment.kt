@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.followapp.mytasks.R
 import com.followapp.mytasks.common.entities.Task
@@ -18,6 +19,7 @@ import com.followapp.mytasks.detailModule.model.domain.DetailRoomDatabase
 import com.followapp.mytasks.detailModule.viewModel.DetailViewModel
 import com.followapp.mytasks.detailModule.viewModel.DetailViewModelFactory
 import com.google.android.material.datepicker.MaterialDatePicker
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,7 +32,8 @@ class DetailFragment : Fragment() {
 //    private lateinit var _taskId: Task
 
     private lateinit var detailViewModel: DetailViewModel
-    private var task: Task? = null
+
+    //    private var task: Task? = null
     private lateinit var editTextTaskTitleDetail: EditText
     private lateinit var editTextTaskDescription: EditText
     private lateinit var buttonShowDatePicker: Button
@@ -50,14 +53,17 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupViewModel()
-
         editTextTaskTitleDetail = view.findViewById(R.id.editTextTaskTitleDetail)
         editTextTaskDescription = view.findViewById(R.id.editTextTaskDescription)
         buttonShowDatePicker = view.findViewById(R.id.buttonShowDatePicker)
         saveButton = view.findViewById(R.id.buttonSaveTask)
         deleteButton = view.findViewById(R.id.buttonDeleteTask)
         closeButton = view.findViewById(R.id.buttonCloseDetail)
+
+
+        setupViewModel()
+        setupButtons()
+
 
 //        if (selectedTaskIndex > -1) {
 ////            task = TaskManager.tasksList[selectedTaskIndex]
@@ -84,7 +90,7 @@ class DetailFragment : Fragment() {
         materialDatePicker = datePicker.build()
         materialDatePicker.addOnPositiveButtonClickListener {
             calendar.timeInMillis = it
-            task?.dueDate = calendar.time
+//            task?.dueDate = calendar.time
             buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
         }
 
@@ -110,8 +116,27 @@ class DetailFragment : Fragment() {
 //            findNavController().navigateUp()
 //        }
 
-        closeButton.setOnClickListener {
-            parentFragmentManager.popBackStack()
+//        closeButton.setOnClickListener {
+//            parentFragmentManager.popBackStack()
+//        }
+    }
+
+    private fun setupButtons() {
+
+        with(binding) {
+            buttonSaveTask.setOnClickListener {
+                val newTask = Task(
+                    editTextTaskTitleDetail.text.toString(),
+                    description = editTextTaskDescription.text.toString(),
+                    dueDate = calendar.time
+                )
+                Log.i("IMPORTANTE", newTask.title)
+                lifecycleScope.launch { detailViewModel.addTask(newTask) }
+
+            }
+            buttonCloseDetail.setOnClickListener {
+                parentFragmentManager.popBackStack()
+            }
         }
     }
 
