@@ -36,12 +36,9 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
 
         fun setListener(task: Task) {
             binding.root.setOnClickListener {
-                listener.onClick(task)
+                listener.onTaskClick(task)
                 true
             }
         }
     }
 }
-
-private fun TaskListAdapter.ViewHolder.onClick(task: Task) {}
-
