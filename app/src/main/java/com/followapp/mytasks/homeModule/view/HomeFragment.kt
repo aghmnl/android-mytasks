@@ -50,7 +50,11 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         })
 
         view.findViewById<FloatingActionButton>(R.id.fabAddTask).setOnClickListener {
-//            openTaskDetail(null)
+            val detailFragment = DetailFragment()
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.container_main, detailFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
     }
 
@@ -81,8 +85,8 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 //        findNavController().navigate(action)
 //    }
 
-    override fun onClick(task: Task) {
-        val fragmentManager = childFragmentManager
+    override fun onTaskClick(task: Task) {
+//        val fragmentManager = childFragmentManager
         val fragment = DetailFragment()
         val args = Bundle()
         args.putLong("id", task.id)
