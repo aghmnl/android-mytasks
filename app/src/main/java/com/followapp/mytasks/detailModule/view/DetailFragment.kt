@@ -24,12 +24,12 @@ import java.util.*
 class DetailFragment : Fragment() {
 
     private var _binding: FragmentDetailBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
-    private var taskId = -1L
-    private lateinit var _taskId: Task
+//    private var taskId = -1L
+//    private lateinit var _taskId: Task
 
-    private lateinit var taskViewModel: DetailViewModel
+    private lateinit var detailViewModel: DetailViewModel
     private var task: Task? = null
     private lateinit var editTextTaskTitleDetail: EditText
     private lateinit var editTextTaskDescription: EditText
@@ -42,17 +42,16 @@ class DetailFragment : Fragment() {
     private lateinit var materialDatePicker: MaterialDatePicker<Long>
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        taskViewModel = ViewModelProvider(this, DetailViewModelFactory(DetailRepository(DetailRoomDatabase())))[DetailViewModel::class.java]
+        setupViewModel()
+
         editTextTaskTitleDetail = view.findViewById(R.id.editTextTaskTitleDetail)
         editTextTaskDescription = view.findViewById(R.id.editTextTaskDescription)
         buttonShowDatePicker = view.findViewById(R.id.buttonShowDatePicker)
@@ -112,7 +111,16 @@ class DetailFragment : Fragment() {
 //        }
 
         closeButton.setOnClickListener {
-            findNavController().navigateUp()
+            parentFragmentManager.popBackStack()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupViewModel() {
+        detailViewModel = ViewModelProvider(this, DetailViewModelFactory(DetailRepository(DetailRoomDatabase())))[DetailViewModel::class.java]
     }
 }

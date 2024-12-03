@@ -45,9 +45,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 //        tasksRecyclerView.layoutManager = LinearLayoutManager(context)
 //        tasksRecyclerView.adapter = tasksAdapter
 
-        homeViewModel.allTasks.observe(viewLifecycleOwner, Observer { tasks ->
-            tasks?.let { tasksAdapter.submitList(it) }
-        })
 
         view.findViewById<FloatingActionButton>(R.id.fabAddTask).setOnClickListener {
             val detailFragment = DetailFragment()
@@ -76,7 +73,10 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
 
     private fun setupObservers() {
-        homeViewModel.allTasks.observe(viewLifecycleOwner) { getTasks() }
+        homeViewModel.allTasks.observe(viewLifecycleOwner, Observer { tasks ->
+            tasks?.let { tasksAdapter.submitList(it) }
+        })
+//        homeViewModel.allTasks.observe(viewLifecycleOwner) { getTasks() }
     }
 
 
