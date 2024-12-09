@@ -63,10 +63,9 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         homeViewModel.allTasks.observe(viewLifecycleOwner, Observer { tasks ->
             tasks?.let {
                 tasksAdapter.submitList(it)
-                getTasks()
+                getTasks()  // I don't know if here is the best place to put it.
             }
         })
-//        homeViewModel.allTasks.observe(viewLifecycleOwner) { getTasks() }
     }
 
     private fun setupButtons() {
@@ -86,16 +85,14 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 //    }
 
     override fun onTaskClick(task: Task) {
-//        val fragmentManager = childFragmentManager
-        val fragment = DetailFragment()
+        val detailFragment = DetailFragment()
         val args = Bundle()
-        args.putLong("id", task.id)
-        fragment.arguments = args
-        fragment.view
-//        fragment.show(fragmentManager, DetailFragment::class.java.simpleName)
-//        fragment.setOnUpdateListener {
-//            getTasks()
-//        }
+        args.putLong("taskId", task.id)
+        detailFragment.arguments = args
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.replace(R.id.container_main, detailFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
     private fun getTasks() {

@@ -1,24 +1,18 @@
 package com.followapp.mytasks.detailModule.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import com.followapp.mytasks.R
 import com.followapp.mytasks.common.entities.Task
 import com.followapp.mytasks.databinding.FragmentDetailBinding
 import com.followapp.mytasks.detailModule.model.DetailRepository
 import com.followapp.mytasks.detailModule.model.domain.DetailRoomDatabase
 import com.followapp.mytasks.detailModule.viewModel.DetailViewModel
 import com.followapp.mytasks.detailModule.viewModel.DetailViewModelFactory
-import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,23 +20,17 @@ import java.util.*
 class DetailFragment : Fragment() {
 
     private var _binding: FragmentDetailBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
-//    private var taskId = -1L
-//    private lateinit var _taskId: Task
-
+    private var _taskId: Long = -1L
     private lateinit var detailViewModel: DetailViewModel
 
-    //    private var task: Task? = null
-    private lateinit var editTextTaskTitleDetail: EditText
-    private lateinit var editTextTaskDescription: EditText
-    private lateinit var buttonShowDatePicker: Button
-    private lateinit var saveButton: Button
-    private lateinit var deleteButton: Button
-    private lateinit var closeButton: Button
+
+//    private var task: Task? = null
+//    private lateinit var _taskId: Task
 
     private val calendar = Calendar.getInstance()
-    private lateinit var materialDatePicker: MaterialDatePicker<Long>
+//    private lateinit var materialDatePicker: MaterialDatePicker<Long>
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,16 +41,23 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        editTextTaskTitleDetail = view.findViewById(R.id.editTextTaskTitleDetail)
-        editTextTaskDescription = view.findViewById(R.id.editTextTaskDescription)
-        buttonShowDatePicker = view.findViewById(R.id.buttonShowDatePicker)
-        saveButton = view.findViewById(R.id.buttonSaveTask)
-        deleteButton = view.findViewById(R.id.buttonDeleteTask)
-        closeButton = view.findViewById(R.id.buttonCloseDetail)
-
-
         setupViewModel()
-        setupButtons()
+//        setupButtons()
+        setArguments()
+        setupListeners()
+
+
+//            task = detailViewModel.
+
+        // Populate UI with task details
+//            binding.editTextTaskTitleDetail.setText(taskTitle)
+//            binding.editTextTaskDescription.setText(taskDescription)
+//            if (taskDueDate != -1L) {
+//                val date = Date(taskDueDate)
+//                binding.buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
+//            }
+        // Show or hide delete button based on whether taskId is valid
+//            binding.buttonDeleteTask.visibility = if (_taskId != -1L) View.VISIBLE else View.GONE
 
 
 //        if (selectedTaskIndex > -1) {
@@ -82,17 +77,19 @@ class DetailFragment : Fragment() {
 //            deleteButton.visibility = View.GONE
 //        }
 
-        buttonShowDatePicker.setOnClickListener {
-            materialDatePicker.show(parentFragmentManager, "DATE_PICKER")
-        }
+//    buttonShowDatePicker.setOnClickListener
+//    {
+//        materialDatePicker.show(parentFragmentManager, "DATE_PICKER")
+//    }
 
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-        materialDatePicker = datePicker.build()
-        materialDatePicker.addOnPositiveButtonClickListener {
-            calendar.timeInMillis = it
-//            task?.dueDate = calendar.time
-            buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
-        }
+//    val datePicker = MaterialDatePicker.Builder.datePicker()
+//    materialDatePicker = datePicker.build()
+//    materialDatePicker.addOnPositiveButtonClickListener
+//    {
+//        calendar.timeInMillis = it
+////            task?.dueDate = calendar.time
+//        buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
+//    }
 
 //        saveButton.setOnClickListener {
 //            if (selectedTaskIndex > -1) {
@@ -121,8 +118,37 @@ class DetailFragment : Fragment() {
 //        }
     }
 
-    private fun setupButtons() {
+//    private fun setupButtons() {
+//        editTextTaskTitleDetail = view.findViewById(R.id.editTextTaskTitleDetail)
+//        editTextTaskDescription = view.findViewById(R.id.editTextTaskDescription)
+//        buttonShowDatePicker = view.findViewById(R.id.buttonShowDatePicker)
+//        saveButton = view.findViewById(R.id.buttonSaveTask)
+//        deleteButton = view.findViewById(R.id.buttonDeleteTask)
+//        closeButton = view.findViewById(R.id.buttonCloseDetail)
+//    }
 
+    private fun setArguments() {
+        arguments?.let {
+            _taskId = it.getLong("taskId", -1L)
+            getTaskById()
+        }
+
+        detailViewModel.task.observe(viewLifecycleOwner) { task ->
+            task?.let {
+                binding.editTextTaskTitleDetail.setText(it.title)
+                binding.editTextTaskDescription.setText(it.description)
+                task.dueDate?.let {
+                    calendar.time = it
+                    binding.buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
+                }
+                binding.buttonDeleteTask.visibility = View.VISIBLE
+            } ?: run {
+                binding.buttonDeleteTask.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun setupListeners() {
         with(binding) {
             buttonSaveTask.setOnClickListener {
                 val newTask = Task(
@@ -130,8 +156,11 @@ class DetailFragment : Fragment() {
                     description = editTextTaskDescription.text.toString(),
                     dueDate = calendar.time
                 )
-                Log.i("IMPORTANTE", newTask.title)
-                lifecycleScope.launch { detailViewModel.addTask(newTask) }
+
+                lifecycleScope.launch {
+                    detailViewModel.addTask(newTask)
+                    parentFragmentManager.popBackStack()
+                }
 
             }
             buttonCloseDetail.setOnClickListener {
@@ -139,6 +168,11 @@ class DetailFragment : Fragment() {
             }
         }
     }
+
+    private fun getTaskById() {
+        if (_taskId != -1L) detailViewModel.getTaskById(_taskId)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

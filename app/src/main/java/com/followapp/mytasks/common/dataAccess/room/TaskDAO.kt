@@ -12,8 +12,8 @@ interface TaskDAO {
     @Query("SELECT * FROM TasksTable")
     suspend fun getAllTasks(): MutableList<Task>
 
-//    @Query("SELECT * FROM TasksTable WHERE id == :id")
-//    suspend fun getTaskById(id: Double): Task
+    @Query("SELECT * FROM TasksTable WHERE id == :id")
+    suspend fun getTaskById(id: Long): Task?
 
     @Insert
     suspend fun addTask(task: Task): Long
@@ -23,4 +23,7 @@ interface TaskDAO {
 
     @Delete
     suspend fun deleteTask(task: Task): Int
+
+//    @Query("DELETE FROM TasksTable WHERE id = :taskId")
+//    suspend fun deleteTaskById(taskId: Long)
 }

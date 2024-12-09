@@ -15,12 +15,10 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
     private val _allTasks = MutableLiveData<List<Task>>()
     val allTasks: LiveData<List<Task>> = _allTasks
 
+    fun setTasks(value: List<Task>) = _allTasks.postValue(value)
+
     init {
         getAllTasks()
-    }
-
-    fun setTasks(value: List<Task>) {
-        _allTasks.postValue(value)
     }
 
     fun getAllTasks() {
