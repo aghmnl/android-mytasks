@@ -11,6 +11,6 @@ class DetailRepository(private val db: DetailRoomDatabase) {
 
     suspend fun updateTask(task: Task) = db.updateTask(task)
 
-    suspend fun deleteTask(task: Task) = db.deleteTask(task)
+    suspend fun deleteTask(id: Long) = db.deleteTask(id)
 
 }

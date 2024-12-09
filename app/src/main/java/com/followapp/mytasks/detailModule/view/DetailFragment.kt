@@ -1,6 +1,7 @@
 package com.followapp.mytasks.detailModule.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.followapp.mytasks.detailModule.model.DetailRepository
 import com.followapp.mytasks.detailModule.model.domain.DetailRoomDatabase
 import com.followapp.mytasks.detailModule.viewModel.DetailViewModel
 import com.followapp.mytasks.detailModule.viewModel.DetailViewModelFactory
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,12 +27,8 @@ class DetailFragment : Fragment() {
     private var _taskId: Long = -1L
     private lateinit var detailViewModel: DetailViewModel
 
-
-//    private var task: Task? = null
-//    private lateinit var _taskId: Task
-
     private val calendar = Calendar.getInstance()
-//    private lateinit var materialDatePicker: MaterialDatePicker<Long>
+    private lateinit var materialDatePicker: MaterialDatePicker<Long>
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,12 +40,11 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupViewModel()
-//        setupButtons()
         setArguments()
+        setupObservers()
+        setupButtons()
         setupListeners()
 
-
-//            task = detailViewModel.
 
         // Populate UI with task details
 //            binding.editTextTaskTitleDetail.setText(taskTitle)
@@ -56,8 +53,6 @@ class DetailFragment : Fragment() {
 //                val date = Date(taskDueDate)
 //                binding.buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
 //            }
-        // Show or hide delete button based on whether taskId is valid
-//            binding.buttonDeleteTask.visibility = if (_taskId != -1L) View.VISIBLE else View.GONE
 
 
 //        if (selectedTaskIndex > -1) {
@@ -77,19 +72,6 @@ class DetailFragment : Fragment() {
 //            deleteButton.visibility = View.GONE
 //        }
 
-//    buttonShowDatePicker.setOnClickListener
-//    {
-//        materialDatePicker.show(parentFragmentManager, "DATE_PICKER")
-//    }
-
-//    val datePicker = MaterialDatePicker.Builder.datePicker()
-//    materialDatePicker = datePicker.build()
-//    materialDatePicker.addOnPositiveButtonClickListener
-//    {
-//        calendar.timeInMillis = it
-////            task?.dueDate = calendar.time
-//        buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
-//    }
 
 //        saveButton.setOnClickListener {
 //            if (selectedTaskIndex > -1) {
@@ -113,26 +95,17 @@ class DetailFragment : Fragment() {
 //            findNavController().navigateUp()
 //        }
 
-//        closeButton.setOnClickListener {
-//            parentFragmentManager.popBackStack()
-//        }
-    }
 
-//    private fun setupButtons() {
-//        editTextTaskTitleDetail = view.findViewById(R.id.editTextTaskTitleDetail)
-//        editTextTaskDescription = view.findViewById(R.id.editTextTaskDescription)
-//        buttonShowDatePicker = view.findViewById(R.id.buttonShowDatePicker)
-//        saveButton = view.findViewById(R.id.buttonSaveTask)
-//        deleteButton = view.findViewById(R.id.buttonDeleteTask)
-//        closeButton = view.findViewById(R.id.buttonCloseDetail)
-//    }
+    }
 
     private fun setArguments() {
         arguments?.let {
             _taskId = it.getLong("taskId", -1L)
             getTaskById()
         }
+    }
 
+    private fun setupObservers() {
         detailViewModel.task.observe(viewLifecycleOwner) { task ->
             task?.let {
                 binding.editTextTaskTitleDetail.setText(it.title)
@@ -148,29 +121,64 @@ class DetailFragment : Fragment() {
         }
     }
 
+    private fun setupButtons() {
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+        materialDatePicker = datePicker.build()
+        materialDatePicker.addOnPositiveButtonClickListener {
+            calendar.timeInMillis = it
+//            task?.dueDate = calendar.time
+            binding.buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
+        }
+
+        // Show or hide delete button based on whether taskId is valid
+        binding.buttonDeleteTask.visibility = if (_taskId != -1L) View.VISIBLE else View.GONE
+    }
+
     private fun setupListeners() {
         with(binding) {
             buttonSaveTask.setOnClickListener {
-                val newTask = Task(
+                val task = Task(
                     editTextTaskTitleDetail.text.toString(),
                     description = editTextTaskDescription.text.toString(),
                     dueDate = calendar.time
                 )
 
                 lifecycleScope.launch {
-                    detailViewModel.addTask(newTask)
-                    parentFragmentManager.popBackStack()
+                    if (_taskId == -1L) {
+                        detailViewModel.addTask(task)
+                    } else {
+                        Log.i("IMPORTANTE TaskId: ", task.id.toString())
+                        detailViewModel.updateTask(task)
+                    }
+                    closeDetail()
                 }
-
             }
+
             buttonCloseDetail.setOnClickListener {
-                parentFragmentManager.popBackStack()
+                closeDetail()
+            }
+
+            buttonShowDatePicker.setOnClickListener {
+                materialDatePicker.show(parentFragmentManager, "DATE_PICKER")
+            }
+
+            buttonDeleteTask.setOnClickListener {
+                if (_taskId != -1L) {
+                    lifecycleScope.launch {
+                        detailViewModel.deleteTask(_taskId)
+                        closeDetail()
+                    }
+                }
             }
         }
     }
 
     private fun getTaskById() {
         if (_taskId != -1L) detailViewModel.getTaskById(_taskId)
+    }
+
+    private fun closeDetail() {
+        parentFragmentManager.popBackStack()
     }
 
 

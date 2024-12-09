@@ -17,7 +17,6 @@ import com.followapp.mytasks.homeModule.model.HomeRepository
 import com.followapp.mytasks.homeModule.model.domain.HomeRoomDatabase
 import com.followapp.mytasks.homeModule.viewModel.HomeViewModel
 import com.followapp.mytasks.homeModule.viewModel.HomeViewModelFactory
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class HomeFragment : Fragment(), OnTaskClickListener {
@@ -40,7 +39,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         setupAdapter()
         setupRecyclerView()
         setupObservers()
-        setupButtons()
+        setupListeners()
     }
 
     private fun setupViewModel() {
@@ -68,7 +67,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         })
     }
 
-    private fun setupButtons() {
+    private fun setupListeners() {
         binding.fabAddTask.setOnClickListener {
             val detailFragment = DetailFragment()
             val transaction = parentFragmentManager.beginTransaction()
@@ -84,6 +83,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 //        findNavController().navigate(action)
 //    }
 
+    // To be implemented for the OnTaskClickListener
     override fun onTaskClick(task: Task) {
         val detailFragment = DetailFragment()
         val args = Bundle()

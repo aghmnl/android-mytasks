@@ -45,9 +45,9 @@ class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
         }
     }
 
-    fun deleteTask(task: Task) {
+    fun deleteTask(id: Long) {
         viewModelScope.launch {
-            val result = repository.deleteTask(task)
+            val result = repository.deleteTask(id)
             if (result == 0) {
                 Log.i("IMPORTANTE", "No se pudo borrar la tarea")
             }

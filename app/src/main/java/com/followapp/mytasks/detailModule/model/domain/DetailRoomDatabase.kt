@@ -13,5 +13,5 @@ class DetailRoomDatabase {
 
     suspend fun updateTask(task: Task) = dao.updateTask(task)
 
-    suspend fun deleteTask(task: Task) = dao.deleteTask(task)
+    suspend fun deleteTask(id: Long) = dao.deleteTaskById(id)
 }
