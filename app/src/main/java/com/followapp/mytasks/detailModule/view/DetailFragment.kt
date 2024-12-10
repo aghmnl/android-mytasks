@@ -1,6 +1,7 @@
 package com.followapp.mytasks.detailModule.view
 
 import android.os.Bundle
+import com.followapp.mytasks.R
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -44,31 +45,10 @@ class DetailFragment : Fragment() {
         setupObservers()
         setupButtons()
         setupListeners()
+    }
 
-
-//        saveButton.setOnClickListener {
-//            if (selectedTaskIndex > -1) {
-//                val newTask = Task(
-//                    editTextTaskTitleDetail.text.toString(),
-//                    false,
-//                    id = task?.id ?: 0.0,
-//                    description = editTextTaskDescription.text.toString(),
-//                    dueDate = task?.dueDate
-//                )
-//                taskViewModel.updateTask(newTask)
-//            } else {
-//                val newTask = Task(
-//                    editTextTaskTitleDetail.text.toString(),
-//                    false,
-//                    description = editTextTaskDescription.text.toString(),
-//                    dueDate = task?.dueDate
-//                )
-//                taskViewModel.addTask(newTask)
-//            }
-//            findNavController().navigateUp()
-//        }
-
-
+    private fun setupViewModel() {
+        detailViewModel = ViewModelProvider(this, DetailViewModelFactory(DetailRepository(DetailRoomDatabase())))[DetailViewModel::class.java]
     }
 
     private fun setArguments() {
@@ -81,15 +61,16 @@ class DetailFragment : Fragment() {
     private fun setupObservers() {
         detailViewModel.task.observe(viewLifecycleOwner) { task ->
             task?.let {
-                binding.editTextTaskTitleDetail.setText(it.title)
-                binding.editTextTaskDescription.setText(it.description)
-                task.dueDate?.let {
-                    calendar.time = it
-                    binding.buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
+                with(binding) {
+                    editTextTaskTitleDetail.setText(it.title)
+                    editTextTaskDescription.setText(it.description)
+                    if (it.dueDate != null) {
+                        buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it.dueDate ?: Date())
+                        calendar.time = it.dueDate ?: Date()
+                    } else {
+                        buttonShowDatePicker.text = getString(R.string.select_date)
+                    }
                 }
-                binding.buttonDeleteTask.visibility = View.VISIBLE
-            } ?: run {
-                binding.buttonDeleteTask.visibility = View.GONE
             }
         }
     }
@@ -99,8 +80,6 @@ class DetailFragment : Fragment() {
         materialDatePicker = datePicker.build()
         materialDatePicker.addOnPositiveButtonClickListener {
             calendar.timeInMillis = it
-//            task?.dueDate = calendar.time
-            binding.buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
         }
 
         // Show or hide delete button based on whether taskId is valid
@@ -113,7 +92,7 @@ class DetailFragment : Fragment() {
                 val task = Task(
                     editTextTaskTitleDetail.text.toString(),
                     description = editTextTaskDescription.text.toString(),
-                    dueDate = calendar.time
+                    dueDate = if (buttonShowDatePicker.text != getString(R.string.select_date)) calendar.time else null
                 )
 
                 lifecycleScope.launch {
@@ -156,13 +135,8 @@ class DetailFragment : Fragment() {
         parentFragmentManager.popBackStack()
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun setupViewModel() {
-        detailViewModel = ViewModelProvider(this, DetailViewModelFactory(DetailRepository(DetailRoomDatabase())))[DetailViewModel::class.java]
     }
 }

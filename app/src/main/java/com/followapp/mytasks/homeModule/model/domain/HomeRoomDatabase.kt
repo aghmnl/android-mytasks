@@ -7,5 +7,4 @@ class HomeRoomDatabase {
     private val dao: TaskDAO by lazy { TaskApplication.database.taskDAO() }
 
     fun getAllTasks() = dao.getAllTasks()
-
 }

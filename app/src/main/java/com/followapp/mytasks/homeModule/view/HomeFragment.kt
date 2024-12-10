@@ -77,12 +77,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
     }
 
-
-//    private fun openTaskDetail(task: Task?) {
-//        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(task)
-//        findNavController().navigate(action)
-//    }
-
     // To be implemented for the OnTaskClickListener
     override fun onTaskClick(task: Task) {
         val detailFragment = DetailFragment()
@@ -103,5 +97,4 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         super.onDestroyView()
         _binding = null
     }
-
 }
