@@ -10,19 +10,19 @@ import com.followapp.mytasks.common.entities.Task
 @Dao
 interface TaskDAO {
     @Query("SELECT * FROM TasksTable")
-    suspend fun getAllTasks(): MutableList<Task>
+    fun getAllTasks(): MutableList<Task>
 
     @Query("SELECT * FROM TasksTable WHERE id == :id")
-    suspend fun getTaskById(id: Long): Task?
+    fun getTaskById(id: Long): Task?
 
     @Insert
-    suspend fun addTask(task: Task): Long
+    fun addTask(task: Task): Long
 
     @Update
-    suspend fun updateTask(task: Task): Int
+    fun updateTask(task: Task): Int
 
     @Query("DELETE FROM TasksTable WHERE id = :id")
-    suspend fun deleteTaskById(id: Long): Int
+    fun deleteTaskById(id: Long): Int
 
 //    @Delete
 //    suspend fun deleteTask(task: Task): Int

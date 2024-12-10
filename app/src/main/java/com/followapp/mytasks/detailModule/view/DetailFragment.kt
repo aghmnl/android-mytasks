@@ -46,33 +46,6 @@ class DetailFragment : Fragment() {
         setupListeners()
 
 
-        // Populate UI with task details
-//            binding.editTextTaskTitleDetail.setText(taskTitle)
-//            binding.editTextTaskDescription.setText(taskDescription)
-//            if (taskDueDate != -1L) {
-//                val date = Date(taskDueDate)
-//                binding.buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
-//            }
-
-
-//        if (selectedTaskIndex > -1) {
-////            task = TaskManager.tasksList[selectedTaskIndex]
-//            editTextTaskTitleDetail.setText(task?.title)
-//            editTextTaskDescription.setText(task?.description ?: "")
-//            task?.dueDate?.let {
-//                calendar.time = it
-//                buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
-//            }
-//            deleteButton.setOnClickListener {
-//                Log.v("DebugAgus", "selectedTaskIndex = $selectedTaskIndex")
-//                task?.let { taskViewModel.deleteTask(it) }
-//                findNavController().navigateUp()
-//            }
-//        } else {
-//            deleteButton.visibility = View.GONE
-//        }
-
-
 //        saveButton.setOnClickListener {
 //            if (selectedTaskIndex > -1) {
 //                val newTask = Task(
@@ -147,6 +120,7 @@ class DetailFragment : Fragment() {
                     if (_taskId == -1L) {
                         detailViewModel.addTask(task)
                     } else {
+                        task.id = _taskId
                         Log.i("IMPORTANTE TaskId: ", task.id.toString())
                         detailViewModel.updateTask(task)
                     }
@@ -175,6 +149,7 @@ class DetailFragment : Fragment() {
 
     private fun getTaskById() {
         if (_taskId != -1L) detailViewModel.getTaskById(_taskId)
+        Log.i("IMPORTANTE taskId x/arg: ", _taskId.toString())
     }
 
     private fun closeDetail() {

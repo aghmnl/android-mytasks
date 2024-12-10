@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.followapp.mytasks.common.entities.Task
 import com.followapp.mytasks.detailModule.model.DetailRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
 
@@ -18,10 +20,12 @@ class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
 
     fun getTaskById(id: Long) {
         viewModelScope.launch {
-            val task = repository.getTaskById(id)
-            setTask(task)
-            if (task == null) {
-                Log.i("IMPORTANTE", "No se pudo encontrar la tarea")
+            withContext(Dispatchers.IO) {
+                val task = repository.getTaskById(id)
+                setTask(task)
+                if (task == null) {
+                    Log.i("IMPORTANTE", "No se pudo encontrar la tarea")
+                }
             }
         }
     }
@@ -29,27 +33,33 @@ class DetailViewModel(private val repository: DetailRepository) : ViewModel() {
 
     fun addTask(task: Task) {
         viewModelScope.launch {
-            val result = repository.addTask(task)
-            if (result == -1L) {
-                Log.i("IMPORTANTE", "No se pudo agregar la tarea")
+            withContext(Dispatchers.IO) {
+                val result = repository.addTask(task)
+                if (result == -1L) {
+                    Log.i("IMPORTANTE", "No se pudo agregar la tarea")
+                }
             }
         }
     }
 
     fun updateTask(task: Task) {
         viewModelScope.launch {
-            val result = repository.updateTask(task)
-            if (result == 0) {
-                Log.i("IMPORTANTE", "No se pudo modificar la tarea")
+            withContext(Dispatchers.IO) {
+                val result = repository.updateTask(task)
+                if (result == 0) {
+                    Log.i("IMPORTANTE", "No se pudo modificar la tarea")
+                }
             }
         }
     }
 
     fun deleteTask(id: Long) {
         viewModelScope.launch {
-            val result = repository.deleteTask(id)
-            if (result == 0) {
-                Log.i("IMPORTANTE", "No se pudo borrar la tarea")
+            withContext(Dispatchers.IO) {
+                val result = repository.deleteTask(id)
+                if (result == 0) {
+                    Log.i("IMPORTANTE", "No se pudo borrar la tarea")
+                }
             }
         }
     }

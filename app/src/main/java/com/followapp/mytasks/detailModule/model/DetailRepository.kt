@@ -5,12 +5,12 @@ import com.followapp.mytasks.detailModule.model.domain.DetailRoomDatabase
 
 class DetailRepository(private val db: DetailRoomDatabase) {
 
-    suspend fun getTaskById(id: Long) = db.getTaskById(id)
+    fun getTaskById(id: Long) = db.getTaskById(id)
 
-    suspend fun addTask(task: Task) = db.addTask(task)
+    fun addTask(task: Task) = db.addTask(task)
 
-    suspend fun updateTask(task: Task) = db.updateTask(task)
+    fun updateTask(task: Task) = db.updateTask(task)
 
-    suspend fun deleteTask(id: Long) = db.deleteTask(id)
+    fun deleteTask(id: Long) = db.deleteTask(id)
 
 }
