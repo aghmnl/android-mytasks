@@ -54,14 +54,11 @@
         <!-- Button to delete the task -->
         <Button
             android:id="@+id/buttonDeleteTask"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/errorButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/delete"
-            android:textColor="?attr/colorOnError"
-            app:backgroundTint="?attr/colorError"
-            app:iconTint="?attr/colorOnError"
-            app:strokeColor="?attr/colorError" />
+          />
 
     </LinearLayout>
 
@@ -73,7 +70,7 @@
         <!-- Button to close the detail view -->
         <Button
             android:id="@+id/buttonCloseDetail"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/outlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
@@ -84,7 +81,7 @@
             android:id="@+id/buttonSaveTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:textColor="@color/text_button"
             android:text="@string/save" />
 
     </LinearLayout>

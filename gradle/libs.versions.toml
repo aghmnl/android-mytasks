@@ -1,5 +1,5 @@
 [versions]
-agp = "8.6.1"  # Tanto para library como para application
+agp = "8.7.3"  # Tanto para library como para application
 #firebaseAuth = "22.3.1"  No es necesario porque se usa Firebase Android BoM
 coreKtx = "1.13.1"
 credentials = "<latest version>"
