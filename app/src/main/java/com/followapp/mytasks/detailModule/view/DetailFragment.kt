@@ -64,6 +64,7 @@ class DetailFragment : Fragment() {
                 with(binding) {
                     editTextTaskTitleDetail.setText(it.title)
                     editTextTaskDescription.setText(it.description)
+                    checkBoxDone.isChecked = it.isDone
                     if (it.dueDate != null) {
                         buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it.dueDate ?: Date())
                         calendar.time = it.dueDate ?: Date()
@@ -92,6 +93,7 @@ class DetailFragment : Fragment() {
                 val task = Task(
                     editTextTaskTitleDetail.text.toString(),
                     description = editTextTaskDescription.text.toString(),
+                    isDone = checkBoxDone.isChecked,
                     dueDate = if (buttonShowDatePicker.text != getString(R.string.select_date)) calendar.time else null
                 )
 

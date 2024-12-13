@@ -21,4 +21,5 @@
     <string name="web_client_id">692558155479-800k03813n3hand9nljrlnrtdnl4sens.apps.googleusercontent.com</string>
     <string name="navigation_drawer_close">close</string>
     <string name="logout">Logout</string>
+    <string name="done">Done</string>
 </resources>
