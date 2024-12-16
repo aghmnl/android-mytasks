@@ -5,6 +5,7 @@
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
     <application
+        android:name=".TaskApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,9 +21,6 @@
             android:value="ca-app-pub-3940256099942544~3347511713" />  <!-- Banner test ID -->
         <!--        android:value="ca-app-pub-5163472824682213~4420222935"/>-->  <!-- FollowApp MyTasks ID -->
 
-        <activity
-            android:name=".detailModule.view.TaskDetail"
-            android:exported="false" />
         <activity
             android:name=".loginModile.view.LoginActivity"
             android:exported="false" />

@@ -9,8 +9,8 @@ import java.util.Date
 @Entity(tableName = "TasksTable")
 data class Task(
     @ColumnInfo(name = "title") var title: String,
-    @ColumnInfo(name = "is_done") var isDone: Boolean,
-    @PrimaryKey(autoGenerate = true) var id: Int = 0,
+    @ColumnInfo(name = "is_done") var isDone: Boolean = false,
+    @PrimaryKey(autoGenerate = true) var id: Long = 0L,
     @ColumnInfo(name = "description") var description: String? = null,
     @ColumnInfo(name = "due_date") var dueDate: Date? = null,
 //    @ColumnInfo(name = "time_required") var timeRequired: LocalTime? = null,

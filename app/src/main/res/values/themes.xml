@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.MyTasks" parent="Theme.Material3.DayNight.NoActionBar">
-<!--        <item name="colorError">@color/colorError</item>-->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimaryVariant">@color/primaryVariant</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondaryVariant</item>
+        <item name="colorOnSecondary">@color/onSecondary</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textColorHint">@color/textHint</item>
+        <item name="materialButtonOutlinedStyle">@style/outlinedButton</item>
+
+        <!--        <item name="colorError">@color/colorError</item>-->
 <!--        <item name="colorOnError">@color/colorOnError</item>-->
         <item name="android:fontFamily">@font/red_hat_display</item>
     </style>
+
+    <style name="outlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/color_900</item>
+        <item name="android:textColor">@color/color_900</item>
+    </style>
+
+    <style name="errorButton" parent="Widget.Material3.Button">
+        <item name="android:color">@color/colorError</item>
+        <item name="android:textColor">@color/text_button</item>
+    </style>
+
+    <style name="mainButton" parent="Widget.Material3.Button">
+        <item name="android:textColor">@color/colorError</item>
+    </style>
+
 
     <style name="MainMargin">
         <item name="android:paddingStart">15dp</item>
@@ -15,10 +41,14 @@
 
     <style name="Title">
         <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textColorHint">@color/textHint</item>
     </style>
 
     <style name="Content">
         <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textColorHint">@color/textHint</item>
     </style>
 
 

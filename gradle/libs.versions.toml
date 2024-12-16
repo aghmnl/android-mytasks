@@ -1,5 +1,5 @@
 [versions]
-agp = "8.6.1"  # Tanto para library como para application
+agp = "8.7.3"  # Tanto para library como para application
 #firebaseAuth = "22.3.1"  No es necesario porque se usa Firebase Android BoM
 coreKtx = "1.13.1"
 credentials = "<latest version>"
@@ -20,6 +20,7 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 koinVersion = "3.5.3"
 #lifecycleRuntimeKtx = "2.8.1"
+lifecycleLivedataKtx = "2.8.7"
 material = "1.12.0"
 navigation = "2.8.1"
 playServicesAds = "23.3.0"
@@ -51,6 +52,7 @@ androidx-drawerlayout = { module = "androidx.drawerlayout:drawerlayout", version
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
 #androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-material3 = { module = "androidx.compose.material3:material3" }
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }

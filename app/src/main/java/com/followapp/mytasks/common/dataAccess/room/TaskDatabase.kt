@@ -7,6 +7,6 @@ import com.followapp.mytasks.common.entities.Task
 
 @Database(entities = [Task::class], version = 1, exportSchema = false)
 @TypeConverters(TaskConverters::class)
-abstract class AppDatabase : RoomDatabase() {
+abstract class TaskDatabase : RoomDatabase() {
     abstract fun taskDAO(): TaskDAO
 }

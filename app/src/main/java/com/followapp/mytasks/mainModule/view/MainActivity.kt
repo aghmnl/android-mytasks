@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.credentials.ClearCredentialStateRequest
@@ -14,65 +13,37 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.followapp.mytasks.loginModile.view.LoginActivity
 import com.followapp.mytasks.R
-import com.followapp.mytasks.detailModule.view.TaskDetail
-import com.followapp.mytasks.tasksModule.model.domain.TaskManager
-import com.followapp.mytasks.homeModule.view.TasksAdapter
+import com.followapp.mytasks.homeModule.view.HomeFragment
+import com.followapp.mytasks.loginModile.view.LoginActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private lateinit var tasksRecyclerView: RecyclerView
-    private lateinit var addTaskButton: FloatingActionButton
     private lateinit var advertView: AdView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-    private val tasksAdapter = TasksAdapter()
 
-    // This should be in the LoginActivity
     private lateinit var credentialManager: CredentialManager
-    private lateinit var auth: FirebaseAuth      // shared instance of the FirebaseAuth object (the entry point of the Firebase Authentication SDK).
-
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        launchHome()
+    }
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) // This is to avoid dark mode
-
-        TaskManager.initialize(this)
-        println("RUNNING INITIALIZE")
-
-        tasksRecyclerView = findViewById(R.id.recyclerViewTasks)
-        addTaskButton = findViewById(R.id.fabAddTask)
-
-        tasksRecyclerView.layoutManager = LinearLayoutManager(this)
-        tasksRecyclerView.adapter = tasksAdapter
-
-        addTaskButton.setOnClickListener {
-            TaskManager.selectedTaskIndex = -1
-
-            // Handle click event to add new task
-            val intent = Intent(this, TaskDetail::class.java)
-            startActivity(intent)
+    fun launchHome() {
+        val fragment = HomeFragment()
+        supportFragmentManager.beginTransaction().apply {
+            add(R.id.container_main, fragment)
+                .commit()
         }
-
-        TaskManager.onItemInserted = { tasksAdapter.notifyItemInserted(TaskManager.tasksList.size) }
-        TaskManager.onItemChanged = { tasksAdapter.notifyItemRangeChanged(TaskManager.selectedTaskIndex, TaskManager.tasksList.size) }
-        TaskManager.onItemRemoved = { tasksAdapter.notifyItemRemoved(TaskManager.selectedTaskIndex) }
-
-        initToolBar()
-        initBanner()
-
     }
 
     private fun initToolBar() {
@@ -96,7 +67,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.setNavigationItemSelectedListener(this)
     }
 
-    // To load the ads banner
     private fun initBanner() {
         MobileAds.initialize(this) {}
         advertView = AdView(this)
@@ -109,7 +79,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val adRequest = AdRequest.Builder().build()
         advertView.loadAd(adRequest)
-
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -124,7 +93,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        // Para cerrar el menú luego de elegir la opción
         drawerLayout.closeDrawer(GravityCompat.START)
 
         return true

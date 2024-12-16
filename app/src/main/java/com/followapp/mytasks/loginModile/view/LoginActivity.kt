@@ -36,66 +36,18 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
-        //auth = Firebase.auth Propuesto por Android Studio
         credentialManager = CredentialManager.create(this)
         initLogin()
 
     }
 
     private fun initLogin() {
-
-        // First, check if the user has any accounts that have previously been used to sign in to your app by calling the API with the setFilterByAuthorizedAccounts parameter set to true. Users can choose between available accounts to sign in.
-        // If no authorized Google Accounts are available, the user should be prompted to sign up with any of their available accounts. To do this, prompt the user by calling the API again and setting setFilterByAuthorizedAccounts to false
-//        val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-//            .setFilterByAuthorizedAccounts(true)
-//            .setServerClientId(getString(R.string.web_client_id))
-//            .setAutoSelectEnabled(true)
-////            .setNonce("nonce string to use when generating a Google ID token")  // To be tested and improved  https://developer.android.com/google/play/integrity/classic#nonce
-//            .build()
-
-
-//        val request: GetCredentialRequest = Builder()
-//            .addCredentialOption(googleIdOption)
-//            .build()
-
-
-        /*        Propuesto por Android Studio
-            signInRequest = BeginSignInRequest.builder()
-                .setGoogleIdTokenRequestOptions(
-                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                        .setSupported(true)
-                        // Your server's client ID, not your Android client ID.
-                        .setServerClientId(getString(R.string.web_client_id))
-                        // Only show accounts previously used to sign in.
-                        .setFilterByAuthorizedAccounts(true)
-                        .build()
-                )
-
-        */
-
-
-//        val googleAccount = GoogleSignIn.getLastSignedInAccount(this)
-//        if (googleAccount != null) {
-//            firebaseAuthWithGoogle(googleAccount.idToken!!)  // If the user is already signed in, authenticate with Firebase.
-
-
-        // Find the Google Sign-In button in the layout and set a click listener.
         val signInButton: Button = findViewById(R.id.signInGoogle)
-
 
         signInButton.setOnClickListener {
             getGoogleIdToken()
         }
     }
-
-    /* Propuesto por Android Studio
-    override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        updateUI(currentUser);
-    }
-    */
 
     private fun getGoogleIdToken() {
         val googleIdOption = GetGoogleIdOption.Builder()
@@ -115,25 +67,10 @@ class LoginActivity : AppCompatActivity() {
                 )
                 handleSignIn(result)
             } catch (e: GetCredentialException) {
-//            handleFailure(e)
             }
         }
 
-//        val task = credentialManager.getCredential(this, request)
-//        task.addOnCompleteListener { result ->
-//            if (result.isSuccessful) {
-//                val idToken = result.result?.idToken
-//                if (idToken != null) {
-//                    firebaseAuthWithGoogle(idToken)
-//                } else {
-//                    // Handle case when no Google ID token is available
-//                    updateUI(null)
-//                }
-//            } else {
-//                // Handle error
-//                updateUI(null)
-//            }
-//        }
+
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
@@ -150,21 +87,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleSignIn(result: GetCredentialResponse) {
-        // Handle the successfully returned credential.
         when (val credential = result.credential) {
 
-            // Passkey credential
             is PublicKeyCredential -> {
-                // Share responseJson such as a GetCredentialResponse on your server to
-                // validate and authenticate
-//                responseJson = credential.authenticationResponseJson
+
             }
 
-            // Password credential
             is PasswordCredential -> {
-                // Send ID and password to your server to validate and authenticate.
-//                val username = credential.id
-//                val password = credential.password
+
             }
 
             // GoogleIdToken credential
@@ -194,16 +124,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    /* Propuesto por Android Studio
-    override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.getCurrentUser()
-        updateUI(currentUser);
-    }
-
-     */
-
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             val intent = Intent(this, MainActivity::class.java)
@@ -213,35 +133,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
-    /* Propuesto por Android Studio
-    val googleCredential = oneTapClient.getSignInCredentialFromIntent(data)
-    val idToken = googleCredential.googleIdToken
-    when {
-        idToken != null -> {
-            // Got an ID token from Google. Use it to authenticate
-            // with Firebase.
-            val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-            auth.signInWithCredential(firebaseCredential)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success")
-                        val user = auth.currentUser
-                        updateUI(user)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        updateUI(null)
-                    }
-                }
-        }
-        else -> {
-            // Shouldn't happen.
-            Log.d(TAG, "No ID token!")
-        }
-    }
-    */
 
 
 }
