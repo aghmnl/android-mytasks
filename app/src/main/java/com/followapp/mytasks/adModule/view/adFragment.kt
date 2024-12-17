@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.followapp.mytasks.R
 import com.followapp.mytasks.adModule.viewModel.AdViewModel
 import com.followapp.mytasks.databinding.FragmentAdBinding
 import com.google.android.gms.ads.AdSize
@@ -45,8 +46,7 @@ class AdFragment : Fragment() {
     private fun loadAd() {
         adView = AdView(requireContext())
         adView.setAdSize(AdSize.BANNER)
-        adView.adUnitId = "ca-app-pub-3940256099942544/9214589741"  // Banner test AdMob ID
-//        advertView.adUnitId = "ca-app-pub-5163472824682213~4420222935"  // FollowApp MyTasks AdMob ID
+        adView.adUnitId = getString(R.string.ad_id) // Retrieve the string resource
         binding.adView.addView(adView)  // Add the AdView to the container in the layout
         adViewModel.loadAd(adView)
     }

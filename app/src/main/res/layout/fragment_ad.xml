@@ -8,5 +8,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-3940256099942544/9214589741" /> <!-- Test AdMob ID -->
+        app:adUnitId="@string/ad_id" /> <!-- Reference the string resource -->
 </FrameLayout>

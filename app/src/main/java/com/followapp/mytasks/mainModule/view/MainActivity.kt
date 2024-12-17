@@ -16,6 +16,7 @@ import com.followapp.mytasks.R
 import com.followapp.mytasks.adModule.view.AdFragment
 import com.followapp.mytasks.homeModule.view.HomeFragment
 import com.followapp.mytasks.loginModule.view.LoginActivity
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        MobileAds.initialize(this)
+
         launchHome()
         loadAdFragment()
     }
