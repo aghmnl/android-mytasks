@@ -22,7 +22,7 @@
         <!--        android:value="ca-app-pub-5163472824682213~4420222935"/>-->  <!-- FollowApp MyTasks ID -->
 
         <activity
-            android:name=".loginModile.view.LoginActivity"
+            android:name=".loginModule.view.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".mainModule.view.MainActivity"
