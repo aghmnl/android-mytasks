@@ -13,35 +13,31 @@
         android:layout_height="match_parent"
         android:background="@color/background">
 
-        <RelativeLayout
+        <!-- Fragment Container -->
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/ad_fragment_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout="@layout/fragment_home" />
+
+        <!-- App Bar -->
+        <!--            <include-->
+        <!--                android:id="@+id/app_bar_main"-->
+        <!--                layout="@layout/app_bar_main"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content" />-->
+
+        <!-- Ads -->
+        <FrameLayout
+            android:id="@+id/ad_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <!-- App Bar -->
-            <!--            <include-->
-            <!--                android:id="@+id/app_bar_main"-->
-            <!--                layout="@layout/app_bar_main"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content" />-->
-
-            <!-- Fragment Container -->
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragment_container_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@id/ad_fragment_container"
-                tools:layout="@layout/fragment_home" />
-
-            <!-- Ads -->
-            <FrameLayout
-                android:id="@+id/ad_fragment_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true" />
-
-        </RelativeLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

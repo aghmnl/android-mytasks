@@ -16,9 +16,6 @@
         android:theme="@style/Theme.MyTasks"
         tools:targetApi="31">
 
-
-
-
         <activity
             android:name=".loginModule.view.LoginActivity"
             android:exported="false" />
