@@ -7,39 +7,30 @@
     android:layout_height="match_parent"
     tools:context=".mainModule.view.MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background">
+        <RelativeLayout
+            android:id="@+id/container_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background">
 
         <!-- Fragment Container -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/ad_fragment_container"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/ad_fragment_container"
             tools:layout="@layout/fragment_home" />
-
-        <!-- App Bar -->
-        <!--            <include-->
-        <!--                android:id="@+id/app_bar_main"-->
-        <!--                layout="@layout/app_bar_main"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content" />-->
 
         <!-- Ads -->
         <FrameLayout
             android:id="@+id/ad_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
 
     <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
