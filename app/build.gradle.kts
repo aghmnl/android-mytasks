@@ -14,8 +14,8 @@ android {
         applicationId = "com.followapp.mytasks"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 4
-        versionName = "0.0.4"
+        versionCode = 9
+        versionName = "0.0.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -36,6 +36,10 @@ android {
             // Includes the default ProGuard rules files that are packaged with
             // the Android Gradle plugin. To learn more, go to the section about
             // R8 configuration files.
+
+            // ATTENTION, two lines were added to the proguard-rules.pro
+            //     -dontwarn android.media.LoudnessCodecController$OnLoudnessCodecUpdateListener
+            //     -dontwarn android.media.LoudnessCodecController
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

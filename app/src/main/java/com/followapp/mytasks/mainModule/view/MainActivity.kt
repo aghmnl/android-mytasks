@@ -3,7 +3,6 @@ package com.followapp.mytasks.mainModule.view
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -14,18 +13,15 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import com.followapp.mytasks.R
+import com.followapp.mytasks.adModule.view.AdFragment
 import com.followapp.mytasks.homeModule.view.HomeFragment
-import com.followapp.mytasks.loginModile.view.LoginActivity
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
+import com.followapp.mytasks.loginModule.view.LoginActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private lateinit var advertView: AdView
+
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
 
@@ -35,15 +31,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         launchHome()
+        loadAdFragment()
     }
 
     fun launchHome() {
-        val fragment = HomeFragment()
+        val homeFragment = HomeFragment()
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.container_main, fragment)
+            add(R.id.container_main, homeFragment)
                 .commit()
         }
+    }
+
+    private fun loadAdFragment() {
+        val adFragment = AdFragment()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.ad_fragment_container, adFragment)
+            .commit()
     }
 
     private fun initToolBar() {
@@ -67,20 +72,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.setNavigationItemSelectedListener(this)
     }
 
-    private fun initBanner() {
-        MobileAds.initialize(this) {}
-        advertView = AdView(this)
-        advertView.setAdSize(AdSize.BANNER)
-        advertView.adUnitId = "ca-app-pub-3940256099942544/9214589741"  // Banner test AdMob ID
-//        advertView.adUnitId = "ca-app-pub-5163472824682213~4420222935"  // FollowApp MyTasks AdMob ID
-
-        val lyAdsBanner = findViewById<FrameLayout>(R.id.ad_view_container)
-        lyAdsBanner.addView(advertView)
-
-        val adRequest = AdRequest.Builder().build()
-        advertView.loadAd(adRequest)
-    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_login -> {
@@ -94,7 +85,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         drawerLayout.closeDrawer(GravityCompat.START)
-
         return true
     }
 
@@ -107,6 +97,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 credentialManager.clearCredentialState(ClearCredentialStateRequest())
                 auth.signOut()
                 println("LOGOUT")
+
             } catch (e: GetCredentialException) {
                 println("THERE WAS AN ERROR LOGOUT")
             }
