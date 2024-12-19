@@ -76,16 +76,20 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun setupButtons() {
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-        materialDatePicker = datePicker.build()
-        materialDatePicker.addOnPositiveButtonClickListener {
+private fun setupButtons() {
+    val datePicker = MaterialDatePicker.Builder.datePicker()
+    materialDatePicker = datePicker.build()
+    materialDatePicker.addOnPositiveButtonClickListener { selection ->
+        selection?.let {
             calendar.timeInMillis = it
+            val selectedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
+            binding.buttonShowDatePicker.text = selectedDate
         }
-
-        // Show or hide delete button based on whether taskId is valid
-        binding.buttonDeleteTask.visibility = if (_taskId != -1L) View.VISIBLE else View.GONE
     }
+
+    // Show or hide delete button based on whether taskId is valid
+    binding.buttonDeleteTask.visibility = if (_taskId != -1L) View.VISIBLE else View.GONE
+}
 
     private fun setupListeners() {
         with(binding) {
