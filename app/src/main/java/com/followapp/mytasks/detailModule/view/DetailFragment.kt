@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.followapp.mytasks.common.entities.Task
+import com.followapp.mytasks.common.utils.*
 import com.followapp.mytasks.databinding.FragmentDetailBinding
 import com.followapp.mytasks.detailModule.model.DetailRepository
 import com.followapp.mytasks.detailModule.model.domain.DetailRoomDatabase
@@ -18,6 +19,8 @@ import com.followapp.mytasks.detailModule.viewModel.DetailViewModelFactory
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.*
 
 class DetailFragment : Fragment() {
@@ -77,10 +80,12 @@ class DetailFragment : Fragment() {
     }
 
     private fun setupButtons() {
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-        materialDatePicker = datePicker.build()
-        materialDatePicker.addOnPositiveButtonClickListener {
-            calendar.timeInMillis = it
+        materialDatePicker = MaterialDatePicker.Builder.datePicker().build()
+        materialDatePicker.addOnPositiveButtonClickListener { selection ->
+            selection?.let {
+                calendar.timeInMillis = it.toUTCLocalDateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                binding.buttonShowDatePicker.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
+            }
         }
 
         // Show or hide delete button based on whether taskId is valid
