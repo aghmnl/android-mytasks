@@ -1,4 +1,4 @@
-package com.followapp.mytasks.loginModile.view
+package com.followapp.mytasks.loginModule.view
 
 import android.content.ContentValues.TAG
 import android.content.Intent
