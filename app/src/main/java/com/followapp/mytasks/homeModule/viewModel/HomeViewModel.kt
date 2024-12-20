@@ -1,5 +1,6 @@
 package com.followapp.mytasks.homeModule.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,6 +22,22 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         getAllTasks()
     }
 
+    fun toggleTaskDone(task: Task) {
+        task.isDone = !task.isDone
+        updateTask(task)
+    }
+
+    fun updateTask(task: Task) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val result = repository.updateTask(task)
+                if (result == 0) {
+                    Log.i("IMPORTANTE", "No se pudo modificar la tarea")
+                }
+            }
+        }
+    }
+
     fun getAllTasks() {
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
@@ -30,5 +47,3 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         }
     }
 }
-
-

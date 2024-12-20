@@ -1,14 +1,13 @@
 package com.followapp.mytasks.detailModule.view
 
 import android.os.Bundle
-import com.followapp.mytasks.R
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.followapp.mytasks.R
 import com.followapp.mytasks.common.entities.Task
 import com.followapp.mytasks.common.utils.*
 import com.followapp.mytasks.databinding.FragmentDetailBinding
@@ -20,7 +19,6 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.util.*
 
 class DetailFragment : Fragment() {
@@ -107,7 +105,6 @@ class DetailFragment : Fragment() {
                         detailViewModel.addTask(task)
                     } else {
                         task.id = _taskId
-                        Log.i("IMPORTANTE TaskId: ", task.id.toString())
                         detailViewModel.updateTask(task)
                     }
                     closeDetail()
@@ -135,7 +132,6 @@ class DetailFragment : Fragment() {
 
     private fun getTaskById() {
         if (_taskId != -1L) detailViewModel.getTaskById(_taskId)
-        Log.i("IMPORTANTE taskId x/arg: ", _taskId.toString())
     }
 
     private fun closeDetail() {

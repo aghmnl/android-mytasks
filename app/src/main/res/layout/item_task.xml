@@ -3,17 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <CheckBox
+        android:id="@+id/cbTaskDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/tvTaskTitle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:textSize="24sp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:padding="8dp"
         tools:text="Sample Task Title" />
-
-<!--    android:textColor="@color/color2_700"-->
 </LinearLayout>

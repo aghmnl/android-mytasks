@@ -18,7 +18,6 @@ import com.followapp.mytasks.homeModule.model.domain.HomeRoomDatabase
 import com.followapp.mytasks.homeModule.viewModel.HomeViewModel
 import com.followapp.mytasks.homeModule.viewModel.HomeViewModelFactory
 
-
 class HomeFragment : Fragment(), OnTaskClickListener {
 
     private var _binding: FragmentHomeBinding? = null
@@ -87,6 +86,11 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         transaction.replace(R.id.container_main, detailFragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    // To be implemented for the OnTaskClickListener
+    override fun onTaskCheckBoxClick(task: Task) {
+        homeViewModel.toggleTaskDone(task)
     }
 
     private fun getTasks() {

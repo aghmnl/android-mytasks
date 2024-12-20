@@ -1,6 +1,5 @@
 package com.followapp.mytasks.homeModule.view
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,13 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
         val task = getItem(position)
         (holder as ViewHolder).run {
             setListener(task)
-            with(binding) { tvTaskTitle.text = task.title }
+            with(binding) {
+                tvTaskTitle.text = task.title
+                cbTaskDone.isChecked = task.isDone
+                cbTaskDone.setOnClickListener {
+                    listener.onTaskCheckBoxClick(task)
+                }
+            }
         }
     }
 
@@ -37,7 +42,6 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
         fun setListener(task: Task) {
             binding.root.setOnClickListener {
                 listener.onTaskClick(task)
-                true
             }
         }
     }
