@@ -1,7 +1,7 @@
 # FollowApp MyTasks
 
 ```
-Streamline your tasks with MyTasks - part of the powerful FollowApps suite
+Boost productivity with MyTasks - part of the FollowApps suite
 ```
 
 ![alt text](./app/src/main/res/drawable-ldpi/logo.png)
