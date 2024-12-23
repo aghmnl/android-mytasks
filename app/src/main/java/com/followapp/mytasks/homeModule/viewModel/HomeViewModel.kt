@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
     private val _allTasks = MutableLiveData<List<Task>>()
-    val allTasks: LiveData<List<Task>> = _allTasks
+    val allTasks: LiveData<List<Task>> get() = _allTasks
 
     fun setTasks(value: List<Task>) = _allTasks.postValue(value)
 

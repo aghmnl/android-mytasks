@@ -21,7 +21,7 @@ import com.followapp.mytasks.homeModule.viewModel.HomeViewModelFactory
 class HomeFragment : Fragment(), OnTaskClickListener {
 
     private var _binding: FragmentHomeBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var tasksAdapter: TaskListAdapter
@@ -63,6 +63,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
                 tasksAdapter.submitList(it)
                 getTasks()  // I don't know if here is the best place to put it.
             }
+            toggleEmptyState(tasks.isEmpty())
         })
     }
 
@@ -73,6 +74,18 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             transaction.replace(R.id.container_main, detailFragment)
             transaction.addToBackStack(null)
             transaction.commit()
+        }
+    }
+
+    private fun toggleEmptyState(isEmpty: Boolean) {
+        if (isEmpty) {
+            binding.recyclerViewTasks.visibility = View.GONE
+            binding.emptyStateImage.visibility = View.VISIBLE
+            binding.emptyStateMessage.visibility = View.VISIBLE
+        } else {
+            binding.recyclerViewTasks.visibility = View.VISIBLE
+            binding.emptyStateImage.visibility = View.GONE
+            binding.emptyStateMessage.visibility = View.GONE
         }
     }
 
