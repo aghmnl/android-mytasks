@@ -1,5 +1,6 @@
 package com.followapp.mytasks.homeModule.view
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,16 +21,7 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val task = getItem(position)
-        (holder as ViewHolder).run {
-            setListener(task)
-            with(binding) {
-                tvTaskTitle.text = task.title
-                cbTaskDone.isChecked = task.isDone
-                cbTaskDone.setOnClickListener {
-                    listener.onTaskCheckBoxClick(task)
-                }
-            }
-        }
+        (holder as ViewHolder).bindItem(task)
     }
 
     fun setOnClickListener(listener: OnTaskClickListener) {
@@ -39,9 +31,31 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ItemTaskBinding.bind(view)
 
-        fun setListener(task: Task) {
-            binding.root.setOnClickListener {
-                listener.onTaskClick(task)
+        fun bindItem(task: Task) {
+            setupUIComponents(task)
+            setupListeners(task)
+        }
+
+        private fun setupUIComponents(task: Task) {
+            with(binding) {
+                tvTaskTitle.text = task.title
+                cbTaskDone.isChecked = task.isDone
+                tvTaskTitle.paintFlags = if (task.isDone) {
+                    binding.tvTaskTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                } else {
+                    binding.tvTaskTitle.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                }
+            }
+        }
+
+        private fun setupListeners(task: Task) {
+            with(binding) {
+                root.setOnClickListener {
+                    listener.onTaskClick(task)
+                }
+                cbTaskDone.setOnClickListener {
+                    listener.onTaskCheckBoxClick(task)
+                }
             }
         }
     }
