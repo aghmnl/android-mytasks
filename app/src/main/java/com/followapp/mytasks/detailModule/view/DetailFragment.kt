@@ -44,7 +44,7 @@ class DetailFragment : Fragment() {
         setupViewModel()
         setArguments()
         setupObservers()
-        setupButtons()
+        setupUIComponents()
         setupListeners()
     }
 
@@ -77,7 +77,7 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun setupButtons() {
+    private fun setupUIComponents() {
         materialDatePicker = MaterialDatePicker.Builder.datePicker().build()
         materialDatePicker.addOnPositiveButtonClickListener { selection ->
             selection?.let {

@@ -27,7 +27,7 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         updateTask(task)
     }
 
-    fun updateTask(task: Task) {
+    private fun updateTask(task: Task) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val result = repository.updateTask(task)
