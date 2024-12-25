@@ -16,7 +16,8 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
     private val _allTasks = MutableLiveData<List<Task>>()
     val allTasks: LiveData<List<Task>> get() = _allTasks
 
-    fun setTasks(value: List<Task>) = _allTasks.postValue(value)
+    private val _isGrouped = MutableLiveData<Boolean>(false)
+    val isGrouped: LiveData<Boolean> get() = _isGrouped
 
     init {
         getAllTasks()
@@ -25,6 +26,15 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
     fun toggleTaskDone(task: Task) {
         task.isDone = !task.isDone
         updateTask(task)
+    }
+
+    fun sortTasksByIsDone(tasks: List<Task>): List<Task> {
+        return tasks.sortedBy { it.isDone }
+    }
+
+    fun toggleGrouping() {
+        _isGrouped.value = _isGrouped.value != true
+        Log.i("IMPORTANTE", "Grouping: ${_isGrouped.value}")
     }
 
     private fun updateTask(task: Task) {
@@ -43,7 +53,7 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
             val result = withContext(Dispatchers.IO) {
                 repository.getAllTasks()
             }
-            setTasks(result)
+            _allTasks.value = if (_isGrouped.value == true) sortTasksByIsDone(result) else result
         }
     }
 }

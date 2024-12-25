@@ -7,17 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".mainModule.view.MainActivity">
 
-        <RelativeLayout
-            android:id="@+id/container_main"
+    <RelativeLayout
+        android:id="@+id/container_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background">
+
+        <!-- Include the app bar -->
+        <include
+            android:id="@+id/app_bar_main"
+            layout="@layout/app_bar_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background">
+            android:layout_height="wrap_content"/>
 
         <!-- Fragment Container -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/app_bar_main"
             android:layout_above="@id/ad_fragment_container"
             tools:layout="@layout/fragment_home" />
 
@@ -27,17 +35,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            />
+            android:layout_centerInParent="true" />
 
-        </RelativeLayout>
+    </RelativeLayout>
 
     <!-- Navigation Drawer -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/activity_main_drawer" />
+    <!--    <com.google.android.material.navigation.NavigationView-->
+    <!--        android:id="@+id/nav_view"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_gravity="start"-->
+    <!--        app:menu="@menu/activity_main_drawer" />-->
 
 </androidx.drawerlayout.widget.DrawerLayout>
