@@ -17,6 +17,7 @@
     <string name="login_google">Log in using Google</string>
     <string name="bar_title">MyTasks</string>
     <string name="no_tasks_message">Congrats! There are no tasks left.\n\nTo create a new task please use the + button below.</string>
+    <string name="action_toggle_group">Group done tasks</string>
 
 <!--    https://console.firebase.google.com/u/0/project/followapp-mytasks/authentication/providers?utm_source=studio-->
     <string name="web_client_id">692558155479-800k03813n3hand9nljrlnrtdnl4sens.apps.googleusercontent.com</string>

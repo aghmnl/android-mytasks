@@ -2,9 +2,16 @@ package com.followapp.mytasks.homeModule.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +32,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var tasksAdapter: TaskListAdapter
+    private var toggleMenuItem: MenuItem? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -39,6 +47,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         setupRecyclerView()
         setupObservers()
         setupListeners()
+        setupMenu()
     }
 
     private fun setupViewModel() {
@@ -65,6 +74,14 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             }
             toggleEmptyState(tasks.isEmpty())
         })
+
+        homeViewModel.isGrouped.observe(viewLifecycleOwner, Observer { isGrouped ->
+            toggleMenuItem?.icon = if (isGrouped) {
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_toggle_on, null)
+            } else {
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_toggle_off, null)
+            }
+        })
     }
 
     private fun setupListeners() {
@@ -87,6 +104,25 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             binding.emptyStateImage.visibility = View.GONE
             binding.emptyStateMessage.visibility = View.GONE
         }
+    }
+
+    private fun setupMenu() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_main, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_toggle_group -> {
+                        homeViewModel.toggleGrouping()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     // To be implemented for the OnTaskClickListener
