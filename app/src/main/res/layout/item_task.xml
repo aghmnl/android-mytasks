@@ -6,17 +6,18 @@
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <CheckBox
+    <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cbTaskDone"
+        style="@style/CustomCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/tvTaskTitle"
+        style="@style/ItemTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="24sp"
         tools:text="Sample Task Title" />
 </LinearLayout>

@@ -8,6 +8,7 @@
     <color name="color2_700">#827717</color>
     <color name="color2_900">#414503</color>
     <color name="color2_950">#272900</color>
+
     <color name="colorError">#B3261E</color>
 
 
@@ -27,6 +28,10 @@
     <color name="text_button">@color/color_100</color>
     <color name="background">@color/color_100</color>
     <color name="line">@color/color_50</color>
+    <color name="main_color">@color/color_500</color>
+    <color name="icon">@color/color_950</color>
+    <color name="checkbox">@color/color_950</color>
+    <color name="filled_checkbox">@color/color_300</color>
 
     <color name="primary">@color/color_700</color>
     <color name="primaryDark">@color/color_900</color>
