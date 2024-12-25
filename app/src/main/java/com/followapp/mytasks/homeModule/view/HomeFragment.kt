@@ -81,6 +81,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             } else {
                 ResourcesCompat.getDrawable(resources, R.drawable.ic_toggle_off, null)
             }
+            requireActivity().invalidateOptionsMenu()
         })
     }
 
@@ -111,6 +112,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_main, menu)
+                toggleMenuItem = menu.findItem(R.id.action_toggle_group)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -120,6 +122,14 @@ class HomeFragment : Fragment(), OnTaskClickListener {
                         true
                     }
                     else -> false
+                }
+            }
+
+            override fun onPrepareMenu(menu: Menu) {
+                toggleMenuItem?.icon = if (homeViewModel.isGrouped.value == true) {
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_toggle_on, null)
+                } else {
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_toggle_off, null)
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
