@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MainMargin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    style="@style/MainMargin"
     android:orientation="vertical">
 
     <!-- LinearLayout to wrap EditText -->
@@ -11,20 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <!-- EditText to edit task title -->
         <EditText
             android:id="@+id/editTextTaskTitleDetail"
+            style="@style/DetailTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="no"
             android:background="@android:color/transparent"
             android:hint="@string/title"
             android:inputType="text"
-            android:padding="16dp"
-            style="@style/Title"/>
+            android:padding="16dp" />
 
         <!--            android:textColor="@color/text"-->
         <!--            android:textColorHint="@color/hint"-->
@@ -33,18 +32,19 @@
         <!-- EditText to edit task description -->
         <EditText
             android:id="@+id/editTextTaskDescription"
+            style="@style/Content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="no"
             android:background="@android:color/transparent"
             android:hint="@string/description"
             android:inputType="text"
-            android:padding="16dp"
-            style="@style/Content" />
+            android:padding="16dp" />
 
         <!-- Button to show the date picker -->
-        <CheckBox
+        <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkBoxDone"
+            style="@style/CustomCheckBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/done" />
@@ -62,8 +62,7 @@
             style="@style/errorButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/delete"
-          />
+            android:text="@string/delete" />
 
     </LinearLayout>
 
@@ -86,8 +85,8 @@
             android:id="@+id/buttonSaveTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_button"
-            android:text="@string/save" />
+            android:text="@string/save"
+            android:textColor="@color/text_button" />
 
     </LinearLayout>
 
