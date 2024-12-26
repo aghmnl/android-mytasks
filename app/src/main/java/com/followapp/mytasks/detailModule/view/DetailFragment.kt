@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.util.*
+import kotlin.toString
 
 class DetailFragment : Fragment() {
 
@@ -93,8 +95,14 @@ class DetailFragment : Fragment() {
     private fun setupListeners() {
         with(binding) {
             buttonSaveTask.setOnClickListener {
+                val title = editTextTaskTitleDetail.text.toString()
+                if (title.isBlank()) {
+                    Toast.makeText(requireContext(), getString(R.string.enter_a_title), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener  // To exit the listener
+                }
+
                 val task = Task(
-                    editTextTaskTitleDetail.text.toString(),
+                    title,
                     description = editTextTaskDescription.text.toString(),
                     isDone = checkBoxDone.isChecked,
                     dueDate = if (buttonShowDatePicker.text != getString(R.string.select_date)) calendar.time else null
