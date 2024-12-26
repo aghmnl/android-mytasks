@@ -21,13 +21,9 @@
             android:layout_height="wrap_content"
             android:autofillHints="no"
             android:background="@android:color/transparent"
+            android:inputType="textCapSentences"
             android:hint="@string/title"
-            android:inputType="text"
             android:padding="16dp" />
-
-        <!--            android:textColor="@color/text"-->
-        <!--            android:textColorHint="@color/hint"-->
-
 
         <!-- EditText to edit task description -->
         <EditText
@@ -37,8 +33,8 @@
             android:layout_height="wrap_content"
             android:autofillHints="no"
             android:background="@android:color/transparent"
+            android:inputType="textCapSentences"
             android:hint="@string/description"
-            android:inputType="text"
             android:padding="16dp" />
 
         <!-- Button to show the date picker -->
