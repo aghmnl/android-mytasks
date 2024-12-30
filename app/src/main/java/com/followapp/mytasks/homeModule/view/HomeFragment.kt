@@ -52,6 +52,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     private fun setupViewModel() {
         homeViewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository(HomeRoomDatabase())))[HomeViewModel::class.java]
+        homeViewModel.getAllTasks()
     }
 
     private fun setupAdapter() {
@@ -70,7 +71,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         homeViewModel.allTasks.observe(viewLifecycleOwner, Observer { tasks ->
             tasks?.let {
                 tasksAdapter.submitList(it)
-                getTasks()  // I don't know if here is the best place to put it.
             }
             toggleEmptyState(tasks.isEmpty())
         })
@@ -81,7 +81,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             } else {
                 ResourcesCompat.getDrawable(resources, R.drawable.ic_toggle_off, null)
             }
-            requireActivity().invalidateOptionsMenu()
+            requireActivity().invalidateOptionsMenu()  // to update the options menu dynamically. requireActivity() is needed when working with fragments
         })
     }
 
@@ -95,6 +95,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
     }
 
+    // If there are no tasks, show an image and a text as the empty state. Otherwise, show the tasks.
     private fun toggleEmptyState(isEmpty: Boolean) {
         if (isEmpty) {
             binding.recyclerViewTasks.visibility = View.GONE
@@ -121,6 +122,17 @@ class HomeFragment : Fragment(), OnTaskClickListener {
                         homeViewModel.toggleGrouping()
                         true
                     }
+
+                    R.id.action_sort_title_az -> {
+                        homeViewModel.sortTasks("az")
+                        true
+                    }
+
+                    R.id.action_sort_title_za -> {
+                        homeViewModel.sortTasks("za")
+                        true
+                    }
+
                     else -> false
                 }
             }
@@ -150,10 +162,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     // To be implemented for the OnTaskClickListener
     override fun onTaskCheckBoxClick(task: Task) {
         homeViewModel.toggleTaskDone(task)
-    }
-
-    private fun getTasks() {
-        homeViewModel.getAllTasks()
     }
 
     override fun onDestroyView() {
