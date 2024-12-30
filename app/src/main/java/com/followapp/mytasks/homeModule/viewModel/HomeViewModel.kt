@@ -33,10 +33,8 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
     fun toggleGrouping() {
         viewModelScope.launch {
             _isGrouped.value = _isGrouped.value != true
-            sortTasks()
+            sortTasks(_sortingCriteria)
         }
-
-        Log.i("IMPORTANTE", "Grouping: ${_isGrouped.value}")
     }
 
     private fun updateTask(task: Task) {
@@ -52,18 +50,15 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
     fun sortTasks(criteria: String? = null) {
         _sortingCriteria = criteria
-        if (_isGrouped.value == true) {
-            _allTasks.value = when (criteria) {
-                "az" -> _unsortedTasks.sortedBy { it.title }
-                "za" -> _unsortedTasks.sortedByDescending { it.title }
-                else -> _unsortedTasks
-            }.sortedBy { it.isDone }
+        val sortedTasks = when (criteria) {
+            "az" -> _unsortedTasks.sortedBy { it.title }
+            "za" -> _unsortedTasks.sortedByDescending { it.title }
+            else -> _unsortedTasks
+        }
+        _allTasks.value = if (_isGrouped.value == true) {
+            sortedTasks.sortedBy { it.isDone }
         } else {
-            _allTasks.value = when (criteria) {
-                "az" -> _unsortedTasks.sortedBy { it.title }
-                "za" -> _unsortedTasks.sortedByDescending { it.title }
-                else -> _unsortedTasks
-            }
+            sortedTasks
         }
     }
 
