@@ -13,7 +13,9 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
-    private val _allTasks = MutableLiveData<List<Task>>()
+    private var _allTasks = MutableLiveData<List<Task>>()
+    private var _unsortedTasks: List<Task> = emptyList()
+    private var _sortingCriteria: String? = null
     val allTasks: LiveData<List<Task>> get() = _allTasks
 
     private val _isGrouped = MutableLiveData<Boolean>(false)
@@ -28,12 +30,12 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         updateTask(task)
     }
 
-    fun sortTasksByIsDone(tasks: List<Task>): List<Task> {
-        return tasks.sortedBy { it.isDone }
-    }
-
     fun toggleGrouping() {
-        _isGrouped.value = _isGrouped.value != true
+        viewModelScope.launch {
+            _isGrouped.value = _isGrouped.value != true
+            sortTasks()
+        }
+
         Log.i("IMPORTANTE", "Grouping: ${_isGrouped.value}")
     }
 
@@ -48,12 +50,29 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         }
     }
 
+    fun sortTasks(criteria: String? = null) {
+        _sortingCriteria = criteria
+        if (_isGrouped.value == true) {
+            _allTasks.value = when (criteria) {
+                "az" -> _unsortedTasks.sortedBy { it.title }
+                "za" -> _unsortedTasks.sortedByDescending { it.title }
+                else -> _unsortedTasks
+            }.sortedBy { it.isDone }
+        } else {
+            _allTasks.value = when (criteria) {
+                "az" -> _unsortedTasks.sortedBy { it.title }
+                "za" -> _unsortedTasks.sortedByDescending { it.title }
+                else -> _unsortedTasks
+            }
+        }
+    }
+
     fun getAllTasks() {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
+            _unsortedTasks = withContext(Dispatchers.IO) {
                 repository.getAllTasks()
             }
-            _allTasks.value = if (_isGrouped.value == true) sortTasksByIsDone(result) else result
+            sortTasks()
         }
     }
 }
