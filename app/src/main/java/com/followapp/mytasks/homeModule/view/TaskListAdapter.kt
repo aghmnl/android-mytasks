@@ -21,7 +21,7 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val task = getItem(position)
-        (holder as ViewHolder).bindItem(task)
+        (holder as ViewHolder).bindItem(task, position)
     }
 
     fun setOnClickListener(listener: OnTaskClickListener) {
@@ -31,9 +31,9 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ItemTaskBinding.bind(view)
 
-        fun bindItem(task: Task) {
+        fun bindItem(task: Task, position: Int) {
             setupUIComponents(task)
-            setupListeners(task)
+            setupListeners(task, position)
         }
 
         private fun setupUIComponents(task: Task) {
@@ -48,15 +48,14 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
             }
         }
 
-        private fun setupListeners(task: Task) {
+        private fun setupListeners(task: Task, position: Int) {
             with(binding) {
-                root.setOnClickListener {
-                    listener.onTaskClick(task)
-                }
+                root.setOnClickListener { listener.onTaskClick(task) }
                 cbTaskDone.setOnClickListener {
-                    listener.onTaskCheckBoxClick(task)
+                    listener.onTaskCheckBoxClick(task, position, this@TaskListAdapter)
                 }
             }
         }
+
     }
 }
