@@ -160,8 +160,8 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     }
 
     // To be implemented for the OnTaskClickListener
-    override fun onTaskCheckBoxClick(task: Task, position: Int, adapter: TaskListAdapter) {
-        homeViewModel.toggleTaskDone(task, position, adapter)
+    override fun onTaskCheckBoxClick(task: Task) {
+        homeViewModel.toggleTaskDone(task)
     }
 
     override fun onDestroyView() {

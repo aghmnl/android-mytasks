@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.followapp.mytasks.common.entities.Task
 import com.followapp.mytasks.homeModule.model.HomeRepository
-import com.followapp.mytasks.homeModule.view.TaskListAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,10 +25,11 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         getAllTasks()
     }
 
-    fun toggleTaskDone(task: Task, position: Int, adapter: TaskListAdapter) {
+    fun toggleTaskDone(task: Task) {
         task.isDone = !task.isDone
+        Log.i("IMPORTANTE", "Tarea ${task.title} completada: ${task.isDone}")
         updateTask(task)
-        adapter.notifyItemChanged(position)
+//        adapter.notifyItemChanged(position)
     }
 
     fun toggleGrouping() {
