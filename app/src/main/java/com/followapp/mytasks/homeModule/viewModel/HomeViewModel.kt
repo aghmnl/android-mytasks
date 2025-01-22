@@ -30,21 +30,20 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         }
     }
 
-
     fun toggleGrouping() {
-        viewModelScope.launch {
-            _isGrouped.value = _isGrouped.value != true
-            sortTasks(_sortingCriteria)
-        }
+        _isGrouped.value = _isGrouped.value != true
+        sortTasks(_sortingCriteria)
     }
 
-    private suspend fun updateTask(task: Task) {
-        withContext(Dispatchers.IO) {
-            val result = repository.updateTask(task)
-            if (result == 0) {
-                Log.i("IMPORTANTE", "No se pudo modificar la tarea")
+    private fun updateTask(task: Task) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val result = repository.updateTask(task)
+                if (result == 0) {
+                    Log.i("IMPORTANT", "The task could not be modified")
+                }
+                getAllTasks()
             }
-            getAllTasks()
         }
     }
 
