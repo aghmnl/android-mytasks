@@ -1,6 +1,7 @@
 package com.followapp.mytasks.homeModule.view
 
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,8 +22,10 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val task = getItem(position)
+        Log.i("IMPORTANTE", "5. TaskListAdapter: onBindViewHolder executed. Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})" )
         (holder as ViewHolder).bindItem(task)
     }
+
 
     fun setOnClickListener(listener: OnTaskClickListener) {
         this.listener = listener
@@ -37,6 +40,7 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
         }
 
         private fun setupUIComponents(task: Task) {
+            Log.i("IMPORTANTE", "6. TaskListAdapter: setupUIComponents executed. Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})" )
             with(binding) {
                 tvTaskTitle.text = task.title
                 cbTaskDone.isChecked = task.isDone
@@ -52,6 +56,7 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
             with(binding) {
                 root.setOnClickListener { listener.onTaskClick(task) }
                 cbTaskDone.setOnClickListener {
+                    Log.i("IMPORTANTE", "1. TaskListAdapter: setupListeners (checkBox clicked). Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})")
                     listener.onTaskCheckBoxClick(task)
                 }
             }

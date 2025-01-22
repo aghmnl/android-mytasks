@@ -1,6 +1,7 @@
 package com.followapp.mytasks.homeModule.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -34,6 +35,11 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     private lateinit var tasksAdapter: TaskListAdapter
     private var toggleMenuItem: MenuItem? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.i("IMPORTANTE", "HomeFragment - onCreate executed")
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -52,6 +58,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     private fun setupViewModel() {
         homeViewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository(HomeRoomDatabase())))[HomeViewModel::class.java]
+        Log.i("IMPORTANTE", "HomeFragment: about to run getAllTasks() from setupViewModel")
         homeViewModel.getAllTasks()
     }
 
@@ -71,6 +78,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         homeViewModel.allTasks.observe(viewLifecycleOwner, Observer { tasks ->
             tasks?.let {
                 tasksAdapter.submitList(it)
+                Log.i("IMPORTANTE", "HomeFragment - setupObservers: Observing changes in allTasks")
             }
             toggleEmptyState(tasks.isEmpty())
         })
@@ -167,5 +175,10 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("IMPORTANTE", "HomeFragment - onDestroy executed")
     }
 }

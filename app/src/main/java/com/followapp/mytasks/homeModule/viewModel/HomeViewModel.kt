@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.followapp.mytasks.common.entities.Task
 import com.followapp.mytasks.homeModule.model.HomeRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -21,16 +22,24 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
     private val _isGrouped = MutableLiveData<Boolean>(false)
     val isGrouped: LiveData<Boolean> get() = _isGrouped
 
-    init {
-        getAllTasks()
-    }
+//    init {
+//        Log.i("IMPORTANTE", "HomeViewModel: about to run getAllTasks() from init")
+//        getAllTasks()
+//    }
 
     fun toggleTaskDone(task: Task) {
         task.isDone = !task.isDone
-        Log.i("IMPORTANTE", "Tarea ${task.title} completada: ${task.isDone}")
-        updateTask(task)
-//        adapter.notifyItemChanged(position)
+        task.version++
+        viewModelScope.launch {
+            updateTask(task)
+            Log.i("IMPORTANTE", "4. HomeViewModel: toggleTaskDone executed. Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})")
+            delay(100) // Add a slight delay to ensure updates are synchronized
+            _allTasks.value = _allTasks.value?.toMutableList() // Create a new list to trigger DiffUtil
+            Log.i("IMPORTANTE", "HomeViewModel: toggleTaskDone after the delay")
+
+        }
     }
+
 
     fun toggleGrouping() {
         viewModelScope.launch {
@@ -39,18 +48,22 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         }
     }
 
-    private fun updateTask(task: Task) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val result = repository.updateTask(task)
-                if (result == 0) {
-                    Log.i("IMPORTANTE", "No se pudo modificar la tarea")
-                }
+    private suspend fun updateTask(task: Task) {
+        withContext(Dispatchers.IO) {
+            Log.i("IMPORTANTE", "2. HomeViewModel: updateTask (before repository.updateTask). Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})")
+            val result = repository.updateTask(task)
+            if (result == 0) {
+                Log.i("IMPORTANTE", "No se pudo modificar la tarea")
+            } else {
+                Log.i("IMPORTANTE", "3. HomeViewModel: updateTask (after repository.updateTask). Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})")
             }
+            Log.i("IMPORTANTE", "HomeViewModel: about to run getAllTasks() from updateTask")
+            getAllTasks()
         }
     }
 
     fun sortTasks(criteria: String? = null) {
+//        Log.i("IMPORTANTE", "Calling sortTasks()")
         _sortingCriteria = criteria
         val sortedTasks = when (criteria) {
             "az" -> _unsortedTasks.sortedBy { it.title }
@@ -69,6 +82,7 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
             _unsortedTasks = withContext(Dispatchers.IO) {
                 repository.getAllTasks()
             }
+            Log.i("IMPORTANTE", "HomeViewModel: getAllTasks. Tasks: $_unsortedTasks)")
             sortTasks()
         }
     }
