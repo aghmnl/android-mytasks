@@ -22,21 +22,17 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
     private val _isGrouped = MutableLiveData<Boolean>(false)
     val isGrouped: LiveData<Boolean> get() = _isGrouped
 
-    init {
-        getAllTasks()
-    }
-
-    fun toggleTaskDone(task: Task, position: Int, adapter: TaskListAdapter) {
+    fun toggleTaskDone(task: Task, adapter: TaskListAdapter) {
         task.isDone = !task.isDone
-        updateTask(task)
-        adapter.notifyItemChanged(position)
+        viewModelScope.launch {
+            updateTask(task)
+            adapter.forceRedraw()
+        }
     }
 
     fun toggleGrouping() {
-        viewModelScope.launch {
-            _isGrouped.value = _isGrouped.value != true
-            sortTasks(_sortingCriteria)
-        }
+        _isGrouped.value = _isGrouped.value != true
+        sortTasks(_sortingCriteria)
     }
 
     private fun updateTask(task: Task) {
@@ -44,8 +40,9 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
             withContext(Dispatchers.IO) {
                 val result = repository.updateTask(task)
                 if (result == 0) {
-                    Log.i("IMPORTANTE", "No se pudo modificar la tarea")
+                    Log.i("IMPORTANT", "The task could not be modified")
                 }
+                getAllTasks()
             }
         }
     }
