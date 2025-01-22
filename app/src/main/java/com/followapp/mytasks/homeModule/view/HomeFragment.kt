@@ -53,7 +53,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     private fun setupViewModel() {
         homeViewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository(HomeRoomDatabase())))[HomeViewModel::class.java]
-        Log.i("IMPORTANTE", "HomeFragment: about to run getAllTasks() from setupViewModel")
         homeViewModel.getAllTasks()
     }
 
@@ -73,7 +72,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         homeViewModel.allTasks.observe(viewLifecycleOwner, Observer { tasks ->
             tasks?.let {
                 tasksAdapter.submitList(it)
-                Log.i("IMPORTANTE", "HomeFragment - setupObservers: Observing changes in allTasks")
             }
             toggleEmptyState(tasks.isEmpty())
         })

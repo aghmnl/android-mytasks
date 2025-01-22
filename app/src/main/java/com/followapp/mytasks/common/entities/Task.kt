@@ -3,7 +3,6 @@ package com.followapp.mytasks.common.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-//import java.time.LocalTime
 import java.util.Date
 
 @Entity(tableName = "TasksTable")
