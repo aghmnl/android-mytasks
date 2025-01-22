@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.followapp.mytasks.common.entities.Task
 import com.followapp.mytasks.homeModule.model.HomeRepository
+import com.followapp.mytasks.homeModule.view.TaskListAdapter
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -27,16 +27,12 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 //        getAllTasks()
 //    }
 
-    fun toggleTaskDone(task: Task) {
+    fun toggleTaskDone(task: Task, adapter: TaskListAdapter) {
         task.isDone = !task.isDone
-        task.version++
         viewModelScope.launch {
             updateTask(task)
-            Log.i("IMPORTANTE", "4. HomeViewModel: toggleTaskDone executed. Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})")
-            delay(100) // Add a slight delay to ensure updates are synchronized
-            _allTasks.value = _allTasks.value?.toMutableList() // Create a new list to trigger DiffUtil
-            Log.i("IMPORTANTE", "HomeViewModel: toggleTaskDone after the delay")
-
+            adapter.forceRedraw() // Force redraw of the list
+            Log.i("IMPORTANTE", "4. HomeViewModel: toggleTaskDone executed. Task: ${task.title} (isDone: ${task.isDone})")
         }
     }
 
@@ -50,12 +46,12 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
     private suspend fun updateTask(task: Task) {
         withContext(Dispatchers.IO) {
-            Log.i("IMPORTANTE", "2. HomeViewModel: updateTask (before repository.updateTask). Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})")
+            Log.i("IMPORTANTE", "2. HomeViewModel: updateTask (before repository.updateTask). Task: ${task.title} (isDone: ${task.isDone}")
             val result = repository.updateTask(task)
             if (result == 0) {
                 Log.i("IMPORTANTE", "No se pudo modificar la tarea")
             } else {
-                Log.i("IMPORTANTE", "3. HomeViewModel: updateTask (after repository.updateTask). Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})")
+                Log.i("IMPORTANTE", "3. HomeViewModel: updateTask (after repository.updateTask). Task: ${task.title} (isDone: ${task.isDone}")
             }
             Log.i("IMPORTANTE", "HomeViewModel: about to run getAllTasks() from updateTask")
             getAllTasks()

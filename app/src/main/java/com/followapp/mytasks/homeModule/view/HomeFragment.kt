@@ -35,11 +35,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     private lateinit var tasksAdapter: TaskListAdapter
     private var toggleMenuItem: MenuItem? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.i("IMPORTANTE", "HomeFragment - onCreate executed")
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -169,16 +164,11 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     // To be implemented for the OnTaskClickListener
     override fun onTaskCheckBoxClick(task: Task) {
-        homeViewModel.toggleTaskDone(task)
+        homeViewModel.toggleTaskDone(task, tasksAdapter)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("IMPORTANTE", "HomeFragment - onDestroy executed")
     }
 }

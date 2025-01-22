@@ -22,7 +22,7 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val task = getItem(position)
-        Log.i("IMPORTANTE", "5. TaskListAdapter: onBindViewHolder executed. Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})" )
+        Log.i("IMPORTANTE", "5. TaskListAdapter: onBindViewHolder executed. Task: ${task.title} (isDone: ${task.isDone})" )
         (holder as ViewHolder).bindItem(task)
     }
 
@@ -30,6 +30,15 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
     fun setOnClickListener(listener: OnTaskClickListener) {
         this.listener = listener
     }
+
+    fun forceRedraw() {
+        notifyItemRangeChanged(0, itemCount)
+    }
+
+//    override fun submitList(list: List<Task>?) {
+//        Log.i("IMPORTANTE", "TaskListAdapter - submitList. Submitting list: $list")
+//        super.submitList(list)
+//    }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ItemTaskBinding.bind(view)
@@ -40,7 +49,7 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
         }
 
         private fun setupUIComponents(task: Task) {
-            Log.i("IMPORTANTE", "6. TaskListAdapter: setupUIComponents executed. Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})" )
+            Log.i("IMPORTANTE", "6. TaskListAdapter: setupUIComponents executed. Task: ${task.title} (isDone: ${task.isDone})" )
             with(binding) {
                 tvTaskTitle.text = task.title
                 cbTaskDone.isChecked = task.isDone
@@ -56,11 +65,13 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiff()) {
             with(binding) {
                 root.setOnClickListener { listener.onTaskClick(task) }
                 cbTaskDone.setOnClickListener {
-                    Log.i("IMPORTANTE", "1. TaskListAdapter: setupListeners (checkBox clicked). Task: ${task.title} (isDone: ${task.isDone} - version: ${task.version})")
+                    Log.i("IMPORTANTE", "1. TaskListAdapter: setupListeners (checkBox clicked). Task: ${task.title} (isDone: ${task.isDone})")
                     listener.onTaskCheckBoxClick(task)
                 }
             }
         }
+
+
 
     }
 }
