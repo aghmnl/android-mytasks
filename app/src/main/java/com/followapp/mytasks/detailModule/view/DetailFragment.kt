@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.util.*
-import kotlin.toString
 
 class DetailFragment : Fragment() {
 
