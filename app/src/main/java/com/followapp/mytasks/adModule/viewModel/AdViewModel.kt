@@ -5,11 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.followapp.mytasks.adModule.model.AdRepository
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.LoadAdError
 
 class AdViewModel(private val repository: AdRepository) : ViewModel() {
 
@@ -30,17 +27,7 @@ class AdViewModel(private val repository: AdRepository) : ViewModel() {
 
     fun loadAd() {
         _adView.value?.let { adView ->
-            val adRequest = AdRequest.Builder().build()
-            adView.loadAd(adRequest)
-            adView.adListener = object : AdListener() {
-                override fun onAdLoaded() {
-                    setAdLoaded(true)
-                }
-
-                override fun onAdFailedToLoad(error: LoadAdError) {
-                    setAdLoaded(false)
-                }
-            }
+            repository.loadAd(adView, { setAdLoaded(true) }, { setAdLoaded(false) })
         }
     }
 }
