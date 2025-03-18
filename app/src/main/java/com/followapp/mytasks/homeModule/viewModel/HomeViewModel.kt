@@ -15,9 +15,10 @@ import kotlinx.coroutines.withContext
 class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
     private var _allTasks = MutableLiveData<List<Task>>()
+    val allTasks: LiveData<List<Task>> get() = _allTasks
+
     private var _unsortedTasks: List<Task> = emptyList()
     private var _sortingCriteria: String? = null
-    val allTasks: LiveData<List<Task>> get() = _allTasks
 
     private val _isGrouped = MutableLiveData<Boolean>(false)
     val isGrouped: LiveData<Boolean> get() = _isGrouped

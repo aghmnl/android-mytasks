@@ -7,17 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.followapp.mytasks.R
+import com.followapp.mytasks.adModule.model.AdRepository
 import com.followapp.mytasks.adModule.viewModel.AdViewModel
+import com.followapp.mytasks.adModule.viewModel.AdViewModelFactory
 import com.followapp.mytasks.databinding.FragmentAdBinding
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
 
 class AdFragment : Fragment() {
 
     private var _binding: FragmentAdBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adView: AdView
     private lateinit var adViewModel: AdViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,24 +29,32 @@ class AdFragment : Fragment() {
 
         setupViewModel()
         setupObservers()
-        loadAd()
+        adViewModel.initializeAdView(requireContext(), getString(R.string.ad_id))
+        adViewModel.loadAd()
     }
 
     private fun setupViewModel() {
-        adViewModel = ViewModelProvider(this)[AdViewModel::class.java]
+        adViewModel = ViewModelProvider(this, AdViewModelFactory(AdRepository()))[AdViewModel::class.java]
     }
 
     private fun setupObservers() {
         adViewModel.adLoaded.observe(viewLifecycleOwner) { isLoaded ->
-            adView.visibility = if (isLoaded) View.VISIBLE else View.GONE
+            adViewModel.adView.value?.visibility = if (isLoaded) View.VISIBLE else View.GONE
+        }
+        adViewModel.adView.observe(viewLifecycleOwner) { adView ->
+            binding.adView.addView(adView)
         }
     }
 
-    private fun loadAd() {
-        adView = AdView(requireContext())
-        adView.setAdSize(AdSize.BANNER)
-        adView.adUnitId = getString(R.string.ad_id) // Retrieve the string resource
-        binding.adView.addView(adView)  // Add the AdView to the container in the layout
-        adViewModel.loadAd(adView)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adViewModel.setAdLoaded(false)
+        adViewModel.adView.value?.destroy()
+        _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adViewModel.loadAd()
     }
 }
