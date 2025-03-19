@@ -1,6 +1,7 @@
 package com.followapp.mytasks.loginModule.view
 
 import android.os.Bundle
+import android.os.TransactionTooLargeException
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -70,7 +71,7 @@ class LoginFragment : Fragment() {
                 getGoogleIdToken()
             } else {
                 Toast.makeText(requireContext(), "Google Play Services are required.", Toast.LENGTH_SHORT).show()
-                Log.d("IMPORTANTE", "Google Play Services are required.")
+                Log.w("IMPORTANTE", "Google Play Services are required.")
             }
         }
     }
@@ -84,6 +85,7 @@ class LoginFragment : Fragment() {
             .build()
 
         Log.d("IMPORTANTE", "FilterByAuthorizedAccounts: ${googleIdOption.filterByAuthorizedAccounts}")
+        Log.d("IMPORTANTE", "ServerClientId: ${getString(R.string.web_client_id)}")
 
         val request = GetCredentialRequest.Builder()
             .addCredentialOption(googleIdOption)
@@ -101,9 +103,16 @@ class LoginFragment : Fragment() {
                 Log.d("IMPORTANTE", "Credential retrieved successfully") // Add this line
                 handleSignIn(result)
             } catch (e: GetCredentialException) {
-                Log.e("IMPORTANTE", "Credential exception: ${e.message}", e) // Modify this line
-                Log.e("IMPORTANTE", "Credential exception class: ${e.javaClass.name}", e) // Add this line
+                Log.e("IMPORTANTE", "Credential exception: ${e.message}", e)
+                Log.e("IMPORTANTE", "Credential exception class: ${e.javaClass.name}", e)
                 Toast.makeText(requireContext(), "Credential exception: ${e.message}", Toast.LENGTH_SHORT).show()
+            } catch (e: TransactionTooLargeException) {
+                Log.e("IMPORTANTE", "TransactionTooLargeException: ${e.message}", e)
+                Toast.makeText(requireContext(), "Too many accounts or account data is too large. Please try again or clear Google Play Services data.", Toast.LENGTH_LONG).show()
+            } catch (e: Exception) {
+                Log.e("IMPORTANTE", "General exception: ${e.message}", e)
+                Log.e("IMPORTANTE", "General exception class: ${e.javaClass.name}", e)
+                Toast.makeText(requireContext(), "General exception: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -117,7 +126,7 @@ class LoginFragment : Fragment() {
                 Toast.makeText(requireContext(), "Firebase sign-in successful", Toast.LENGTH_SHORT).show()
                 updateUI(user)
             } else {
-                Log.w("IMPORTANT", "signInWithCredential:failure", task.exception)
+                Log.w("IMPORTANTE", "signInWithCredential:failure", task.exception)
                 Toast.makeText(requireContext(), "Firebase sign-in failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 updateUI(null)
             }
@@ -139,7 +148,7 @@ class LoginFragment : Fragment() {
                 try {
                     firebaseAuthWithGoogle(credential.idToken)
                 } catch (e: GoogleIdTokenParsingException) {
-                    Log.e("IMPORTANT", "Received an invalid google id token response", e)
+                    Log.e("IMPORTANTE", "Received an invalid google id token response", e)
                     Toast.makeText(requireContext(), "Invalid google id token: ${e.message}", Toast.LENGTH_SHORT).show()
 
                 }
@@ -153,7 +162,7 @@ class LoginFragment : Fragment() {
                         val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
                         firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
                     } catch (e: GoogleIdTokenParsingException) {
-                        Log.e("IMPORTANT", "Received an invalid google id token response", e)
+                        Log.e("IMPORTANTE", "Received an invalid google id token response", e)
                         Toast.makeText(requireContext(), "Invalid google id token: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -161,7 +170,7 @@ class LoginFragment : Fragment() {
 
             else -> {
                 // Catch any unrecognized credential type here.
-                Log.e("IMPORTANT", "Unexpected type of credential")
+                Log.w("IMPORTANTE", "Unexpected type of credential")
                 Toast.makeText(requireContext(), "Unexpected type of credential", Toast.LENGTH_SHORT).show()
             }
         }
