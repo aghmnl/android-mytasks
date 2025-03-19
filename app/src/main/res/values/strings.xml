@@ -33,7 +33,7 @@
     <string name="sort_z_a">Sort Z-A</string>
     <string name="asset_statements" translatable="false">
             [{
-              \"include\": \"https://aghmnl.github.io/android-mytasks/.well-known/assetlinks.json\"
+              \"include\": \"https://followapp-mytasks.web.app/.well-known/assetlinks.json\"
             }]
 </string>
 </resources>
