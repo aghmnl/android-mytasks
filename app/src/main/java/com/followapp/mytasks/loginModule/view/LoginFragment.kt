@@ -41,6 +41,10 @@ class LoginFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
         credentialManager = CredentialManager.create(requireContext())
+
+//        Log.d("IMPORTANTE", "FirebaseAuth initialized: ${auth != null}")
+//        Log.d("IMPORTANTE", "CredentialManager initialized: ${credentialManager != null}")
+
         initLogin(view)
     }
 
@@ -52,11 +56,13 @@ class LoginFragment : Fragment() {
     }
 
     private fun getGoogleIdToken() {
-        Toast.makeText(requireContext(), "Logging in...", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(requireContext(), "getGoogleIdToken called", Toast.LENGTH_SHORT).show()
         val googleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
             .setServerClientId(getString(R.string.web_client_id))
             .build()
+
+//        Log.d("IMPORTANTE", "FilterByAuthorizedAccounts: ${googleIdOption.filterByAuthorizedAccounts}")
 
         val request = GetCredentialRequest.Builder()
             .addCredentialOption(googleIdOption)
@@ -64,25 +70,31 @@ class LoginFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
+                Toast.makeText(requireContext(), "Attempting to get credential...", Toast.LENGTH_SHORT).show()
                 val result = credentialManager.getCredential(
                     request = request,
                     context = requireContext(),
                 )
+                Toast.makeText(requireContext(), "Credential retrieved successfully", Toast.LENGTH_SHORT).show()
                 handleSignIn(result)
             } catch (e: GetCredentialException) {
-                Log.e(TAG, "Credential exception: ${e.message}", e)
+                Log.e("IMPORTANTE", "Credential exception: ${e.message}", e)
+                Toast.makeText(requireContext(), "Credential exception: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
+        Toast.makeText(requireContext(), "firebaseAuthWithGoogle called", Toast.LENGTH_SHORT).show()
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener(requireActivity()) { task ->
             if (task.isSuccessful) {
                 val user = auth.currentUser
+                Toast.makeText(requireContext(), "Firebase sign-in successful", Toast.LENGTH_SHORT).show()
                 updateUI(user)
             } else {
-                Log.w(TAG, "signInWithCredential:failure", task.exception)
+                Log.w("IMPORTANTE", "signInWithCredential:failure", task.exception)
+                Toast.makeText(requireContext(), "Firebase sign-in failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 updateUI(null)
             }
         }
@@ -91,31 +103,49 @@ class LoginFragment : Fragment() {
     private fun handleSignIn(result: GetCredentialResponse) {
         when (val credential = result.credential) {
             is PublicKeyCredential -> {
-                // Handle PublicKeyCredential
+                Toast.makeText(requireContext(), "PublicKeyCredential...", Toast.LENGTH_SHORT).show()
             }
+
             is PasswordCredential -> {
-                // Handle PasswordCredential
+                Toast.makeText(requireContext(), "PasswordCredential...", Toast.LENGTH_SHORT).show()
             }
+
+            is GoogleIdTokenCredential -> {
+                Toast.makeText(requireContext(), "GoogleIdTokenCredential...", Toast.LENGTH_SHORT).show()
+                try {
+                    firebaseAuthWithGoogle(credential.idToken)
+                } catch (e: GoogleIdTokenParsingException) {
+                    Log.e("IMPORTANTE", "Received an invalid google id token response", e)
+                    Toast.makeText(requireContext(), "Invalid google id token: ${e.message}", Toast.LENGTH_SHORT).show()
+
+                }
+            }
+
             is CustomCredential -> {
+                Toast.makeText(requireContext(), "CustomCredential...", Toast.LENGTH_SHORT).show()
                 if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     try {
+                        // Use googleIdTokenCredential and extract id to validate and authenticate on your server.
                         val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
                         firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
                     } catch (e: GoogleIdTokenParsingException) {
-                        Log.e(TAG, "Received an invalid google id token response", e)
+                        Log.e("IMPORTANTE", "Received an invalid google id token response", e)
+                        Toast.makeText(requireContext(), "Invalid google id token: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    Log.e(TAG, "Unexpected type of credential")
                 }
             }
+
             else -> {
-                Log.e(TAG, "Unexpected type of credential")
+                // Catch any unrecognized credential type here.
+                Log.e("IMPORTANTE", "Unexpected type of credential")
+                Toast.makeText(requireContext(), "Unexpected type of credential", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
+            Toast.makeText(requireContext(), "Navigating to HomeFragment", Toast.LENGTH_SHORT).show()
             val homeFragment = HomeFragment()
             val transaction = parentFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_container_view, homeFragment)
