@@ -6,7 +6,7 @@
     ],
     "target" : {
       "namespace" : "android_app",
-      "package_name" : "com.followapp.mytasks",
+      "package_name" : "com.followapp.mytime",
       "sha256_cert_fingerprints" : [
         "ED:66:2C:EE:0B:36:60:D8:1C:DC:99:BA:85:36:B1:3F:0B:15:F5:9C:CB:ED:31:7C:08:BF:06:DA:09:6A:DC:6D"
       ]
