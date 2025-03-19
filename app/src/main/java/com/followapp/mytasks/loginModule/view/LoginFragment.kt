@@ -1,6 +1,5 @@
 package com.followapp.mytasks.loginModule.view
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +18,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.followapp.mytasks.R
 import com.followapp.mytasks.homeModule.view.HomeFragment
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -48,21 +49,41 @@ class LoginFragment : Fragment() {
         initLogin(view)
     }
 
+    private fun checkPlayServices(): Boolean {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val resultCode = googleApiAvailability.isGooglePlayServicesAvailable(requireContext())
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (googleApiAvailability.isUserResolvableError(resultCode)) {
+                googleApiAvailability.getErrorDialog(requireActivity(), resultCode, 9000)?.show()
+            } else {
+                Toast.makeText(requireContext(), "This device is not supported.", Toast.LENGTH_LONG).show()
+            }
+            return false
+        }
+        return true
+    }
+
     private fun initLogin(view: View) {
         val signInButton: Button = view.findViewById(R.id.signInGoogle)
         signInButton.setOnClickListener {
-            getGoogleIdToken()
+            if (checkPlayServices()) {
+                getGoogleIdToken()
+            } else {
+                Toast.makeText(requireContext(), "Google Play Services are required.", Toast.LENGTH_SHORT).show()
+                Log.d("IMPORTANTE", "Google Play Services are required.")
+            }
         }
     }
 
     private fun getGoogleIdToken() {
 //        Toast.makeText(requireContext(), "getGoogleIdToken called", Toast.LENGTH_SHORT).show()
+        Log.d("IMPORTANTE", "getGoogleIdToken called") // Add this line
         val googleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
             .setServerClientId(getString(R.string.web_client_id))
             .build()
 
-//        Log.d("IMPORTANTE", "FilterByAuthorizedAccounts: ${googleIdOption.filterByAuthorizedAccounts}")
+        Log.d("IMPORTANTE", "FilterByAuthorizedAccounts: ${googleIdOption.filterByAuthorizedAccounts}")
 
         val request = GetCredentialRequest.Builder()
             .addCredentialOption(googleIdOption)
@@ -71,14 +92,17 @@ class LoginFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 Toast.makeText(requireContext(), "Attempting to get credential...", Toast.LENGTH_SHORT).show()
+                Log.d("IMPORTANTE", "Attempting to get credential...") // Add this line
                 val result = credentialManager.getCredential(
                     request = request,
                     context = requireContext(),
                 )
                 Toast.makeText(requireContext(), "Credential retrieved successfully", Toast.LENGTH_SHORT).show()
+                Log.d("IMPORTANTE", "Credential retrieved successfully") // Add this line
                 handleSignIn(result)
             } catch (e: GetCredentialException) {
-                Log.e("IMPORTANTE", "Credential exception: ${e.message}", e)
+                Log.e("IMPORTANTE", "Credential exception: ${e.message}", e) // Modify this line
+                Log.e("IMPORTANTE", "Credential exception class: ${e.javaClass.name}", e) // Add this line
                 Toast.makeText(requireContext(), "Credential exception: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
@@ -93,7 +117,7 @@ class LoginFragment : Fragment() {
                 Toast.makeText(requireContext(), "Firebase sign-in successful", Toast.LENGTH_SHORT).show()
                 updateUI(user)
             } else {
-                Log.w("IMPORTANTE", "signInWithCredential:failure", task.exception)
+                Log.w("IMPORTANT", "signInWithCredential:failure", task.exception)
                 Toast.makeText(requireContext(), "Firebase sign-in failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 updateUI(null)
             }
@@ -115,7 +139,7 @@ class LoginFragment : Fragment() {
                 try {
                     firebaseAuthWithGoogle(credential.idToken)
                 } catch (e: GoogleIdTokenParsingException) {
-                    Log.e("IMPORTANTE", "Received an invalid google id token response", e)
+                    Log.e("IMPORTANT", "Received an invalid google id token response", e)
                     Toast.makeText(requireContext(), "Invalid google id token: ${e.message}", Toast.LENGTH_SHORT).show()
 
                 }
@@ -129,7 +153,7 @@ class LoginFragment : Fragment() {
                         val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
                         firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
                     } catch (e: GoogleIdTokenParsingException) {
-                        Log.e("IMPORTANTE", "Received an invalid google id token response", e)
+                        Log.e("IMPORTANT", "Received an invalid google id token response", e)
                         Toast.makeText(requireContext(), "Invalid google id token: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -137,7 +161,7 @@ class LoginFragment : Fragment() {
 
             else -> {
                 // Catch any unrecognized credential type here.
-                Log.e("IMPORTANTE", "Unexpected type of credential")
+                Log.e("IMPORTANT", "Unexpected type of credential")
                 Toast.makeText(requireContext(), "Unexpected type of credential", Toast.LENGTH_SHORT).show()
             }
         }
