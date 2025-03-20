@@ -41,14 +41,6 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        loginViewModel.playServicesAvailable.observe(viewLifecycleOwner, Observer { available ->
-            if (available) {
-                loginViewModel.getGoogleIdToken(requireContext())
-            } else {
-                Toast.makeText(requireContext(), "Google Play Services are required.", Toast.LENGTH_SHORT).show()
-            }
-        })
-
         loginViewModel.user.observe(viewLifecycleOwner, Observer { user ->
             if (user != null) {
                 parentFragmentManager.beginTransaction()
@@ -65,7 +57,7 @@ class LoginFragment : Fragment() {
 
     private fun setupListeners() {
         binding.signInGoogle.setOnClickListener {
-            loginViewModel.checkPlayServices(requireContext())
+            loginViewModel.signInWithGoogle(requireContext())
         }
     }
 

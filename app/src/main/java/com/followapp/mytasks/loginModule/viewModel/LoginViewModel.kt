@@ -13,18 +13,11 @@ import kotlinx.coroutines.withContext
 
 class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
 
-    private val _playServicesAvailable = MutableLiveData<Boolean>()
-    val playServicesAvailable: LiveData<Boolean> get() = _playServicesAvailable
-
     private val _user = MutableLiveData<FirebaseUser?>()
     val user: LiveData<FirebaseUser?> get() = _user
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
-
-    fun checkPlayServices(context: Context) {
-        _playServicesAvailable.value = repository.checkPlayServices(context)
-    }
 
     private fun setUser(user: FirebaseUser?) {
         _user.postValue(user)
@@ -34,14 +27,18 @@ class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
         _errorMessage.postValue(message ?: "Unknown error")
     }
 
-    fun getGoogleIdToken(context: Context) {
+    fun signInWithGoogle(context: Context) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repository.signInWithGoogle(context) { user, error ->
-                    setUser(user)
-                    error?.let {
-                        setErrorMessage(it)
+                if (repository.checkPlayServices(context)) {
+                    repository.signInWithGoogle(context) { user, error ->
+                        setUser(user)
+                        error?.let {
+                            setErrorMessage(it)
+                        }
                     }
+                } else {
+                    setErrorMessage("Google Play Services are required.")
                 }
             }
         }
