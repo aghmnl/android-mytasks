@@ -37,7 +37,8 @@ class LoginRepository {
         return true
     }
 
-    suspend fun getGoogleIdToken(context: Context): GetCredentialResponse {
+suspend fun getGoogleIdToken(context: Context): GetCredentialResponse? {
+    return try {
         credentialManager = CredentialManager.create(context)
         val googleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
@@ -48,8 +49,12 @@ class LoginRepository {
             .addCredentialOption(googleIdOption)
             .build()
 
-        return credentialManager.getCredential(context, request)
+        credentialManager.getCredential(context, request)
+    } catch (e: Exception) {
+        Log.e("LoginRepository", "Error getting Google ID token", e)
+        null
     }
+}
 
     fun handleSignIn(result: GetCredentialResponse, callback: (FirebaseUser?, String?) -> Unit) {
         when (val credential = result.credential) {

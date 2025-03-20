@@ -9,7 +9,7 @@ import com.followapp.mytasks.loginModule.model.LoginRepository
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val repository: LoginRepository): ViewModel() {
+class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
 
     private val _playServicesAvailable = MutableLiveData<Boolean>()
     val playServicesAvailable: LiveData<Boolean> get() = _playServicesAvailable
@@ -34,14 +34,16 @@ class LoginViewModel(private val repository: LoginRepository): ViewModel() {
 
     fun getGoogleIdToken(context: Context) {
         viewModelScope.launch {
-            try {
-                val result = repository.getGoogleIdToken(context)
-                repository.handleSignIn(result) { user, error ->
+            val result = repository.getGoogleIdToken(context)
+            result?.let {
+                repository.handleSignIn(it) { user, error ->
                     setUser(user)
-                    error?.let { setErrorMessage(it) }
+                    error?.let {
+                        setErrorMessage(it)
+                    }
                 }
-            } catch (e: Exception) {
-                setErrorMessage(e.message)
+            } ?: run {
+                setErrorMessage("Failed to get Google ID token")
             }
         }
     }
