@@ -7,16 +7,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.followapp.mytasks.R
 import com.followapp.mytasks.homeModule.view.HomeFragment
+import com.followapp.mytasks.loginModule.model.LoginRepository
 import com.followapp.mytasks.loginModule.viewModel.LoginViewModel
-import kotlin.getValue
+import com.followapp.mytasks.loginModule.viewModel.LoginViewModelFactory
 
 class LoginFragment : Fragment() {
 
-    private val loginViewModel: LoginViewModel by viewModels()
+    private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_login, container, false)
@@ -25,8 +26,13 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupViewModel()
         setupObservers()
         setupListeners(view)
+    }
+
+    private fun setupViewModel() {
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory(LoginRepository()))[LoginViewModel::class.java]
     }
 
     private fun setupObservers() {

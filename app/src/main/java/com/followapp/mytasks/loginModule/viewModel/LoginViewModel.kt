@@ -9,9 +9,7 @@ import com.followapp.mytasks.loginModule.model.LoginRepository
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
-
-    private val repository = LoginRepository()
+class LoginViewModel(private val repository: LoginRepository): ViewModel() {
 
     private val _playServicesAvailable = MutableLiveData<Boolean>()
     val playServicesAvailable: LiveData<Boolean> get() = _playServicesAvailable
