@@ -2,18 +2,14 @@ package com.followapp.mytasks.loginModule.view
 
 import android.os.Bundle
 import android.os.TransactionTooLargeException
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.credentials.CredentialManager
-import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
-import androidx.credentials.PasswordCredential
-import androidx.credentials.PublicKeyCredential
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -90,12 +86,11 @@ class LoginFragment : Fragment() {
                 )
                 handleSignIn(result)
             } catch (e: GetCredentialException) {
-                Log.e("LoginFragment", "Credential exception: ${e.message}", e)
+                e.printStackTrace()
             } catch (e: TransactionTooLargeException) {
-                Log.e("LoginFragment", "TransactionTooLargeException: ${e.message}", e)
                 Toast.makeText(requireContext(), "Too many accounts or account data is too large. Please try again or clear Google Play Services data.", Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
-                Log.e("LoginFragment", "General exception: ${e.message}", e)
+                e.printStackTrace()
             }
         }
     }
@@ -104,10 +99,8 @@ class LoginFragment : Fragment() {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener(requireActivity()) { task ->
             if (task.isSuccessful) {
-                val user = auth.currentUser
-                updateUI(user)
+                updateUI(auth.currentUser)
             } else {
-                Log.w("LoginFragment", "signInWithCredential:failure", task.exception)
                 updateUI(null)
             }
         }
@@ -115,35 +108,15 @@ class LoginFragment : Fragment() {
 
     private fun handleSignIn(result: GetCredentialResponse) {
         when (val credential = result.credential) {
-            is PublicKeyCredential -> {
-                // Handle PublicKeyCredential
-            }
-
-            is PasswordCredential -> {
-                // Handle PasswordCredential
-            }
-
             is GoogleIdTokenCredential -> {
                 try {
                     firebaseAuthWithGoogle(credential.idToken)
                 } catch (e: GoogleIdTokenParsingException) {
-                    Log.e("LoginFragment", "Received an invalid google id token response", e)
+                    e.printStackTrace()
                 }
             }
-
-            is CustomCredential -> {
-                if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-                    try {
-                        val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
-                        firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
-                    } catch (e: GoogleIdTokenParsingException) {
-                        Log.e("LoginFragment", "Received an invalid google id token response", e)
-                    }
-                }
-            }
-
             else -> {
-                Log.w("LoginFragment", "Unexpected type of credential")
+                // Handle other credential types if needed
             }
         }
     }
@@ -151,10 +124,10 @@ class LoginFragment : Fragment() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             val homeFragment = HomeFragment()
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container_view, homeFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container_view, homeFragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 }
