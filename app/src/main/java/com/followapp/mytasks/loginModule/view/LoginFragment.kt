@@ -80,15 +80,13 @@ class LoginFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                val result = credentialManager.getCredential(
-                    request = request,
-                    context = requireContext(),
-                )
+                val result = credentialManager.getCredential(requireContext(), request)
                 handleSignIn(result)
             } catch (e: GetCredentialException) {
                 e.printStackTrace()
             } catch (e: TransactionTooLargeException) {
-                Toast.makeText(requireContext(), "Too many accounts or account data is too large. Please try again or clear Google Play Services data.", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Too many accounts or account data is too large. Please delete some accounts or clear Google Play Services data and try again.", Toast.LENGTH_LONG).show()
+                e.printStackTrace()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -98,11 +96,7 @@ class LoginFragment : Fragment() {
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener(requireActivity()) { task ->
-            if (task.isSuccessful) {
-                updateUI(auth.currentUser)
-            } else {
-                updateUI(null)
-            }
+            updateUI(if (task.isSuccessful) auth.currentUser else null)
         }
     }
 
@@ -123,9 +117,8 @@ class LoginFragment : Fragment() {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            val homeFragment = HomeFragment()
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container_view, homeFragment)
+                .replace(R.id.fragment_container_view, HomeFragment())
                 .addToBackStack(null)
                 .commit()
         }
