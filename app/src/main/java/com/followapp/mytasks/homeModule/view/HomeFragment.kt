@@ -87,11 +87,10 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     private fun setupListeners() {
         binding.fabAddTask.setOnClickListener {
-            val detailFragment = DetailFragment()
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container_view, detailFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_view, DetailFragment())
+            .addToBackStack(null)
+            .commit()
         }
     }
 

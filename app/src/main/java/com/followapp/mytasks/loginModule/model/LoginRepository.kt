@@ -1,4 +1,85 @@
 package com.followapp.mytasks.loginModule.model
 
+import android.app.Activity
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import com.followapp.mytasks.R
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.gson.Gson
+
 class LoginRepository {
+
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var credentialManager: CredentialManager
+
+    fun checkPlayServices(context: Context): Boolean {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val resultCode = googleApiAvailability.isGooglePlayServicesAvailable(context)
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (googleApiAvailability.isUserResolvableError(resultCode)) {
+                googleApiAvailability.getErrorDialog(context as Activity, resultCode, 9000)?.show()
+            } else {
+                Toast.makeText(context, "This device is not supported.", Toast.LENGTH_LONG).show()
+            }
+            return false
+        }
+        return true
+    }
+
+suspend fun getGoogleIdToken(context: Context): GetCredentialResponse {
+    credentialManager = CredentialManager.create(context)
+    val googleIdOption = GetGoogleIdOption.Builder()
+        .setFilterByAuthorizedAccounts(false)
+        .setServerClientId(context.getString(R.string.web_client_id))
+        .build()
+
+    val request = GetCredentialRequest.Builder()
+        .addCredentialOption(googleIdOption)
+        .build()
+
+    return credentialManager.getCredential(context, request)
+}
+
+    fun handleSignIn(result: GetCredentialResponse, callback: (FirebaseUser?, String?) -> Unit) {
+        when (val credential = result.credential) {
+            is GoogleIdTokenCredential -> {
+                try {
+                    firebaseAuthWithGoogle(credential.idToken, callback)
+                } catch (e: Exception) {
+                    callback(null, e.message)
+                }
+            }
+            is CustomCredential -> {
+                val credentialData = Gson().toJson(credential.data)
+                Log.e("IMPORTANTE", "CustomCredential received: $credentialData")
+                callback(null, "AG: Custom credential type is not supported")
+            }
+            else -> {
+                Log.e("IMPORTANTE", "Unexpected type of credential: ${credential::class.java}")
+                callback(null, "Unexpected type of credential")
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String, callback: (FirebaseUser?, String?) -> Unit) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                callback(auth.currentUser, null)
+            } else {
+                callback(null, task.exception?.message)
+            }
+        }
+    }
 }
