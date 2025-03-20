@@ -13,10 +13,10 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.gson.Gson
 
 class LoginRepository {
 
@@ -37,36 +37,44 @@ class LoginRepository {
         return true
     }
 
-suspend fun getGoogleIdToken(context: Context): GetCredentialResponse {
-    credentialManager = CredentialManager.create(context)
-    val googleIdOption = GetGoogleIdOption.Builder()
-        .setFilterByAuthorizedAccounts(false)
-        .setServerClientId(context.getString(R.string.web_client_id))
-        .build()
+    suspend fun getGoogleIdToken(context: Context): GetCredentialResponse {
+        credentialManager = CredentialManager.create(context)
+        val googleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(context.getString(R.string.web_client_id))
+            .build()
 
-    val request = GetCredentialRequest.Builder()
-        .addCredentialOption(googleIdOption)
-        .build()
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
 
-    return credentialManager.getCredential(context, request)
-}
+        return credentialManager.getCredential(context, request)
+    }
 
     fun handleSignIn(result: GetCredentialResponse, callback: (FirebaseUser?, String?) -> Unit) {
         when (val credential = result.credential) {
             is GoogleIdTokenCredential -> {
                 try {
                     firebaseAuthWithGoogle(credential.idToken, callback)
-                } catch (e: Exception) {
+                } catch (e: GoogleIdTokenParsingException) {
                     callback(null, e.message)
                 }
             }
+
             is CustomCredential -> {
-                val credentialData = Gson().toJson(credential.data)
-                Log.e("IMPORTANTE", "CustomCredential received: $credentialData")
-                callback(null, "AG: Custom credential type is not supported")
+                if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                    try {
+                        val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                        firebaseAuthWithGoogle(googleIdTokenCredential.idToken, callback)
+                    } catch (e: GoogleIdTokenParsingException) {
+                        Log.e("LoginFragment", "Received an invalid google id token response", e)
+                        callback(null, e.message)
+                    }
+                }
             }
+
             else -> {
-                Log.e("IMPORTANTE", "Unexpected type of credential: ${credential::class.java}")
+                Log.e("LoginFragment", "Unexpected type of credential: ${credential::class.java}")
                 callback(null, "Unexpected type of credential")
             }
         }
