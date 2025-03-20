@@ -30,15 +30,11 @@ class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
     fun signInWithGoogle(context: Context) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                if (repository.checkPlayServices(context)) {
-                    repository.signInWithGoogle(context) { user, error ->
-                        setUser(user)
-                        error?.let {
-                            setErrorMessage(it)
-                        }
+                repository.signInWithGoogle(context) { user, error ->
+                    setUser(user)
+                    error?.let {
+                        setErrorMessage(it)
                     }
-                } else {
-                    setErrorMessage("Google Play Services are required.")
                 }
             }
         }

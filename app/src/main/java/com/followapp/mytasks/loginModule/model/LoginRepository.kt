@@ -25,11 +25,15 @@ class LoginRepository(private val firebaseService: FirebaseService) {
     }
 
     suspend fun signInWithGoogle(context: Context, callback: (FirebaseUser?, String?) -> Unit) {
-        val result = firebaseService.getGoogleIdToken(context)
-        result?.let {
-            firebaseService.handleSignIn(it, callback)
-        } ?: run {
-            callback(null, "Failed to get Google ID token")
+        if (checkPlayServices(context)) {
+            val result = firebaseService.getGoogleIdToken(context)
+            result?.let {
+                firebaseService.handleSignIn(it, callback)
+            } ?: run {
+                callback(null, "Failed to get Google ID token")
+            }
+        } else {
+            callback(null, "Google Play Services are required.")
         }
     }
 }
