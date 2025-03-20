@@ -36,20 +36,13 @@ class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
 
     fun getGoogleIdToken(context: Context) {
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                repository.getGoogleIdToken(context)
-            }
-            result?.let {
-                withContext(Dispatchers.IO) {
-                    repository.handleSignIn(it) { user, error ->
-                        setUser(user)
-                        error?.let {
-                            setErrorMessage(it)
-                        }
+            withContext(Dispatchers.IO) {
+                repository.signInWithGoogle(context) { user, error ->
+                    setUser(user)
+                    error?.let {
+                        setErrorMessage(it)
                     }
                 }
-            } ?: run {
-                setErrorMessage("Failed to get Google ID token")
             }
         }
     }

@@ -37,6 +37,15 @@ class LoginRepository {
         return true
     }
 
+    suspend fun signInWithGoogle(context: Context, callback: (FirebaseUser?, String?) -> Unit) {
+        val result = getGoogleIdToken(context)
+        result?.let {
+            handleSignIn(it, callback)
+        } ?: run {
+            callback(null, "Failed to get Google ID token")
+        }
+    }
+
 suspend fun getGoogleIdToken(context: Context): GetCredentialResponse? {
     return try {
         credentialManager = CredentialManager.create(context)
