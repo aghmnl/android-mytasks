@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".TaskApplication"
@@ -16,9 +17,6 @@
         android:theme="@style/Theme.MyTasks"
         tools:targetApi="31">
 
-        <activity
-            android:name=".loginModule.view.LoginActivity"
-            android:exported="false" />
         <activity
             android:name=".mainModule.view.MainActivity"
             android:exported="true"
