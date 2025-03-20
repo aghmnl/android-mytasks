@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.followapp.mytasks.R
 import com.followapp.mytasks.common.dataAccess.services.FirebaseService
+import com.followapp.mytasks.common.dataAccess.services.GooglePlayService
 import com.followapp.mytasks.databinding.FragmentLoginBinding
 import com.followapp.mytasks.homeModule.view.HomeFragment
 import com.followapp.mytasks.loginModule.model.LoginRepository
@@ -37,7 +38,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory(LoginRepository(FirebaseService())))[LoginViewModel::class.java]
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory(LoginRepository(FirebaseService(), GooglePlayService())))[LoginViewModel::class.java]
     }
 
     private fun setupObservers() {
