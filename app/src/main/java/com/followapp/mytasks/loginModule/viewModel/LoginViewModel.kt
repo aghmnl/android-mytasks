@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.followapp.mytasks.loginModule.model.LoginRepository
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
 
@@ -34,12 +36,16 @@ class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
 
     fun getGoogleIdToken(context: Context) {
         viewModelScope.launch {
-            val result = repository.getGoogleIdToken(context)
+            val result = withContext(Dispatchers.IO) {
+                repository.getGoogleIdToken(context)
+            }
             result?.let {
-                repository.handleSignIn(it) { user, error ->
-                    setUser(user)
-                    error?.let {
-                        setErrorMessage(it)
+                withContext(Dispatchers.IO) {
+                    repository.handleSignIn(it) { user, error ->
+                        setUser(user)
+                        error?.let {
+                            setErrorMessage(it)
+                        }
                     }
                 }
             } ?: run {
