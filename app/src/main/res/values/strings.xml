@@ -31,4 +31,9 @@
     <string name="enter_a_title">Please enter a title</string>
     <string name="sort_a_z">Sort A-Z</string>
     <string name="sort_z_a">Sort Z-A</string>
+    <string name="asset_statements" translatable="false">
+            [{
+              \"include\": \"https://followapp-mytasks.web.app/.well-known/assetlinks.json\"
+            }]
+</string>
 </resources>

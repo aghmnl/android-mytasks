@@ -2,12 +2,13 @@
 agp = "8.7.3"  # Tanto para library como para application
 #firebaseAuth = "22.3.1"  No es necesario porque se usa Firebase Android BoM
 coreKtx = "1.13.1"
-credentials = "<latest version>"
+#credentials = "<latest version>"
+credentials = "1.5.0"
 drawerlayout = "1.2.0"
 firebaseBom = "33.7.0"
-kotlin = "2.0.21"  # https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android
+kotlin = "2.0.20"  # https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android
 kotlinxCoroutinesAndroid = "1.8.0"
-kps = "2.0.20-1.0.25"  # https://github.com/google/ksp/releases
+kps = "2.0.20-1.0.24"  # https://github.com/google/ksp/releases
 activityCompose = "1.9.3"
 appcompat = "1.7.0"
 composeBom = "2024.12.01"
@@ -23,11 +24,11 @@ koinVersion = "4.0.0"
 lifecycleLivedataKtx = "2.8.7"
 material = "1.12.0"
 navigation = "2.8.5"
-playServicesAds = "23.6.0"
+playServicesAds = "24.1.0"
 playServicesAuth = "21.3.0"  # // GoogleSignIn is deprecated in version 21.0.0
 roomVersion = "2.6.1"
 # @keep
-compileSdk = "34"
+compileSdk = "35"  # Updated from 34 to 35 to use LocalTime
 # @keep
 minSdk = "26"  # Updated from 25 to 26 to use LocalTime
 securityIdentityCredential = "1.0.0-alpha03"
@@ -75,7 +76,6 @@ koin = { module = "io.insert-koin:koin-android", version.ref = "koinVersion" }
 #kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
-
 
 
 [plugins]

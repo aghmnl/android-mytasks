@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".TaskApplication"
@@ -17,9 +18,6 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".loginModule.view.LoginActivity"
-            android:exported="false" />
-        <activity
             android:name=".mainModule.view.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.MyTasks">
@@ -28,6 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data android:name="asset_statements" android:resource="@string/asset_statements" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

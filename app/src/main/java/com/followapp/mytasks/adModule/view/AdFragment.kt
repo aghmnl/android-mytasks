@@ -29,12 +29,12 @@ class AdFragment : Fragment() {
 
         setupViewModel()
         setupObservers()
-        adViewModel.initializeAdView(requireContext(), getString(R.string.ad_id))
-        adViewModel.loadAd()
     }
 
     private fun setupViewModel() {
         adViewModel = ViewModelProvider(this, AdViewModelFactory(AdRepository()))[AdViewModel::class.java]
+        adViewModel.initializeAdView(requireContext(), getString(R.string.ad_id))
+        adViewModel.loadAd()
     }
 
     private fun setupObservers() {
