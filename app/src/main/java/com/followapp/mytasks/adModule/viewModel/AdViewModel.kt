@@ -20,8 +20,8 @@ class AdViewModel(private val repository: AdRepository) : ViewModel() {
 
     fun initializeAdView(context: Context, adUnitId: String) {
         val adView = AdView(context)
-        adView.setAdSize(AdSize.BANNER)
         adView.adUnitId = adUnitId
+        adView.setAdSize(AdSize.BANNER)
         _adView.value = adView
     }
 
