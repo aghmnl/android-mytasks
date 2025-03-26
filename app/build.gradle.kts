@@ -101,8 +101,8 @@ dependencies {
     implementation(libs.androidx.drawerlayout)
 
     // Koin for Android
-    implementation(libs.koin)  // Dependencies Injection
-
+    implementation(project.dependencies.platform(libs.koin.bom))
+    implementation(libs.koin.core)
 
 
     // Required
