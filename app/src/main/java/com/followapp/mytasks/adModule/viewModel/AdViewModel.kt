@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.followapp.mytasks.adModule.model.AdRepository
-import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
 class AdViewModel(private val repository: AdRepository) : ViewModel() {
@@ -19,10 +18,7 @@ class AdViewModel(private val repository: AdRepository) : ViewModel() {
     fun setAdLoaded(value: Boolean) = _adLoaded.postValue(value)
 
     fun initializeAdView(context: Context, adUnitId: String) {
-        val adView = AdView(context)
-        adView.adUnitId = adUnitId
-        adView.setAdSize(AdSize.BANNER)
-        _adView.value = adView
+        _adView.value = repository.initializeAdView(context, adUnitId)
     }
 
     fun loadAd() {
