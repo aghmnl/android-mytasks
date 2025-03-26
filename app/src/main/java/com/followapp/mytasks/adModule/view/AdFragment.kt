@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.followapp.mytasks.R
 import com.followapp.mytasks.adModule.viewModel.AdViewModel
 import com.followapp.mytasks.databinding.FragmentAdBinding
 import org.koin.android.ext.android.inject
@@ -30,7 +29,7 @@ class AdFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        adViewModel.initializeAdView(requireContext(), getString(R.string.ad_id))
+        adViewModel.initializeAdView(requireContext())
         adViewModel.loadAd()
     }
 

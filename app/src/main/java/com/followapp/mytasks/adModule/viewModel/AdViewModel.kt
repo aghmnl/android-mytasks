@@ -17,8 +17,8 @@ class AdViewModel(private val repository: AdRepository) : ViewModel() {
 
     fun setAdLoaded(value: Boolean) = _adLoaded.postValue(value)
 
-    fun initializeAdView(context: Context, adUnitId: String) {
-        _adView.value = repository.initializeAdView(context, adUnitId)
+    fun initializeAdView(context: Context) {
+        _adView.value = repository.initializeAdView(context)
     }
 
     fun loadAd() {

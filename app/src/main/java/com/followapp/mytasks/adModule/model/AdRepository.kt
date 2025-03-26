@@ -6,8 +6,8 @@ import com.google.android.gms.ads.AdView
 
 class AdRepository(private val adService: GoogleAdService) {
 
-    fun initializeAdView(context: Context, adUnitId: String): AdView {
-        return adService.initializeAdView(context, adUnitId)
+    fun initializeAdView(context: Context): AdView {
+        return adService.initializeAdView(context)
     }
 
     fun loadAd(adView: AdView, onAdLoaded: () -> Unit, onAdFailed: () -> Unit) {
