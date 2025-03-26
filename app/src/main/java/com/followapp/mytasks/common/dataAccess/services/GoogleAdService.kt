@@ -1,7 +1,7 @@
 package com.followapp.mytasks.common.dataAccess.services
 
 import android.content.Context
-import com.followapp.mytasks.common.utils.Constants
+import com.followapp.mytasks.R
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -12,7 +12,7 @@ class GoogleAdService {
 
     fun initializeAdView(context: Context): AdView {
         val adView = AdView(context)
-        adView.adUnitId = Constants.AD_ID
+        adView.adUnitId = context.getString(R.string.ad_id)
         adView.setAdSize(AdSize.BANNER)
         return adView
     }

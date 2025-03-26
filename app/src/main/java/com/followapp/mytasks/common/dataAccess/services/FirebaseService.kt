@@ -6,7 +6,7 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
-import com.followapp.mytasks.common.utils.Constants
+import com.followapp.mytasks.R
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -24,7 +24,7 @@ class FirebaseService {
             credentialManager = CredentialManager.create(context)
             val googleIdOption = GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(Constants.WEB_CLIENT_ID)
+                .setServerClientId(context.getString(R.string.web_client_id))
                 .build()
 
             val request = GetCredentialRequest.Builder()
