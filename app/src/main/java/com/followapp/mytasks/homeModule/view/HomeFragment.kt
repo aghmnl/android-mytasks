@@ -13,24 +13,21 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.followapp.mytasks.R
 import com.followapp.mytasks.common.entities.Task
 import com.followapp.mytasks.common.utils.OnTaskClickListener
 import com.followapp.mytasks.databinding.FragmentHomeBinding
 import com.followapp.mytasks.detailModule.view.DetailFragment
-import com.followapp.mytasks.homeModule.model.HomeRepository
-import com.followapp.mytasks.homeModule.model.domain.HomeRoomDatabase
 import com.followapp.mytasks.homeModule.viewModel.HomeViewModel
-import com.followapp.mytasks.homeModule.viewModel.HomeViewModelFactory
+import org.koin.android.ext.android.inject
 
 class HomeFragment : Fragment(), OnTaskClickListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by inject()
     private lateinit var tasksAdapter: TaskListAdapter
     private var toggleMenuItem: MenuItem? = null
 
@@ -51,7 +48,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     }
 
     private fun setupViewModel() {
-        homeViewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository(HomeRoomDatabase())))[HomeViewModel::class.java]
         homeViewModel.getAllTasks()
     }
 

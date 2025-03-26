@@ -1,23 +1,16 @@
 package com.followapp.mytasks.adModule.model
 
-import com.google.android.gms.ads.AdRequest
+import android.content.Context
+import com.followapp.mytasks.common.dataAccess.services.GoogleAdService
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.LoadAdError
 
-class AdRepository {
+class AdRepository(private val adService: GoogleAdService) {
+
+    fun initializeAdView(context: Context): AdView {
+        return adService.initializeAdView(context)
+    }
 
     fun loadAd(adView: AdView, onAdLoaded: () -> Unit, onAdFailed: () -> Unit) {
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
-        adView.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                onAdLoaded()
-            }
-
-            override fun onAdFailedToLoad(error: LoadAdError) {
-                onAdFailed()
-            }
-        }
+        adService.loadAd(adView, onAdLoaded, onAdFailed)
     }
 }

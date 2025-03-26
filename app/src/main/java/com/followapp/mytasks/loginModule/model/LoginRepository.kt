@@ -7,11 +7,11 @@ import com.google.firebase.auth.FirebaseUser
 
 class LoginRepository(
     private val firebaseService: FirebaseService,
-    private val googlePlayServicesChecker: GooglePlayService
+    private val googlePlayServices: GooglePlayService
 ) {
 
     suspend fun signInWithGoogle(context: Context, callback: (FirebaseUser?, String?) -> Unit) {
-        if (googlePlayServicesChecker.checkPlayServices(context)) {
+        if (googlePlayServices.checkPlayServices(context)) {
             val result = firebaseService.getGoogleIdToken(context)
             result?.let {
                 firebaseService.handleSignIn(it, callback)

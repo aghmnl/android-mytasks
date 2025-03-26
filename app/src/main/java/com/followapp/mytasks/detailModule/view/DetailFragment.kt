@@ -6,21 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.followapp.mytasks.R
 import com.followapp.mytasks.common.entities.Task
-import com.followapp.mytasks.common.utils.*
+import com.followapp.mytasks.common.utils.toUTCLocalDateTime
 import com.followapp.mytasks.databinding.FragmentDetailBinding
-import com.followapp.mytasks.detailModule.model.DetailRepository
-import com.followapp.mytasks.detailModule.model.domain.DetailRoomDatabase
 import com.followapp.mytasks.detailModule.viewModel.DetailViewModel
-import com.followapp.mytasks.detailModule.viewModel.DetailViewModelFactory
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import java.text.SimpleDateFormat
 import java.time.ZoneId
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class DetailFragment : Fragment() {
 
@@ -28,7 +27,7 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var _taskId: Long = -1L
-    private lateinit var detailViewModel: DetailViewModel
+    private val detailViewModel: DetailViewModel by inject()
 
     private val calendar = Calendar.getInstance()
     private lateinit var materialDatePicker: MaterialDatePicker<Long>
@@ -42,15 +41,10 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupViewModel()
         setArguments()
         setupObservers()
         setupUIComponents()
         setupListeners()
-    }
-
-    private fun setupViewModel() {
-        detailViewModel = ViewModelProvider(this, DetailViewModelFactory(DetailRepository(DetailRoomDatabase())))[DetailViewModel::class.java]
     }
 
     private fun setArguments() {
