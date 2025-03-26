@@ -23,14 +23,15 @@ import com.followapp.mytasks.detailModule.view.DetailFragment
 import com.followapp.mytasks.homeModule.model.HomeRepository
 import com.followapp.mytasks.homeModule.model.domain.HomeRoomDatabase
 import com.followapp.mytasks.homeModule.viewModel.HomeViewModel
-import com.followapp.mytasks.homeModule.viewModel.HomeViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.getValue
 
 class HomeFragment : Fragment(), OnTaskClickListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by viewModel()
     private lateinit var tasksAdapter: TaskListAdapter
     private var toggleMenuItem: MenuItem? = null
 
@@ -51,7 +52,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     }
 
     private fun setupViewModel() {
-        homeViewModel = ViewModelProvider(this, HomeViewModelFactory(HomeRepository(HomeRoomDatabase())))[HomeViewModel::class.java]
         homeViewModel.getAllTasks()
     }
 
