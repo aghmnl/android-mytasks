@@ -35,15 +35,19 @@ class LoginFragment : Fragment() {
     private fun setupObservers() {
         loginViewModel.user.observe(this, Observer { user ->
             if (user != null) {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container_view, HomeFragment())
-                    .addToBackStack(null)
-                    .commit()
+                navigateToHome()
             }
         })
 
         loginViewModel.errorMessage.observe(this, Observer { message ->
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         })
+    }
+
+    private fun navigateToHome() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_view, HomeFragment())
+            .addToBackStack(null)
+            .commit()
     }
 }
