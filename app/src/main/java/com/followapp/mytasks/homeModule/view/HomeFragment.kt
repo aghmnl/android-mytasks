@@ -13,25 +13,21 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.followapp.mytasks.R
 import com.followapp.mytasks.common.entities.Task
 import com.followapp.mytasks.common.utils.OnTaskClickListener
 import com.followapp.mytasks.databinding.FragmentHomeBinding
 import com.followapp.mytasks.detailModule.view.DetailFragment
-import com.followapp.mytasks.homeModule.model.HomeRepository
-import com.followapp.mytasks.homeModule.model.domain.HomeRoomDatabase
 import com.followapp.mytasks.homeModule.viewModel.HomeViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.getValue
+import org.koin.android.ext.android.inject
 
 class HomeFragment : Fragment(), OnTaskClickListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val homeViewModel: HomeViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by inject()
     private lateinit var tasksAdapter: TaskListAdapter
     private var toggleMenuItem: MenuItem? = null
 
