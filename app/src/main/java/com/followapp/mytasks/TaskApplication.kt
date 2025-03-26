@@ -6,6 +6,7 @@ import com.followapp.mytasks.adModule.di.adModule
 import com.followapp.mytasks.common.dataAccess.room.TaskDatabase
 import com.followapp.mytasks.detailModule.di.detailModule
 import com.followapp.mytasks.homeModule.di.homeModule
+import com.followapp.mytasks.loginModule.di.loginModule
 import com.google.android.gms.ads.MobileAds
 import org.koin.core.context.startKoin
 
@@ -24,7 +25,7 @@ class TaskApplication : Application() {
             .build()
 
         startKoin {
-            modules(homeModule, detailModule, adModule)
+            modules(homeModule, detailModule, adModule, loginModule)
         }
     }
 }
