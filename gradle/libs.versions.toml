@@ -35,8 +35,9 @@ securityIdentityCredential = "1.0.0-alpha03"
 # @keep
 targetSdk = "34"
 # @keep
-# compose-compiler = "2.0.0"
+compose-compiler = "2.0.0"
 googleid = "1.1.1"
+compose = "1.7.8"
 
 
 [libraries]
@@ -81,6 +82,11 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 
+#Compose added by Copilot
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -90,3 +96,4 @@ google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "kps" }
 
 # https://firebase.google.com/docs/android/troubleshooting-faq#add-plugins-using-buildscript-syntax
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
+
