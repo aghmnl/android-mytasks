@@ -5,19 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.followapp.mytasks.R
-import com.followapp.mytasks.adModule.model.AdRepository
 import com.followapp.mytasks.adModule.viewModel.AdViewModel
-import com.followapp.mytasks.adModule.viewModel.AdViewModelFactory
 import com.followapp.mytasks.databinding.FragmentAdBinding
+import org.koin.android.ext.android.inject
 
 class AdFragment : Fragment() {
 
     private var _binding: FragmentAdBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adViewModel: AdViewModel
+    private val adViewModel: AdViewModel by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentAdBinding.inflate(inflater, container, false)
@@ -32,7 +30,6 @@ class AdFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        adViewModel = ViewModelProvider(this, AdViewModelFactory(AdRepository()))[AdViewModel::class.java]
         adViewModel.initializeAdView(requireContext(), getString(R.string.ad_id))
         adViewModel.loadAd()
     }
