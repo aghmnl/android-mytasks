@@ -57,9 +57,9 @@ android {
     buildFeatures {
         compose = true
     }
-//    composeOptions {
-//        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-//    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -121,4 +121,8 @@ dependencies {
     // Livedata
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
+    // Compose added by Copilot
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.ui.tooling.preview)
 }

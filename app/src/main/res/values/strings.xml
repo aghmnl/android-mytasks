@@ -22,8 +22,8 @@
 <!--    https://console.firebase.google.com/u/0/project/followapp-mytasks/authentication/providers?utm_source=studio-->
      <string name="ad_unit_id">ca-app-pub-5163472824682213~4420222935</string>  <!--- FollowApp MyTasks ID -->
 <!--    <string name="ad_unit_id">ca-app-pub-3940256099942544~3347511713</string>  Banner test ID -->
-<!--    <string name="ad_id">ca-app-pub-3940256099942544/9214589741</string>  Test AdMob ID, also in Constants -->
-    <string name="ad_id">ca-app-pub-5163472824682213/1226263826</string>  <!-- Real Banner AdMob ID, also in Constants -->
+    <!-- <string name="ad_id">ca-app-pub-3940256099942544/9214589741</string>  Test AdMob ID, also in Constants -->
+     <string name="ad_id">ca-app-pub-5163472824682213/1226263826</string>   <!--Real Banner AdMob ID, also in Constants -->
 
     <string name="navigation_drawer_close">close</string>
     <string name="logout">Logout</string>
