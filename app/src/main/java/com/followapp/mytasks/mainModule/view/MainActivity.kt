@@ -14,9 +14,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         initToolBar()
-//        launchHome()
+        launchHome()
         loadAdFragment()
-        loadLoginFragment()
+//        loadLoginFragment()
     }
 
     private fun launchHome() {
